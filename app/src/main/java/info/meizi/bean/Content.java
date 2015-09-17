@@ -6,7 +6,7 @@ package info.meizi.bean;
 public class Content {
     String url;//图片地址
     String title;//标题
-    String count = "5";//每个group的数量
+    String count;//每个group的数量
 
     public String getCount() {
         return count;

@@ -9,14 +9,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import info.meizi.bean.Content;
-import info.meizi.utils.LogUtils;
 
 /**
  * Created by Mr_Wrong on 15/9/14.
  * 解析具体大图页面
  */
 public class ContentParser {
-    private int count;
     public static Content Parser(String html) {
         Document doc = Jsoup.parse(html);
         Elements links = doc.select("img[src~=(?i)\\.(png|jpe?g)]");
@@ -24,16 +22,38 @@ public class ContentParser {
         Element element = links.get(1).getElementsByTag("img").first();
 
 
-        Elements pages = doc.select("span");
-        Element page = pages.get(3);
+//        Elements pages = doc.select("span");
+//        Element page = pages.get(3);
 
-        Pattern p = Pattern.compile("\\/(.*?)\\é¡µ");
-        Matcher m = p.matcher(page.toString());
-        while(m.find()) {
-            content.setCount(m.group(1));
-        }
+//        Pattern p = Pattern.compile("\\/(.*?)\\é¡µ");
+//        Matcher m = p.matcher(page.toString());
+//        while(m.find()) {
+//            content.setCount(m.group(1));
+//        }
         content.setUrl(element.attr("src"));
         content.setTitle(element.attr("alt"));
         return content;
+    }
+
+    public static int getCount(final String html) throws InterruptedException {
+        final String[] s = new String[1];
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Document doc = Jsoup.parse(html);
+                Elements pages = doc.select("span");
+                Element page = pages.get(3);
+                Pattern p = Pattern.compile("[\\d*]");
+                Matcher m = p.matcher(page.toString());
+                StringBuilder sb = new StringBuilder();
+                while (m.find()) {
+                    sb.append(m.group());
+                }
+                s[0] = (String) sb.toString().subSequence(1, sb.toString().length());
+            }
+        });
+        thread.start();
+        thread.join();
+        return Integer.parseInt(s[0]);
     }
 }

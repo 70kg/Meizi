@@ -29,6 +29,8 @@ public class BaseActivity extends AppCompatActivity {
         }
         mRequestQueue.add(request);
         LogUtils.d("addRequest = " + request.getUrl());
-
+    }
+    protected  <T> T find(int viewID) {
+        return (T) findViewById(viewID);
     }
 }
