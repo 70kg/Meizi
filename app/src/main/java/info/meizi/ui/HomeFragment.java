@@ -28,6 +28,7 @@ public class HomeFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         loaddata();
+
     }
 
     private void loaddata() {
@@ -40,7 +41,12 @@ public class HomeFragment extends BaseFragment {
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String s) {
-                            Content content = ContentParser.Parser(s);
+                            Content content = null;
+                            try {
+                                content = ContentParser.Parser(s);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                             mDatas.add(content);
                             mRecyclerView.setAdapter(mAdapter);
                             mAdapter.notifyDataSetChanged();

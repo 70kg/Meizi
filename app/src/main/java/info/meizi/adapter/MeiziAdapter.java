@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -20,6 +20,7 @@ import info.meizi.bean.Content;
 public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.MyViewHolder> {
     private List<Content> mDatas;
     private LayoutInflater mInflater;
+    private Context mContetx;
 
     /**
      * 点击事件接口
@@ -38,6 +39,7 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.MyViewHolder
 
     public MeiziAdapter(Context context, List<Content> mDatas) {
         this.mDatas = mDatas;
+        this.mContetx = context;
         mInflater = LayoutInflater.from(context);
     }
 
@@ -49,8 +51,12 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int i) {
-        ImageLoader loader = ImageLoader.getInstance();
-        loader.displayImage(mDatas.get(i).getUrl(),holder.imageView);
+//        ImageLoader loader = ImageLoader.getInstance();
+//        loader.displayImage(mDatas.get(i).getUrl(),holder.imageView);
+
+        //使用Picasso来进行图片的加载
+        Picasso.with(mContetx).load(mDatas.get(i).getUrl()).into(holder.imageView);
+
         //如果设置回调，设置点击事件
         if (mOnitemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -79,7 +85,7 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.MyViewHolder
     }
 
     //添加数据
-    public void addData(int position,Content content) {
+    public void addData(int position, Content content) {
         mDatas.add(position, content);
         notifyItemInserted(position);
     }
@@ -91,6 +97,7 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.MyViewHolder
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
+
         public MyViewHolder(View view) {
             super(view);
             imageView = (ImageView) view.findViewById(R.id.iv_item);

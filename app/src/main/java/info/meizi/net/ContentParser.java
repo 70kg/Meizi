@@ -15,23 +15,20 @@ import info.meizi.bean.Content;
  * 解析具体大图页面
  */
 public class ContentParser {
-    public static Content Parser(String html) {
-        Document doc = Jsoup.parse(html);
-        Elements links = doc.select("img[src~=(?i)\\.(png|jpe?g)]");
-        Content content = new Content();
-        Element element = links.get(1).getElementsByTag("img").first();
-
-
-//        Elements pages = doc.select("span");
-//        Element page = pages.get(3);
-
-//        Pattern p = Pattern.compile("\\/(.*?)\\é¡µ");
-//        Matcher m = p.matcher(page.toString());
-//        while(m.find()) {
-//            content.setCount(m.group(1));
-//        }
-        content.setUrl(element.attr("src"));
-        content.setTitle(element.attr("alt"));
+    public static Content Parser(final String html) throws InterruptedException {
+        final Content content = new Content();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Document doc = Jsoup.parse(html);
+                Elements links = doc.select("img[src~=(?i)\\.(png|jpe?g)]");
+                Element element = links.get(1).getElementsByTag("img").first();
+                content.setUrl(element.attr("src"));
+                content.setTitle(element.attr("alt"));
+            }
+        });
+        thread.start();
+        thread.join();
         return content;
     }
 
