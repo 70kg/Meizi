@@ -12,13 +12,13 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import info.meizi.R;
-import info.meizi.bean.Content;
+import info.meizi.bean.TestContent;
 
 /**
  * Created by Mr_Wrong on 15/9/14.
  */
 public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.MyViewHolder> {
-    private List<Content> mDatas;
+    private List<TestContent> mDatas;
     private LayoutInflater mInflater;
     private Context mContetx;
 
@@ -37,7 +37,7 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.MyViewHolder
         this.mOnitemClickListener = onitemClickListener;
     }
 
-    public MeiziAdapter(Context context, List<Content> mDatas) {
+    public MeiziAdapter(Context context, List<TestContent> mDatas) {
         this.mDatas = mDatas;
         this.mContetx = context;
         mInflater = LayoutInflater.from(context);
@@ -51,8 +51,6 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int i) {
-//        ImageLoader loader = ImageLoader.getInstance();
-//        loader.displayImage(mDatas.get(i).getUrl(),holder.imageView);
 
         //使用Picasso来进行图片的加载
         Picasso.with(mContetx).load(mDatas.get(i).getUrl()).into(holder.imageView);
@@ -85,9 +83,17 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.MyViewHolder
     }
 
     //添加数据
-    public void addData(int position, Content content) {
+    public void addData(int position, TestContent content) {
         mDatas.add(position, content);
         notifyItemInserted(position);
+    }
+
+
+    public void addAll(List<TestContent> lists){
+        for (int i = 0; i <mDatas.size() ; i++) {
+            mDatas.remove(i);
+        }
+        mDatas.addAll(lists);
     }
 
     @Override

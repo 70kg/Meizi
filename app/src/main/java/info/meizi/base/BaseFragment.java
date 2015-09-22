@@ -13,41 +13,57 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import info.meizi.R;
-import info.meizi.adapter.MeiziAdapter;
-import info.meizi.bean.Content;
 import info.meizi.utils.LogUtils;
 
 /**
  * Created by Mr_Wrong on 15/9/17.
  */
-public class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment {
     public static RequestQueue mRequestQueue = Volley.newRequestQueue(MyApp.getContext());
-    protected List<Content> mDatas = new ArrayList<Content>();
-    protected MeiziAdapter mAdapter;
     protected View rootView;
     @Bind(R.id.id_recyclerview)
     protected RecyclerView mRecyclerView;
-
+    protected boolean isPrepared;//控件等是否已经加载完
+    protected boolean isVisible;//是否可见
+    private boolean hasload;//是否已经记载过  getUserVisibleHint会在fragment显示或隐藏时重复调
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment, container, false);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.id_recyclerview);
         ButterKnife.bind(this, rootView);
         return rootView;
     }
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if(getUserVisibleHint()) {
+            isVisible = true;
+            onVisible();
+        } else {
+            isVisible = false;
+            onInvisible();
+        }
+
+    }
+    protected void onVisible(){//可见 只加载一次
+        if(!hasload){
+            lazyLoad();
+            hasload = true;
+        }
+    }
+    protected abstract void lazyLoad();
+    protected void onInvisible(){}
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mAdapter = new MeiziAdapter(getContext(), mDatas);
         mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        mRecyclerView.setAdapter(mAdapter);
     }
 
     protected void executeRequest(Request<?> request) {

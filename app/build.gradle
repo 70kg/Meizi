@@ -17,7 +17,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
 }
+
+
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -26,6 +32,8 @@ dependencies {
     compile 'me.drakeet.materialdialog:library:1.2.2'
     compile 'com.android.support:design:23.0.+'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'io.realm:realm-android:0.81.1'
+    compile 'com.squareup.okhttp:okhttp:2.4.0'
 
 
     compile 'org.jsoup:jsoup:1.8.2'

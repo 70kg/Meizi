@@ -26,6 +26,10 @@
         </activity>
 
         <activity android:name=".base.BaseActivity"></activity>
+
+
+        <service android:name="info.meizi.FetchingService" />
+
     </application>
 
 </manifest>
