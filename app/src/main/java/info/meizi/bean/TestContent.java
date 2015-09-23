@@ -2,11 +2,25 @@ package info.meizi.bean;
 
 import java.io.Serializable;
 
+import io.realm.RealmObject;
+
 /**
  * Created by Mr_Wrong on 15/9/22.
  */
-public class TestContent implements Serializable {
-    public int imagewidth;
+public class TestContent extends RealmObject implements Serializable {
+    private int imagewidth;
+    private int imageheight;
+    private String url;
+    private int order;
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
 
     public int getImageheight() {
         return imageheight;
@@ -24,8 +38,6 @@ public class TestContent implements Serializable {
         this.imagewidth = imagewidth;
     }
 
-    public int imageheight;
-    private String url;
 
     public String getUrl() {
         return url;

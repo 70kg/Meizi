@@ -10,7 +10,6 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +17,8 @@ import info.meizi.bean.TestContent;
 import info.meizi.net.ContentParser;
 import info.meizi.net.RequestFactory;
 import info.meizi.utils.LogUtils;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by Mr_Wrong on 15/9/22.
@@ -25,38 +26,58 @@ import info.meizi.utils.LogUtils;
 public class FetchingService extends IntentService {
     private static final String TAG = "MeiziFetchingService";
     private final OkHttpClient client = new OkHttpClient();
+
     public FetchingService() {
         super(TAG);
     }
+
     private String groupid;
     private int mcount;
     private String html;
     private List<TestContent> lists = new ArrayList<>();
+
     @Override
     protected void onHandleIntent(Intent intent) {
         groupid = intent.getStringExtra("groupid");
-        try {
-            html = client.newCall(RequestFactory.make(groupid)).execute().body().string();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        mcount = ContentParser.getCount(html);
+        Realm realm = Realm.getInstance(this);
 
-        for (int i = 1; i < mcount + 1; i++) {
-            TestContent content = null;
+        RealmResults<TestContent> latest = realm.where(TestContent.class)
+                .findAllSorted("order", RealmResults.SORT_ORDER_DESCENDING);
+
+        if (!latest.isEmpty()) {
+            lists.addAll(latest);
+        } else {
             try {
-                content = fetchContent(groupid + "/" + i);
+                html = client.newCall(RequestFactory.make(groupid)).execute().body().string();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            lists.add(content);
+            mcount = ContentParser.getCount(html);
+            for (int i = 1; i < mcount + 1; i++) {
+                TestContent content = null;
+                try {
+                    content = fetchContent(groupid + "/" + i);
+                    content.setOrder(Integer.parseInt(groupid + i));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                saveDb(realm,content);
+                lists.add(content);
+            }
         }
-        LogUtils.e(lists.size());
 
         Intent resuleintent = new Intent(groupid);
-        resuleintent.putExtra("list", (Serializable) lists);
+        LogUtils.e("发送广播" + groupid);
         sendBroadcast(resuleintent);
 
+        realm.close();
+    }
+
+    private void saveDb( Realm realm,TestContent content) {
+        realm.beginTransaction();
+        realm.copyToRealm(content);
+        LogUtils.e("数据插入成功");
+        realm.commitTransaction();
     }
 
     /**
@@ -67,7 +88,6 @@ public class FetchingService extends IntentService {
      */
     private TestContent fetchContent(String path) throws IOException {
         String html;
-
         try {
             html = client.newCall(RequestFactory.make(path)).execute().body().string();
         } catch (IOException e) {
