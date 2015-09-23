@@ -39,6 +39,10 @@ public class ContentParser {
 
         content.setUrl(element.attr("src"));
         content.setTitle(element.attr("alt"));
+
+
+
+
         return content;
     }
 

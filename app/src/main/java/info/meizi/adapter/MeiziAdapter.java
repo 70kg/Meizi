@@ -5,14 +5,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import info.meizi.R;
 import info.meizi.bean.TestContent;
+import info.meizi.widget.RadioImageView;
 
 /**
  * Created by Mr_Wrong on 15/9/14.
@@ -51,9 +53,13 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int i) {
-
+        TestContent content = mDatas.get(i);
         //使用Picasso来进行图片的加载
-        Picasso.with(mContetx).load(mDatas.get(i).getUrl()).into(holder.imageView);
+        Picasso.with(mContetx).load(content.getUrl()).
+                transform(new CopyOnWriteArrayList<Transformation>()).
+                into(holder.imageView);
+        holder.imageView.setOriginalSize(content.getImagewidth(), content.getImageheight());
+
 
         //如果设置回调，设置点击事件
         if (mOnitemClickListener != null) {
@@ -102,11 +108,11 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.MyViewHolder
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageView;
+        RadioImageView imageView;
 
         public MyViewHolder(View view) {
             super(view);
-            imageView = (ImageView) view.findViewById(R.id.iv_item);
+            imageView = (RadioImageView) view.findViewById(R.id.iv_item);
         }
     }
 }
