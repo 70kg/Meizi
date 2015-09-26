@@ -67,4 +67,10 @@ public class RadioImageView extends ImageView {
         }
     }
 
+//    @Override
+//    protected void onDetachedFromWindow() {
+//        super.onDetachedFromWindow();
+//        setImageDrawable(null);
+//    }
+
 }

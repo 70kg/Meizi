@@ -1,6 +1,7 @@
 package info.meizi.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,9 +56,15 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.MyViewHolder
     public void onBindViewHolder(final MyViewHolder holder, int i) {
         TestContent content = mDatas.get(i);
         //使用Picasso来进行图片的加载
-        Picasso.with(mContetx).load(content.getUrl()).
+        Picasso.with(mContetx).load(content.getUrl()).tag("1").config(Bitmap.Config.RGB_565).
                 transform(new CopyOnWriteArrayList<Transformation>()).
                 into(holder.imageView);
+
+//        Picasso.with(mContetx).load(content.getUrl()).tag("1").
+//                memoryPolicy(NOCACHE, NO_STORE).
+//                transform(new CopyOnWriteArrayList<Transformation>()).
+//                into(holder.imageView);
+
         holder.imageView.setOriginalSize(content.getImagewidth(), content.getImageheight());
 
 
@@ -95,8 +102,8 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.MyViewHolder
     }
 
 
-    public void addAll(List<TestContent> lists){
-        for (int i = 0; i <mDatas.size() ; i++) {
+    public void addAll(List<TestContent> lists) {
+        for (int i = 0; i < mDatas.size(); i++) {
             mDatas.remove(i);
         }
         mDatas.addAll(lists);

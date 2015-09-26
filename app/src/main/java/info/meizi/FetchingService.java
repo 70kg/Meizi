@@ -39,44 +39,51 @@ public class FetchingService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         groupid = intent.getStringExtra("groupid");
+        Intent resuleintent = new Intent(groupid);
+
         Realm realm = Realm.getInstance(this);
 
         RealmResults<TestContent> latest = realm.where(TestContent.class)
+                .equalTo("groupid", groupid)
                 .findAllSorted("order", RealmResults.SORT_ORDER_DESCENDING);
 
-        if (!latest.isEmpty()) {
-            lists.addAll(latest);
-        } else {
+        if (!latest.isEmpty()) {//数据库有  直接发送广播通知
+
+//           return;
+        } else {//否则加载网络 并存入数据库 通知
             try {
                 html = client.newCall(RequestFactory.make(groupid)).execute().body().string();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             mcount = ContentParser.getCount(html);
+            resuleintent.putExtra("count",mcount);
+            LogUtils.e("发送count广播");
+            sendBroadcast(resuleintent);
+
             for (int i = 1; i < mcount + 1; i++) {
                 TestContent content = null;
                 try {
                     content = fetchContent(groupid + "/" + i);
                     content.setOrder(Integer.parseInt(groupid + i));
+                    content.setGroupid(groupid);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                saveDb(realm,content);
+                saveDb(realm, content);
+
+                resuleintent.putExtra("currentcount", i);
+                sendBroadcast(resuleintent);
                 lists.add(content);
             }
         }
-
-        Intent resuleintent = new Intent(groupid);
-        LogUtils.e("发送广播" + groupid);
         sendBroadcast(resuleintent);
-
         realm.close();
     }
 
-    private void saveDb( Realm realm,TestContent content) {
+    private void saveDb(Realm realm, TestContent content) {
         realm.beginTransaction();
         realm.copyToRealm(content);
-        LogUtils.e("数据插入成功");
         realm.commitTransaction();
     }
 

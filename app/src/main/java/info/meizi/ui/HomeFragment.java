@@ -6,8 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-
-import java.util.ArrayList;
+import android.support.design.widget.Snackbar;
 
 import info.meizi.FetchingService;
 import info.meizi.adapter.MeiziAdapter;
@@ -16,29 +15,45 @@ import info.meizi.bean.TestContent;
 import info.meizi.utils.LogUtils;
 import io.realm.Realm;
 import io.realm.RealmResults;
+import me.drakeet.materialdialog.MaterialDialog;
 
 /**
  * Created by Mr_Wrong on 15/9/17.
  */
 public class HomeFragment extends BaseFragment {
     String groupid;
+    MaterialDialog mMaterialDialog;
+    MeiziAdapter mAdapter;
 
     public HomeFragment(String groupid) {
         this.groupid = groupid;
+
     }
+
 
     private BroadcastReceiver Receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             LogUtils.e("收到广播了,开始显示meizi");
             if (intent.getAction().equals(groupid)) {
-                ArrayList<TestContent> list = (ArrayList<TestContent>) intent.getSerializableExtra("list");
-
                 Realm realm = Realm.getInstance(getActivity());
                 RealmResults<TestContent> latest = realm.where(TestContent.class)
+                        .equalTo("groupid", groupid)
                         .findAllSorted("order", RealmResults.SORT_ORDER_DESCENDING);
 
-                MeiziAdapter mAdapter = new MeiziAdapter(getContext(), latest);
+                int count = intent.getIntExtra("count", 0);
+                int currentcount = intent.getIntExtra("currentcount", 0);
+
+                mMaterialDialog.setMessage(currentcount + "");
+                mMaterialDialog.show();
+
+                if (currentcount == count) {
+                    mMaterialDialog.dismiss();
+                    Snackbar.make(rootView,"精彩马上呈现",Snackbar.LENGTH_SHORT).show();
+                }
+                if (mAdapter == null) {
+                    mAdapter = new MeiziAdapter(getContext(), latest);
+                }
                 mRecyclerView.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();
             }
@@ -62,6 +77,9 @@ public class HomeFragment extends BaseFragment {
         filter.addAction(groupid);
         LogUtils.e("IntentFilter的action" + groupid);
         getActivity().registerReceiver(Receiver, filter);
+        mMaterialDialog = new MaterialDialog(getContext())
+                .setTitle("正在加载");
+
     }
 
     /**

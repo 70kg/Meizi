@@ -50,11 +50,11 @@ public class MainActivity extends BaseActivity {
         tabLayout.setTabTextColors(Color.GRAY, getResources().getColor(R.color.app_primary_color));
 
         mFragments.add(new HomeFragment("48616"));
-        mFragments.add(new HomeFragment("6857"));
-        mFragments.add(new HomeFragment("10165"));
+        mFragments.add(new HomeFragment("42407"));
+        mFragments.add(new HomeFragment("48990"));
         mFragments.add(new HomeFragment("48645"));
-        mFragments.add(new HomeFragment("28030"));
-        mFragments.add(new HomeFragment(GROUP_ID));
+        mFragments.add(new HomeFragment("48915"));
+        mFragments.add(new HomeFragment("48827"));
 //        mFragments.add(new HomeFragment());
 //        mFragments.add(new HomeFragment());
 
