@@ -14,14 +14,15 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import info.meizi.R;
-import info.meizi.bean.Content;
+import info.meizi.bean.MainBean;
 import info.meizi.widget.RadioImageView;
 
 /**
- * Created by Mr_Wrong on 15/9/14.
+ * Created by Mr_Wrong on 15/10/9.
  */
-public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.MyViewHolder> {
-    private List<Content> mDatas;
+public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> {
+
+    private List<MainBean> mDatas;
     private LayoutInflater mInflater;
     private Context mContetx;
 
@@ -40,7 +41,7 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.MyViewHolder
         this.mOnitemClickListener = onitemClickListener;
     }
 
-    public MeiziAdapter(Context context, List<Content> mDatas) {
+    public MainAdapter(Context context, List<MainBean> mDatas) {
         this.mDatas = mDatas;
         this.mContetx = context;
         mInflater = LayoutInflater.from(context);
@@ -52,23 +53,19 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.MyViewHolder
         return holder;
     }
 
-    public Content get(int location) {
+    public MainBean get(int location) {
         return mDatas.get(location);
     }
+
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int i) {
-        Content content = mDatas.get(i);
+        MainBean MainBean = mDatas.get(i);
         //使用Picasso来进行图片的加载
-        Picasso.with(mContetx).load(content.getUrl()).tag("1").config(Bitmap.Config.RGB_565).
+        Picasso.with(mContetx).load(MainBean.getImageurl()).tag("1").config(Bitmap.Config.RGB_565).
                 transform(new CopyOnWriteArrayList<Transformation>()).
                 into(holder.imageView);
 
-//        Picasso.with(mContetx).load(content.getUrl()).tag("1").
-//                memoryPolicy(NOCACHE, NO_STORE).
-//                transform(new CopyOnWriteArrayList<Transformation>()).
-//                into(holder.imageView);
-
-        holder.imageView.setOriginalSize(content.getImagewidth(), content.getImageheight());
+        holder.imageView.setOriginalSize(MainBean.getWidth(), MainBean.getHeight());
 
 
         //如果设置回调，设置点击事件
@@ -99,13 +96,13 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.MyViewHolder
     }
 
     //添加数据
-    public void addData(int position, Content content) {
-        mDatas.add(position, content);
+    public void addData(int position, MainBean MainBean) {
+        mDatas.add(position, MainBean);
         notifyItemInserted(position);
     }
 
 
-    public void addAll(List<Content> lists) {
+    public void addAll(List<MainBean> lists) {
         for (int i = 0; i < mDatas.size(); i++) {
             mDatas.remove(i);
         }
@@ -126,4 +123,5 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.MyViewHolder
         }
     }
 }
+
 

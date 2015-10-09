@@ -14,6 +14,7 @@ import com.squareup.picasso.Picasso;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import info.meizi.R;
+import info.meizi.utils.LogUtils;
 
 /**
  * Created by Mr_Wrong on 15/9/17.
@@ -26,7 +27,6 @@ public abstract class BaseFragment extends Fragment {
     protected boolean isVisible;
     private boolean hasload;
     protected StaggeredGridLayoutManager layoutManager;
-    // protected LinearLayoutManager layoutManager;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -43,10 +43,12 @@ public abstract class BaseFragment extends Fragment {
         if (getUserVisibleHint()) {
             isVisible = true;
             onVisible();
+            LogUtils.e(isPrepared + "--" + isVisible);
         } else {
             isVisible = false;
             onInvisible();
         }
+
 
     }
 
@@ -66,9 +68,7 @@ public abstract class BaseFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        //layoutManager = new lin(2,StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
-
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -80,6 +80,7 @@ public abstract class BaseFragment extends Fragment {
                 }
             }
         });
+
     }
 
 

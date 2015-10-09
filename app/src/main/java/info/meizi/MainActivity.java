@@ -16,7 +16,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import info.meizi.adapter.ViewPagerAdapter;
 import info.meizi.base.BaseActivity;
-import info.meizi.ui.HomeFragment;
+import info.meizi.ui.MainFragment;
 
 public class MainActivity extends BaseActivity {
     private static final String URL = "http://www.mzitu.com/";
@@ -49,17 +49,15 @@ public class MainActivity extends BaseActivity {
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayout.setTabTextColors(Color.GRAY, getResources().getColor(R.color.app_primary_color));
 
-        mFragments.add(new HomeFragment("48616"));
-        mFragments.add(new HomeFragment("42407"));
-        mFragments.add(new HomeFragment("48990"));
-        mFragments.add(new HomeFragment("48645"));
-        mFragments.add(new HomeFragment("48915"));
-        mFragments.add(new HomeFragment("48827"));
-//        mFragments.add(new HomeFragment());
-//        mFragments.add(new HomeFragment());
+        mFragments.add(new MainFragment("xinggan"));
+//        mFragments.add(new HomeFragment("42407"));
+//        mFragments.add(new HomeFragment("48990"));
+//        mFragments.add(new HomeFragment("48645"));
+//        mFragments.add(new HomeFragment("48915"));
+//        mFragments.add(new HomeFragment("48827"));
 
         viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), mFragments));
-        viewPager.setOffscreenPageLimit(4);
+        viewPager.setOffscreenPageLimit(5);
         tabLayout.setupWithViewPager(viewPager);
     }
 
@@ -73,27 +71,10 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            //showdialog();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-  /*  private void showdialog() {
-        final EditText contentView = new EditText(this);
-        contentView.setTextColor(getResources().getColor(R.color.app_primary_color));
-        contentView.setText("35666");
-        final MaterialDialog mMaterialDialog = new MaterialDialog(this);
-        mMaterialDialog.setPositiveButton("OK", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                path = URL + contentView.getText().toString();
-                mDatas.removeAll(mDatas);
-                loaddata();
-                mMaterialDialog.dismiss();
-            }
-        }).setView(contentView);
 
-        mMaterialDialog.show();
-    }*/
 }

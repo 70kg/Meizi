@@ -13,12 +13,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import info.meizi.bean.TestContent;
+import info.meizi.bean.Content;
 import info.meizi.net.ContentParser;
 import info.meizi.net.RequestFactory;
-import info.meizi.utils.LogUtils;
 import io.realm.Realm;
-import io.realm.RealmResults;
 
 /**
  * Created by Mr_Wrong on 15/9/22.
@@ -34,7 +32,7 @@ public class FetchingService extends IntentService {
     private String groupid;
     private int mcount;
     private String html;
-    private List<TestContent> lists = new ArrayList<>();
+    private List<Content> lists = new ArrayList<>();
 
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -43,9 +41,7 @@ public class FetchingService extends IntentService {
 
         Realm realm = Realm.getInstance(this);
 
-        RealmResults<TestContent> latest = realm.where(TestContent.class)
-                .equalTo("groupid", groupid)
-                .findAllSorted("order", RealmResults.SORT_ORDER_DESCENDING);
+        List<Content> latest = Content.all(realm,groupid);
 
         if (!latest.isEmpty()) {//数据库有  直接发送广播通知
 
@@ -57,12 +53,11 @@ public class FetchingService extends IntentService {
                 e.printStackTrace();
             }
             mcount = ContentParser.getCount(html);
-            resuleintent.putExtra("count",mcount);
-            LogUtils.e("发送count广播");
+            resuleintent.putExtra("count", mcount);
             sendBroadcast(resuleintent);
 
             for (int i = 1; i < mcount + 1; i++) {
-                TestContent content = null;
+                Content content = null;
                 try {
                     content = fetchContent(groupid + "/" + i);
                     content.setOrder(Integer.parseInt(groupid + i));
@@ -70,6 +65,7 @@ public class FetchingService extends IntentService {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
                 saveDb(realm, content);
 
                 resuleintent.putExtra("currentcount", i);
@@ -81,7 +77,7 @@ public class FetchingService extends IntentService {
         realm.close();
     }
 
-    private void saveDb(Realm realm, TestContent content) {
+    private void saveDb(Realm realm, Content content) {
         realm.beginTransaction();
         realm.copyToRealm(content);
         realm.commitTransaction();
@@ -90,10 +86,10 @@ public class FetchingService extends IntentService {
     /**
      * 抓取content
      *
-     * @param path 202020/1
+     * @param path
      * @return
      */
-    private TestContent fetchContent(String path) throws IOException {
+    private Content fetchContent(String path) throws IOException {
         String html;
         try {
             html = client.newCall(RequestFactory.make(path)).execute().body().string();
@@ -102,7 +98,7 @@ public class FetchingService extends IntentService {
             return null;
         }
 
-        TestContent content = ContentParser.ParserTestContent(html);//这里解析获取的HTML文本
+        Content content = ContentParser.ParserContent(html);//这里解析获取的HTML文本
 
         Response response = client.newCall(new Request.Builder().url(content.getUrl()).build()).execute();
         BitmapFactory.Options options = new BitmapFactory.Options();
