@@ -17,7 +17,6 @@ import butterknife.ButterKnife;
 import info.meizi.R;
 import info.meizi.adapter.ViewPagerAdapter;
 import info.meizi.base.BaseActivity;
-import info.meizi.ui.group.GroupFragment;
 
 public class MainActivity extends BaseActivity {
     private static final String URL = "http://www.mzitu.com/";
@@ -50,12 +49,12 @@ public class MainActivity extends BaseActivity {
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayout.setTabTextColors(Color.GRAY, getResources().getColor(R.color.app_primary_color));
 
-          //mFragments.add(new MainFragment("xinggan"));
-        mFragments.add(new GroupFragment("49727"));
-        mFragments.add(new GroupFragment("48990"));
-        mFragments.add(new GroupFragment("48645"));
-        mFragments.add(new GroupFragment("48915"));
-        mFragments.add(new GroupFragment("48827"));
+          mFragments.add(new MainFragment("xinggan"));
+//        mFragments.add(new GroupFragment("49727"));
+//        mFragments.add(new GroupFragment("48990"));
+//        mFragments.add(new GroupFragment("48645"));
+//        mFragments.add(new GroupFragment("48915"));
+//        mFragments.add(new GroupFragment("48827"));
 
         viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), mFragments));
         viewPager.setOffscreenPageLimit(5);

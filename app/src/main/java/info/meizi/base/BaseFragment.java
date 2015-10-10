@@ -14,7 +14,6 @@ import com.squareup.picasso.Picasso;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import info.meizi.R;
-import info.meizi.utils.LogUtils;
 
 /**
  * Created by Mr_Wrong on 15/9/17.
@@ -43,7 +42,6 @@ public abstract class BaseFragment extends Fragment {
         if (getUserVisibleHint()) {
             isVisible = true;
             onVisible();
-            LogUtils.e(isPrepared + "--" + isVisible);
         } else {
             isVisible = false;
             onInvisible();

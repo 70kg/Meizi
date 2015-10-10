@@ -21,6 +21,7 @@ import io.realm.Realm;
 
 /**
  * Created by Mr_Wrong on 15/10/6.
+ * 查看大图的
  */
 public class LargePicActivity extends BaseActivity {
     @Bind(R.id.large_toolbar)
@@ -32,6 +33,7 @@ public class LargePicActivity extends BaseActivity {
     private List<Content> images;
     private PagerAdapter adapter;
     private String groupid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +68,7 @@ public class LargePicActivity extends BaseActivity {
             }
         });
     }
+
     @Override
     public void supportFinishAfterTransition() {
         Intent data = new Intent();

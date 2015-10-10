@@ -12,17 +12,18 @@ import android.view.View;
 
 import com.squareup.leakcanary.RefWatcher;
 
-import info.meizi.GroupService;
+import info.meizi.net.GroupService;
 import info.meizi.adapter.GroupAdapter;
 import info.meizi.base.BaseFragment;
 import info.meizi.base.MyApp;
 import info.meizi.bean.Content;
-import info.meizi.ui.LargePicActivity;
+import info.meizi.ui.largepic.LargePicActivity;
 import io.realm.Realm;
 import me.drakeet.materialdialog.MaterialDialog;
 
 /**
  * Created by Mr_Wrong on 15/9/17.
+ * 首页进去的某个group页面
  */
 public class GroupFragment extends BaseFragment {
     String groupid;
@@ -31,6 +32,7 @@ public class GroupFragment extends BaseFragment {
     Realm realm;
     int currentcount;
     boolean isfrist = false;
+
     public GroupFragment(String groupid) {
         this.groupid = groupid;
     }
@@ -48,7 +50,7 @@ public class GroupFragment extends BaseFragment {
                 //mMaterialDialog.show();
 
                 if (currentcount == count) {
-                   // mMaterialDialog.dismiss();
+                    // mMaterialDialog.dismiss();
                     Snackbar.make(rootView, "精彩马上呈现", Snackbar.LENGTH_SHORT).show();
                 }
                 if (currentcount == 0) {//数据库空 第一次网络加载
@@ -65,7 +67,7 @@ public class GroupFragment extends BaseFragment {
     @Nullable
     @Override
     protected void lazyLoad() {
-        if (!isVisible) {
+        if ( !isVisible) {
             return;
         }
         SendToLoad();
@@ -101,6 +103,7 @@ public class GroupFragment extends BaseFragment {
 
         mMaterialDialog = new MaterialDialog(getContext())
                 .setTitle("正在加载");
+        SendToLoad();
 
 
     }
