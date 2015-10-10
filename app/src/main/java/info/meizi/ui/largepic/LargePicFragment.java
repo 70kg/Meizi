@@ -69,6 +69,7 @@ public class LargePicFragment extends Fragment {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
+
     View getSharedElement() {
         return image;
     }

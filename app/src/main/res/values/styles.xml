@@ -13,4 +13,8 @@
         <item name="android:colorBackground">@color/app_color_background</item>
         <item name="android:textColor">@color/app_primary_color_dark</item>
     </style>
+    <style name="TabLayout" parent="ThemeOverlay.AppCompat.Light" >
+        <item name="android:colorBackground">@color/app_color_background</item>
+        <item name="android:textColor">@color/app_color_background</item>
+    </style>
 </resources>

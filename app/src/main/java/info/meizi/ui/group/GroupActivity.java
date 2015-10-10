@@ -10,7 +10,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import info.meizi.R;
 import info.meizi.base.BaseActivity;
-import info.meizi.utils.LogUtils;
 
 /**
  * Created by Mr_Wrong on 15/10/10.
@@ -29,7 +28,6 @@ public class GroupActivity extends BaseActivity {
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
         groupid = getIntent().getStringExtra("groupid");
-        LogUtils.e("我添加了GroupFragment"+groupid);
         setDefaultFragment();
 
     }

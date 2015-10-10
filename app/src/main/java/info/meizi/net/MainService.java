@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.util.List;
 
 import info.meizi.bean.MainBean;
-import info.meizi.net.ContentParser;
-import info.meizi.net.RequestFactory;
 import info.meizi.utils.LogUtils;
 import io.realm.Realm;
 
@@ -32,7 +30,7 @@ public class MainService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         type = intent.getStringExtra("type");
         Intent resuleintent = new Intent(type);
-        LogUtils.e("接受到命令");
+        LogUtils.d("接受到命令");
         Realm realm = Realm.getInstance(this);
 
         List<MainBean> latest = MainBean.all(realm, type);
@@ -43,18 +41,18 @@ public class MainService extends IntentService {
         } else {//否则加载网络 并存入数据库 通知
             try {
                 html = client.newCall(RequestFactory.make(type)).execute().body().string();
-                LogUtils.e("获取成功");
+                LogUtils.d("获取成功");
 
                 List<MainBean> list = ContentParser.ParserMainBean(html,type);
                 saveDb(realm, list);
-                LogUtils.e("存入数据库成功");
+                LogUtils.d("存入数据库成功");
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         sendBroadcast(resuleintent);
-        LogUtils.e("发送广播");
+        LogUtils.d("发送广播");
         realm.close();
     }
 

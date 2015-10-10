@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import java.util.List;
@@ -16,14 +17,13 @@ import info.meizi.base.BaseFragment;
 import info.meizi.bean.MainBean;
 import info.meizi.net.MainService;
 import info.meizi.ui.group.GroupActivity;
-import info.meizi.utils.LogUtils;
 import io.realm.Realm;
 
 /**
  * Created by Mr_Wrong on 15/10/9.
  * 首页那几个tab
  */
-public class MainFragment extends BaseFragment {
+public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
     String type;
     MainAdapter mAdapter;
 
@@ -37,10 +37,10 @@ public class MainFragment extends BaseFragment {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            LogUtils.e("接受到广播");
             if (intent.getAction().equals(type)) {
                 List<MainBean> latest = MainBean.all(realm, type);
                 mAdapter.replaceWith(latest);
+                mRefresher.setRefreshing(false);
             }
         }
     };
@@ -58,7 +58,6 @@ public class MainFragment extends BaseFragment {
         Intent intent = new Intent(getActivity(), MainService.class);
         intent.putExtra("type", type);
         getActivity().startService(intent);
-        LogUtils.e("发送加载数据");
     }
 
     private void startGroupActivity(View view, int position) {
@@ -100,4 +99,9 @@ public class MainFragment extends BaseFragment {
         super.onDestroyView();
     }
 
+    //刷新的回调
+    @Override
+    public void onRefresh() {
+        SendToLoad();
+    }
 }

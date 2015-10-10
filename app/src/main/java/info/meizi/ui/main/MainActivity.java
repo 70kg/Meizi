@@ -29,6 +29,7 @@ public class MainActivity extends BaseActivity {
     private String GROUP_ID = "35666";
 
     List<Fragment> mFragments = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +40,7 @@ public class MainActivity extends BaseActivity {
 
     private void initviews() {
         setSupportActionBar(toolbar);
-
+        tabLayout.setTabTextColors(Color.WHITE, Color.BLACK);
         tabLayout.addTab(tabLayout.newTab().setText("首页"));
         tabLayout.addTab(tabLayout.newTab().setText("性感妹子"));
         tabLayout.addTab(tabLayout.newTab().setText("日本妹子"));
@@ -47,14 +48,14 @@ public class MainActivity extends BaseActivity {
         tabLayout.addTab(tabLayout.newTab().setText("清纯妹子"));
         tabLayout.addTab(tabLayout.newTab().setText("妹子自拍"));
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        tabLayout.setTabTextColors(Color.GRAY, getResources().getColor(R.color.app_primary_color));
+//        tabLayout.setTabTextColors(Color.GRAY, getResources().getColor(R.color.app_primary_color));
 
-          mFragments.add(new MainFragment("xinggan"));
-//        mFragments.add(new GroupFragment("49727"));
-//        mFragments.add(new GroupFragment("48990"));
-//        mFragments.add(new GroupFragment("48645"));
-//        mFragments.add(new GroupFragment("48915"));
-//        mFragments.add(new GroupFragment("48827"));
+        mFragments.add(new MainFragment(""));
+        mFragments.add(new MainFragment("xinggan"));
+        mFragments.add(new MainFragment("japan"));
+        mFragments.add(new MainFragment("taiwan"));
+        mFragments.add(new MainFragment("mm"));
+        // mFragments.add(new MainFragment("xinggan"));
 
         viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), mFragments));
         viewPager.setOffscreenPageLimit(5);
