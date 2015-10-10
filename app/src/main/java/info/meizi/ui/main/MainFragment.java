@@ -1,4 +1,4 @@
-package info.meizi.ui;
+package info.meizi.ui.main;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

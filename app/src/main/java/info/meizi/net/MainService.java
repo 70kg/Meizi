@@ -1,4 +1,4 @@
-package info.meizi;
+package info.meizi.net;
 
 import android.app.IntentService;
 import android.content.Intent;

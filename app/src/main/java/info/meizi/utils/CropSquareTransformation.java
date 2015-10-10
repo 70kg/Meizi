@@ -1,4 +1,4 @@
-package info.meizi;
+package info.meizi.utils;
 
 import android.graphics.Bitmap;
 

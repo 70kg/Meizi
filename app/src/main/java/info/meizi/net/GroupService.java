@@ -1,4 +1,4 @@
-package info.meizi;
+package info.meizi.net;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -21,11 +21,11 @@ import io.realm.Realm;
 /**
  * Created by Mr_Wrong on 15/9/22.
  */
-public class FetchingService extends IntentService {
+public class GroupService extends IntentService {
     private static final String TAG = "MeiziFetchingService";
     private final OkHttpClient client = new OkHttpClient();
 
-    public FetchingService() {
+    public GroupService() {
         super(TAG);
     }
 
@@ -68,8 +68,6 @@ public class FetchingService extends IntentService {
 
                 saveDb(realm, content);
 
-                resuleintent.putExtra("currentcount", i);
-                sendBroadcast(resuleintent);
                 lists.add(content);
             }
         }

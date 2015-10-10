@@ -1,4 +1,4 @@
-package info.meizi.ui;
+package info.meizi.ui.largepic;
 
 import android.content.Intent;
 import android.os.Bundle;
