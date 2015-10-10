@@ -2,5 +2,15 @@
 练习一下md
 贴个妹子吧
 
-![](http://pic.mmfile.net/2015/06/07m16.jpg)
+学习使用：
+* butterknife
+* okhttp
+* picasso
+* realm
+* jsoup
+
+![](https://github.com/70kg/Meizi/blob/master/screenshots/111.png)
+![](https://github.com/70kg/Meizi/blob/master/screenshots/2222.png)
+![](https://github.com/70kg/Meizi/blob/master/screenshots/333.png)
+
 
