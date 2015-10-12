@@ -24,6 +24,13 @@ import io.realm.Realm;
  * 查看大图的
  */
 public class LargePicActivity extends BaseActivity {
+    private static final int SYSTEM_UI_BASE_VISIBILITY = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+    private static final int SYSTEM_UI_IMMERSIVE = View.SYSTEM_UI_FLAG_IMMERSIVE
+            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_FULLSCREEN;
+
     @Bind(R.id.large_toolbar)
     Toolbar mToolbar;
     @Bind(R.id.pager)
@@ -43,7 +50,14 @@ public class LargePicActivity extends BaseActivity {
     }
 
     private void initviews() {
-        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        mToolbar.setTitle("Meizi");
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                supportFinishAfterTransition();
+            }
+        });
 
         index = getIntent().getIntExtra("index", 0);
         groupid = getIntent().getStringExtra("groupid");
@@ -76,6 +90,30 @@ public class LargePicActivity extends BaseActivity {
         setResult(RESULT_OK, data);
 //        showSystemUi();
         super.supportFinishAfterTransition();
+    }
+
+    public void toggleToolbar() {
+        if (mToolbar.getTranslationY() == 0) {
+            hideSystemUi();
+        } else {
+            showSystemUi();
+        }
+    }
+
+    private void showSystemUi() {
+        mPager.setSystemUiVisibility(SYSTEM_UI_BASE_VISIBILITY);
+        mToolbar.animate()
+                .translationY(0)
+                .setDuration(400)
+                .start();
+    }
+
+    private void hideSystemUi() {
+        mPager.setSystemUiVisibility(SYSTEM_UI_BASE_VISIBILITY | SYSTEM_UI_IMMERSIVE);
+        mToolbar.animate()
+                .translationY(-mToolbar.getHeight())
+                .setDuration(400)
+                .start();
     }
 
     private class PagerAdapter extends FragmentStatePagerAdapter {

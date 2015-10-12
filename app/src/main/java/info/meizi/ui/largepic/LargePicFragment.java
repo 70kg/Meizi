@@ -12,6 +12,7 @@ import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import info.meizi.R;
 import info.meizi.widget.TouchImageView;
 
@@ -25,6 +26,10 @@ public class LargePicFragment extends Fragment {
     private boolean initialShown;
     private LargePicActivity activity;
 
+    @OnClick(R.id.image)
+    void toggleToolbar() {
+        activity.toggleToolbar();
+    }
 
     public static Fragment newFragment(String url, boolean initialShown) {
         Bundle bundle = new Bundle();

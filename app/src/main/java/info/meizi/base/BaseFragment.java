@@ -25,8 +25,10 @@ public abstract class BaseFragment extends Fragment {
     protected RecyclerView mRecyclerView;
     protected boolean isPrepared;
     protected boolean isVisible;
+
     @Bind(R.id.refresher)
     protected SwipeRefreshLayout mRefresher;
+
     private boolean hasload;
     protected StaggeredGridLayoutManager layoutManager;
 
@@ -35,6 +37,9 @@ public abstract class BaseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment, container, false);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.id_recyclerview);
+        mRefresher = (SwipeRefreshLayout) rootView.findViewById(R.id.refresher);
+        mRefresher.setColorSchemeResources(R.color.app_primary_color);
+
         ButterKnife.bind(this, rootView);
         isPrepared = true;
         return rootView;
@@ -50,7 +55,6 @@ public abstract class BaseFragment extends Fragment {
             isVisible = false;
             onInvisible();
         }
-
 
     }
 
@@ -81,10 +85,22 @@ public abstract class BaseFragment extends Fragment {
                     Picasso.with(getContext()).pauseTag("1");
                 }
             }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int[] positions = new int[layoutManager.getSpanCount()];
+                layoutManager.findLastVisibleItemPositions(positions);
+                int position = Math.max(positions[0], positions[1]);
+                if (position == layoutManager.getItemCount() - 1) {
+                    loadMore();
+                }
+            }
         });
 
     }
 
+    protected abstract void loadMore();
 
     @Override
     public void onDestroyView() {

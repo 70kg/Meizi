@@ -1,7 +1,6 @@
 package info.meizi.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.annotation.LayoutRes;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
@@ -43,7 +42,7 @@ public abstract  class MainAdapter extends ArrayRecyclerAdapter<MainBean, MainAd
     public void onBindViewHolder(ViewHolder holder, int position) {
         MainBean bean = get(position);
         holder.imageView.setOriginalSize(bean.getWidth(), bean.getHeight());
-        Picasso.with(context).load(bean.getImageurl()).tag("1").config(Bitmap.Config.RGB_565).
+        Picasso.with(context).load(bean.getImageurl()).tag("1").//config(Bitmap.Config.RGB_565).
                 transform(new CopyOnWriteArrayList<Transformation>()).
                 into(holder.imageView);
         ViewCompat.setTransitionName(holder.imageView, bean.getUrl());

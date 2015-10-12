@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
 
 import info.meizi.bean.Content;
 import info.meizi.bean.MainBean;
-import info.meizi.utils.LogUtils;
 
 /**
  * Created by Mr_Wrong on 15/9/14.
@@ -43,7 +42,6 @@ public class ContentParser {
 
         Element aelement;
         Element imgelement;
-        LogUtils.e(links.size());
         for (int i = 7; i < links.size(); i++) {
             imgelement = links.get(i).select("img").first();
             aelement = links.get(i).select("a").first();

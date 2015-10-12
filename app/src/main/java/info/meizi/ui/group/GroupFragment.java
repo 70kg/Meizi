@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.view.View;
+import android.view.ViewTreeObserver;
 
 import com.squareup.leakcanary.RefWatcher;
 
@@ -25,9 +26,9 @@ import io.realm.Realm;
  * 首页进去的某个group页面
  */
 public class GroupFragment extends BaseFragment {
-    String groupid;
-    GroupAdapter mAdapter;
-    Realm realm;
+    private String groupid;
+    private GroupAdapter mAdapter;
+    private Realm realm;
     int currentcount;
     boolean isfrist = false;
 
@@ -45,7 +46,7 @@ public class GroupFragment extends BaseFragment {
 
                 mRefresher.setRefreshing(true);
 
-                if (currentcount == count||count==0) {
+                if (currentcount == count || count == 0) {
                     mRefresher.setRefreshing(false);
                     Snackbar.make(rootView, "精彩马上呈现", Snackbar.LENGTH_SHORT).show();
                 }
@@ -63,12 +64,37 @@ public class GroupFragment extends BaseFragment {
     @Nullable
     @Override
     protected void lazyLoad() {
-        if ( !isVisible) {
+        if (!isVisible) {
             return;
         }
         SendToLoad();
     }
 
+    GroupActivity activity;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity = (GroupActivity) context;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        int index = activity.getIndex();
+        if (index != -1) {
+            mRecyclerView.scrollToPosition(index);
+            mRecyclerView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    mRecyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
+                    mRecyclerView.requestLayout();
+                    activity.supportStartPostponedEnterTransition();
+                    return true;
+                }
+            });
+        }
+    }
 
     private void startLargePicActivity(View view, int position) {
         Intent intent1 = new Intent(getActivity(), LargePicActivity.class);
@@ -78,6 +104,7 @@ public class GroupFragment extends BaseFragment {
                 .makeSceneTransitionAnimation(getActivity(), view, mAdapter.get(position).getUrl());
         getActivity().startActivity(intent1, options.toBundle());
     }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -99,6 +126,10 @@ public class GroupFragment extends BaseFragment {
 
         SendToLoad();
 
+    }
+
+    @Override
+    protected void loadMore() {
 
     }
 
@@ -123,4 +154,6 @@ public class GroupFragment extends BaseFragment {
         RefWatcher refWatcher = MyApp.getRefWatcher(getActivity());
         refWatcher.watch(this);
     }
+
+
 }
