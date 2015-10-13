@@ -32,13 +32,10 @@ public class ContentParser {
     }
 
     //获取首页的list
-    public static List<MainBean> ParserMainBean(String html,String type) {
+    public static List<MainBean> ParserMainBean(String html, String type) {
         List<MainBean> list = new ArrayList<>();
         Document doc = Jsoup.parse(html);
         Elements links = doc.select("li");//.select("a[target]");
-
-//        LogUtils.e(links.get(8).select("a").attr("href"));//页面url
-//        LogUtils.e(links.get(8).select("img").attr("data-original").toString());//图片url
 
         Element aelement;
         Element imgelement;
@@ -47,12 +44,14 @@ public class ContentParser {
             aelement = links.get(i).select("a").first();
             MainBean bean = new MainBean();
             bean.setOrder(i);
+
             bean.setTitle(imgelement.attr("alt").toString());
             bean.setType(type);
             bean.setHeight(354);//element.attr("height")
             bean.setWidth(236);
             bean.setImageurl(imgelement.attr("data-original"));
             bean.setUrl(aelement.attr("href"));
+            bean.setGroupid(url2groupid(bean.getUrl()));//首页的这个是从大到小排序的 可以当做排序依据
             list.add(bean);
         }
         return list;
@@ -71,4 +70,9 @@ public class ContentParser {
         }
         return Integer.parseInt(stringBuffer.toString());
     }
+
+    private static int url2groupid(String url) {
+        return Integer.parseInt(url.split("/")[3]);
+    }
+
 }

@@ -85,7 +85,6 @@ public abstract class BaseFragment extends Fragment {
                     Picasso.with(getContext()).pauseTag("1");
                 }
             }
-
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -99,7 +98,6 @@ public abstract class BaseFragment extends Fragment {
         });
 
     }
-
     protected abstract void loadMore();
 
     @Override

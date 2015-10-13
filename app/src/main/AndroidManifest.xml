@@ -30,10 +30,14 @@
 
 
         <service android:name=".net.GroupService" />
-        <service android:name=".net.MainService"></service>
+        <service android:name=".net.MainService" />
 
-        <activity android:name=".ui.largepic.LargePicActivity"></activity>
-        <activity android:name=".ui.group.GroupActivity"></activity>
+        <activity
+            android:name=".ui.largepic.LargePicActivity"
+            android:theme="@style/ViewerTheme" />
+        <activity
+            android:name=".ui.group.GroupActivity"
+            android:theme="@style/ViewerThemeBase" />
     </application>
 
 </manifest>

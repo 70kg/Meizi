@@ -1,6 +1,8 @@
 package info.meizi.ui.group;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -11,6 +13,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import info.meizi.R;
 import info.meizi.base.BaseActivity;
+import info.meizi.utils.LogUtils;
+import info.meizi.utils.SystemBarTintManager;
 
 /**
  * Created by Mr_Wrong on 15/10/10.
@@ -18,11 +22,11 @@ import info.meizi.base.BaseActivity;
 public class GroupActivity extends BaseActivity {
     @Bind(R.id.group_toolbar)
     Toolbar mToolbar;
-    String groupid;
-    public Bundle reenterState;
-    GroupFragment fragment;
+    private String groupid;
+    private GroupFragment fragment;
     public int index = -1;
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,14 +41,20 @@ public class GroupActivity extends BaseActivity {
                 supportFinishAfterTransition();
             }
         });
-
-
         groupid = getIntent().getStringExtra("groupid");
+        int color = getIntent().getIntExtra("color", getResources().getColor(R.color.app_primary_color));
+        LogUtils.d("PaletteColor----->" + color);
+        SystemBarTintManager tintManager = new SystemBarTintManager(this);
+        tintManager.setStatusBarTintEnabled(true);
+        mToolbar.setBackgroundColor(color);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            tintManager.setStatusBarTintColor(color);
+        }
         setDefaultFragment();
 
     }
 
-
+    //这里有问题。。还不知道怎么去解决
     @Override
     public void onActivityReenter(int resultCode, Intent data) {
         super.onActivityReenter(resultCode, data);
@@ -53,7 +63,7 @@ public class GroupActivity extends BaseActivity {
     }
 
     public int getIndex() {
-     return  index;
+        return index;
     }
 
     private void setDefaultFragment() {

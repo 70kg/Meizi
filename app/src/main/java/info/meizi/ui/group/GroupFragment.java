@@ -29,8 +29,9 @@ public class GroupFragment extends BaseFragment {
     private String groupid;
     private GroupAdapter mAdapter;
     private Realm realm;
-    int currentcount;
-    boolean isfrist = false;
+    private int currentcount;
+    private boolean isfrist = false;
+    private GroupActivity activity;
 
     public GroupFragment(String groupid) {
         this.groupid = groupid;
@@ -70,14 +71,13 @@ public class GroupFragment extends BaseFragment {
         SendToLoad();
     }
 
-    GroupActivity activity;
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         activity = (GroupActivity) context;
     }
 
+    //这里有问题  好像不是在这里进行回调的。。
     @Override
     public void onResume() {
         super.onResume();

@@ -19,14 +19,25 @@ public class MainBean extends RealmObject implements Serializable {
     private String title;
     private String type;
 
+    private int groupid;
 
 
     private int order;
+
+    public int getGroupid() {
+        return groupid;
+    }
+
+    public void setGroupid(int groupid) {
+        this.groupid = groupid;
+    }
+
     public static List<MainBean> all(Realm realm, String type) {
         return realm.where(MainBean.class)
                 .equalTo("type", type)
-                .findAllSorted("order", RealmResults.SORT_ORDER_ASCENDING);
+                .findAllSorted("groupid", RealmResults.SORT_ORDER_DESCENDING);
     }
+
     public int getOrder() {
         return order;
     }
@@ -34,6 +45,7 @@ public class MainBean extends RealmObject implements Serializable {
     public void setOrder(int order) {
         this.order = order;
     }
+
     public String getType() {
         return type;
     }
@@ -41,6 +53,7 @@ public class MainBean extends RealmObject implements Serializable {
     public void setType(String type) {
         this.type = type;
     }
+
     public int getWidth() {
         return width;
     }
@@ -88,4 +101,6 @@ public class MainBean extends RealmObject implements Serializable {
     public void setTitle(String title) {
         this.title = title;
     }
+
+
 }

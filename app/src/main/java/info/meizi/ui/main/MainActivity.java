@@ -19,17 +19,13 @@ import info.meizi.adapter.ViewPagerAdapter;
 import info.meizi.base.BaseActivity;
 
 public class MainActivity extends BaseActivity {
-    private static final String URL = "http://www.mzitu.com/";
     @Bind(R.id.toolbar)
-    Toolbar toolbar;
+    public Toolbar toolbar;
     @Bind(R.id.tab_layout)
     TabLayout tabLayout;
     @Bind(R.id.ac_tab_vp)
     ViewPager viewPager;
-    private String GROUP_ID = "35666";
-
     List<Fragment> mFragments = new ArrayList<>();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,14 +44,13 @@ public class MainActivity extends BaseActivity {
         tabLayout.addTab(tabLayout.newTab().setText("清纯妹子"));
         tabLayout.addTab(tabLayout.newTab().setText("妹子自拍"));
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-//        tabLayout.setTabTextColors(Color.GRAY, getResources().getColor(R.color.app_primary_color));
 
         mFragments.add(new MainFragment(""));
         mFragments.add(new MainFragment("xinggan"));
         mFragments.add(new MainFragment("japan"));
         mFragments.add(new MainFragment("taiwan"));
         mFragments.add(new MainFragment("mm"));
-        // mFragments.add(new MainFragment("xinggan"));
+        // mFragments.add(new MainFragment("xinggan"));//后面其实还有两个tab页面  解析方式不一样 以后写
 
         viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), mFragments));
         viewPager.setOffscreenPageLimit(5);

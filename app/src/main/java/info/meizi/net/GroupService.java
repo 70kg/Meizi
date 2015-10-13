@@ -14,21 +14,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import info.meizi.bean.Content;
-import info.meizi.net.ContentParser;
-import info.meizi.net.RequestFactory;
 import io.realm.Realm;
 
 /**
  * Created by Mr_Wrong on 15/9/22.
  */
 public class GroupService extends IntentService {
-    private static final String TAG = "MeiziFetchingService";
+    private static final String TAG = "GroupService";
     private final OkHttpClient client = new OkHttpClient();
-
     public GroupService() {
         super(TAG);
     }
-
     private String groupid;
     private int mcount;
     private String html;
@@ -45,7 +41,6 @@ public class GroupService extends IntentService {
 
         if (!latest.isEmpty()) {//数据库有  直接发送广播通知
 
-//           return;
         } else {//否则加载网络 并存入数据库 通知
             try {
                 html = client.newCall(RequestFactory.make(groupid)).execute().body().string();
@@ -98,6 +93,7 @@ public class GroupService extends IntentService {
 
         Content content = ContentParser.ParserContent(html);//这里解析获取的HTML文本
 
+        //其实这里不用再去解析bitmap，从HTML可以解析到的。。。至于为什么不去解析，我也不知道我当时怎么想的。。
         Response response = client.newCall(new Request.Builder().url(content.getUrl()).build()).execute();
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;

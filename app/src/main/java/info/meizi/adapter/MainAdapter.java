@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
@@ -35,7 +36,7 @@ public abstract  class MainAdapter extends ArrayRecyclerAdapter<MainBean, MainAd
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(R.layout.meizi_item, parent);
+        return new ViewHolder(R.layout.main_item, parent);
     }
 
     @Override
@@ -45,6 +46,7 @@ public abstract  class MainAdapter extends ArrayRecyclerAdapter<MainBean, MainAd
         Picasso.with(context).load(bean.getImageurl()).tag("1").//config(Bitmap.Config.RGB_565).
                 transform(new CopyOnWriteArrayList<Transformation>()).
                 into(holder.imageView);
+        holder.title.setText(bean.getTitle());
         ViewCompat.setTransitionName(holder.imageView, bean.getUrl());
     }
 
@@ -57,8 +59,11 @@ public abstract  class MainAdapter extends ArrayRecyclerAdapter<MainBean, MainAd
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.iv_item)
+        @Bind(R.id.iv_main_item)
         public RadioImageView imageView;
+
+        @Bind(R.id.text_title)
+        public TextView title;
 
         public ViewHolder(@LayoutRes int resource, ViewGroup parent) {
             super(inflater.inflate(resource, parent, false));
