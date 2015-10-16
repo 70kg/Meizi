@@ -19,7 +19,7 @@ import info.meizi.R;
 /**
  * Created by Mr_Wrong on 15/9/17.
  */
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     protected View rootView;
     @Bind(R.id.id_recyclerview)
     protected RecyclerView mRecyclerView;
@@ -39,7 +39,7 @@ public abstract class BaseFragment extends Fragment {
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.id_recyclerview);
         mRefresher = (SwipeRefreshLayout) rootView.findViewById(R.id.refresher);
         mRefresher.setColorSchemeResources(R.color.app_primary_color);
-
+        mRefresher.setOnRefreshListener(this);
         ButterKnife.bind(this, rootView);
         isPrepared = true;
         return rootView;

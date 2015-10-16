@@ -25,7 +25,8 @@
             android:id="@+id/text_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:text="hahah"
-            android:textColor="@color/primary_black" />
+            android:textColor="@color/md_grey_900" />
     </LinearLayout>
 </android.support.v7.widget.CardView>

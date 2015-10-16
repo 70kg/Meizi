@@ -19,11 +19,13 @@ import io.realm.Realm;
 public class MainService extends IntentService {
     private static final String TAG = "MainService";
     private final OkHttpClient client = new OkHttpClient();
+    Realm realm;
 
     public MainService() {
         super(TAG);
     }
 
+    Intent resuleintent;
     private String type;//首页的类型  性感，日本。。
     private String html;
     private String mPage;//加载更多的
@@ -33,35 +35,59 @@ public class MainService extends IntentService {
         type = intent.getStringExtra("type");
         mPage = intent.getStringExtra("page");
         //返回结果的
-        Intent resuleintent = new Intent(type);
-        Realm realm = Realm.getInstance(this);
+        resuleintent = new Intent(type);
+        realm = Realm.getInstance(this);
 
         List<MainBean> latest = MainBean.all(realm, type);
 
-        if (!latest.isEmpty() && latest.size() >= Page2int(mPage) * 24) {//数据库有  直接发送广播通知
+        boolean hasdata = latest.size() >= Page2int(mPage) * 24;//数据库有数据
+        boolean firstload = Page2int(mPage) == 1;//第一次加载||刷新
+        boolean loadmore = Page2int(mPage) != 1;//加载更多
 
+        LogUtils.e("数据库有数据:" + hasdata + "  第一次加载||刷新:" + firstload + "   loadmore:" + loadmore);
 
-        } else {//否则加载网络 并存入数据库 通知
-            try {
-                html = client.newCall(RequestFactory.make(Utils.makeUrl(type, mPage))).execute().body().string();
-                LogUtils.d("http://www.mzitu.com/" + Utils.makeUrl(type, mPage));
-                List<MainBean> list = ContentParser.ParserMainBean(html, type);
-                saveDb(realm, list);
-            } catch (IOException e) {
-                e.printStackTrace();
+        if (hasdata) {//数据库有
+            if (firstload) {//刷新
+                LogUtils.e("刷新");
+                loaddata();
+                resuleintent.putExtra("isRefreshe", true);
             }
+
+        } else {//数据库没有 就是第一次加载
+            if (loadmore) {
+                LogUtils.e("加载更多");
+                loaddata();
+                resuleintent.putExtra("isLoadmore", true);
+            } else {
+                LogUtils.e("第一次加载");
+                loaddata();
+                resuleintent.putExtra("isFirstload", true);
+            }
+
         }
         sendBroadcast(resuleintent);
-        LogUtils.d("发送广播" + type);
         realm.close();
     }
 
+    //加载数据
+    private void loaddata() {
+        try {
+            html = client.newCall(RequestFactory.make(Utils.makeUrl(type, mPage))).execute().body().string();
+            LogUtils.d("http://www.mzitu.com/" + Utils.makeUrl(type, mPage));
+            List<MainBean> list = ContentParser.ParserMainBean(html, type);
+            saveDb(realm, list);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     private void saveDb(Realm realm, List<MainBean> list) {
         realm.beginTransaction();
-        realm.copyToRealm(list);
+        realm.copyToRealmOrUpdate(list);
         realm.commitTransaction();
-        LogUtils.d("存入数据库成功");
     }
+
     int Page2int(String s) {
         int i = 1;
         if (!s.equals("")) {

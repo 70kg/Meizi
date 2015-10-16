@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.view.View;
-import android.view.ViewTreeObserver;
 
 import com.squareup.leakcanary.RefWatcher;
 
@@ -78,31 +77,31 @@ public class GroupFragment extends BaseFragment {
     }
 
     //这里有问题  好像不是在这里进行回调的。。
-    @Override
-    public void onResume() {
-        super.onResume();
-        int index = activity.getIndex();
-        if (index != -1) {
-            mRecyclerView.scrollToPosition(index);
-            mRecyclerView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                @Override
-                public boolean onPreDraw() {
-                    mRecyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
-                    mRecyclerView.requestLayout();
-                    activity.supportStartPostponedEnterTransition();
-                    return true;
-                }
-            });
-        }
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        int index = activity.getIndex();
+//        if (index != -1) {
+//            mRecyclerView.scrollToPosition(index);
+//            mRecyclerView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+//                @Override
+//                public boolean onPreDraw() {
+//                    mRecyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
+//                    mRecyclerView.requestLayout();
+//                    activity.supportStartPostponedEnterTransition();
+//                    return true;
+//                }
+//            });
+//        }
+//    }
 
     private void startLargePicActivity(View view, int position) {
-        Intent intent1 = new Intent(getActivity(), LargePicActivity.class);
+        Intent intent1 = new Intent(activity, LargePicActivity.class);
         intent1.putExtra("index", position);
         intent1.putExtra("groupid", groupid);
         ActivityOptionsCompat options = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(getActivity(), view, mAdapter.get(position).getUrl());
-        getActivity().startActivity(intent1, options.toBundle());
+        activity.startActivity(intent1, options.toBundle());
     }
 
 
@@ -112,10 +111,10 @@ public class GroupFragment extends BaseFragment {
         IntentFilter filter = new IntentFilter();
         filter.addAction(groupid);
 
-        getActivity().registerReceiver(Receiver, filter);
+        activity.registerReceiver(Receiver, filter);
 
-        realm = Realm.getInstance(getActivity());
-        mAdapter = new GroupAdapter(getContext()) {
+        realm = Realm.getInstance(activity);
+        mAdapter = new GroupAdapter(MyApp.getContext()) {
             @Override
             protected void onItemClick(View v, int position) {
                 startLargePicActivity(v, position);
@@ -123,7 +122,7 @@ public class GroupFragment extends BaseFragment {
         };
 
         mRecyclerView.setAdapter(mAdapter);
-
+        mRefresher.setColorSchemeColors(activity.color);
         SendToLoad();
 
     }
@@ -144,16 +143,22 @@ public class GroupFragment extends BaseFragment {
 
     @Override
     public void onDestroyView() {
-        getActivity().unregisterReceiver(Receiver);
         super.onDestroyView();
+        rootView = null;
+        activity.unregisterReceiver(Receiver);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        realm.close();
         RefWatcher refWatcher = MyApp.getRefWatcher(getActivity());
         refWatcher.watch(this);
     }
 
 
+    @Override
+    public void onRefresh() {
+
+    }
 }

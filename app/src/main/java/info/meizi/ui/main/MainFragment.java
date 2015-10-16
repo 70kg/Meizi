@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import java.util.List;
@@ -30,7 +29,7 @@ import io.realm.Realm;
  * Created by Mr_Wrong on 15/10/9.
  * 首页那几个tab
  */
-public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class MainFragment extends BaseFragment {
     private String type;
     private MainAdapter mAdapter;
 
@@ -46,12 +45,21 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            LogUtils.d("接受到广播" + intent.getAction().contains(type));
             if (intent.getAction().equals(type)) {
+                boolean isRefreshe, isLoadmore, isFirstload;
                 List<MainBean> latest = MainBean.all(realm, type);
-                LogUtils.e(latest.size());
                 hasload = false;
-                mAdapter.addAll(latest.subList(latest.size() - 24, latest.size()));
+
+                isRefreshe = intent.getBooleanExtra("isRefreshe", false);
+                isLoadmore = intent.getBooleanExtra("isLoadmore", false);
+                isFirstload = intent.getBooleanExtra("isFirstload", false);
+
+                if (isFirstload||isRefreshe) {
+                    mAdapter.replaceWith(latest);
+                }
+                if (isLoadmore) {
+                    mAdapter.addAll(latest.subList(latest.size() - 24, latest.size()));
+                }
                 mRefresher.setRefreshing(false);
             }
         }

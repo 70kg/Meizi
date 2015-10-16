@@ -6,6 +6,7 @@ import java.util.List;
 import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Mr_Wrong on 15/10/9.
@@ -14,6 +15,7 @@ public class MainBean extends RealmObject implements Serializable {
     private int count;
     private int width;
     private int height;
+    @PrimaryKey
     private String imageurl;
     private String url;
     private String title;
