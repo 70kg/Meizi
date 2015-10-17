@@ -19,16 +19,15 @@ import io.realm.Realm;
 public class MainService extends IntentService {
     private static final String TAG = "MainService";
     private final OkHttpClient client = new OkHttpClient();
-    Realm realm;
+    private Realm realm;
+    private Intent resuleintent;
+    private String type;//首页的类型  性感，日本。。
+    private String html;
+    private String mPage;//加载更多的
 
     public MainService() {
         super(TAG);
     }
-
-    Intent resuleintent;
-    private String type;//首页的类型  性感，日本。。
-    private String html;
-    private String mPage;//加载更多的
 
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -48,23 +47,16 @@ public class MainService extends IntentService {
 
         if (hasdata) {//数据库有
             if (firstload) {//刷新
-                LogUtils.e("刷新");
-                loaddata();
                 resuleintent.putExtra("isRefreshe", true);
             }
-
         } else {//数据库没有 就是第一次加载
             if (loadmore) {
-                LogUtils.e("加载更多");
-                loaddata();
                 resuleintent.putExtra("isLoadmore", true);
             } else {
-                LogUtils.e("第一次加载");
-                loaddata();
                 resuleintent.putExtra("isFirstload", true);
             }
-
         }
+        loaddata();
         sendBroadcast(resuleintent);
         realm.close();
     }
