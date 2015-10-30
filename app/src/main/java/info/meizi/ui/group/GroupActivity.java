@@ -1,6 +1,7 @@
 package info.meizi.ui.group;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -54,18 +55,19 @@ public class GroupActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             tintManager.setStatusBarTintColor(color);
         }
-
         setDefaultFragment();
-
     }
 
     //这里有问题。。还不知道怎么去解决
-//    @Override
-//    public void onActivityReenter(int resultCode, Intent data) {
-//        super.onActivityReenter(resultCode, data);
-//        supportStartPostponedEnterTransition();
-//        index = data.getIntExtra("index", 0);
-//    }
+    @Override
+    public void onActivityReenter(int resultCode, Intent data) {
+        super.onActivityReenter(resultCode, data);
+        supportStartPostponedEnterTransition();
+        index = data.getIntExtra("index", 0);
+
+
+    }
+
 
     public int getIndex() {
         return index;
@@ -85,7 +87,6 @@ public class GroupActivity extends BaseActivity {
     protected void onDestroy() {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-//        transaction.detach(fragment);
         transaction.remove(fragment);
         transaction.commitAllowingStateLoss();
         super.onDestroy();

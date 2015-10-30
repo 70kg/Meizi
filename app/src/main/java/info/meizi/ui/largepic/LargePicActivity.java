@@ -76,7 +76,6 @@ public class LargePicActivity extends BaseActivity {
             public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
                 Content image = images.get(mPager.getCurrentItem());
                 LargePicFragment fragment = (LargePicFragment) adapter.instantiateItem(mPager, mPager.getCurrentItem());
-
                 sharedElements.clear();
                 sharedElements.put(image.getUrl(), fragment.getSharedElement());
             }

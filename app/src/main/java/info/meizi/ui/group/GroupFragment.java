@@ -8,9 +8,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.SharedElementCallback;
 import android.view.View;
+import android.view.ViewTreeObserver;
 
 import com.squareup.leakcanary.RefWatcher;
+
+import java.util.List;
+import java.util.Map;
 
 import info.meizi.adapter.GroupAdapter;
 import info.meizi.base.BaseFragment;
@@ -18,6 +23,7 @@ import info.meizi.base.MyApp;
 import info.meizi.bean.Content;
 import info.meizi.net.GroupService;
 import info.meizi.ui.largepic.LargePicActivity;
+import info.meizi.utils.LogUtils;
 import io.realm.Realm;
 
 /**
@@ -31,6 +37,7 @@ public class GroupFragment extends BaseFragment {
     private int currentcount;
     private boolean isfrist = false;
     private GroupActivity activity;
+    int index;
 
     public GroupFragment(String groupid) {
         this.groupid = groupid;
@@ -70,10 +77,25 @@ public class GroupFragment extends BaseFragment {
         SendToLoad();
     }
 
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         activity = (GroupActivity) context;
+        index = activity.getIndex();
+        if (index != -1) {
+            mRecyclerView.scrollToPosition(index);
+            mRecyclerView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    mRecyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
+                    mRecyclerView.requestLayout();
+                    return true;
+                }
+            });
+        }
+
+        LogUtils.e("onResume" + "  index " + index);
     }
 
     //这里有问题  好像不是在这里进行回调的。。
@@ -125,6 +147,20 @@ public class GroupFragment extends BaseFragment {
         mRefresher.setColorSchemeColors(activity.color);
         SendToLoad();
 
+        setEnterSharedElementCallback(new SharedElementCallback() {
+            @Override
+            public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                super.onMapSharedElements(names, sharedElements);
+                String newTransitionName = mAdapter.get(index).getUrl();
+                View newSharedView = mRecyclerView.findViewWithTag(newTransitionName);
+                if (newSharedView != null) {
+                    names.clear();
+                    names.add(newTransitionName);
+                    sharedElements.clear();
+                    sharedElements.put(newTransitionName, newSharedView);
+                }
+            }
+        });
     }
 
     @Override

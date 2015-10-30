@@ -24,7 +24,6 @@ import info.meizi.widget.RadioImageView;
  * Created by Mr_Wrong on 15/10/10.
  */
 public abstract class GroupAdapter extends ArrayRecyclerAdapter<Content, GroupAdapter.ViewHolder> {
-
     private final Context context;
     private final LayoutInflater inflater;
 
@@ -46,6 +45,7 @@ public abstract class GroupAdapter extends ArrayRecyclerAdapter<Content, GroupAd
         Picasso.with(context).load(image.getUrl()).tag("1").config(Bitmap.Config.RGB_565).
                 transform(new CopyOnWriteArrayList<Transformation>()).
                 into(holder.imageView);
+        holder.imageView.setTag(image.getUrl());
         ViewCompat.setTransitionName(holder.imageView, image.getUrl());
     }
 
