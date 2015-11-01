@@ -64,8 +64,6 @@ public class GroupActivity extends BaseActivity {
         super.onActivityReenter(resultCode, data);
         supportStartPostponedEnterTransition();
         index = data.getIntExtra("index", 0);
-
-
     }
 
 

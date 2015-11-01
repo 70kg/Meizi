@@ -1,16 +1,23 @@
 package info.meizi_retrofit.ui.fragment;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.view.View;
 
 import java.util.List;
 
+import info.meizi_retrofit.R;
 import info.meizi_retrofit.adapter.HomeAdapter;
 import info.meizi_retrofit.base.BaseFragment;
 import info.meizi_retrofit.model.Group;
 import info.meizi_retrofit.net.ContentParser;
-import info.meizi_retrofit.utils.LogUtils;
+import info.meizi_retrofit.ui.GroupActivity;
+import info.meizi_retrofit.utils.Utils;
+import info.meizi_retrofit.widget.RadioImageView;
 import io.realm.Realm;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -30,61 +37,59 @@ public class HomeFragment extends BaseFragment {
     public HomeFragment(String type) {
         this.type = type;
     }
-
-    @Override
-    protected void lazyLoad() {
-        if (!isVisible) {
-            return;
-        }
-    }
-
     private void StartLoad(String page) {
-        mSubscriptions.add(mGroupApi.getGroup(type,page).map(new Func1<String, List<Group>>() {
+        mSubscriptions.add(mGroupApi.getGroup(type, page).map(new Func1<String, List<Group>>() {
+            @Override
+            public List<Group> call(String s) {
+                return ContentParser.ParserGroups(s, type);
+            }
+        })
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<Group>>() {
                     @Override
-                    public List<Group> call(String s) {
-                        return ContentParser.ParserGroups(s, type);
+                    public void call(List<Group> groups) {
+                        if (!hasload) {
+                            mAdapter.replaceWith(groups);
+                        } else {
+                            mAdapter.addAll(groups);
+                        }
+                        hasload = false;
+                        mRefresher.setRefreshing(false);
                     }
-                })
-                        .subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Action1<List<Group>>() {
-                            @Override
-                            public void call(List<Group> groups) {
-                                LogUtils.e(groups.size());
-                                if(!hasload){
-                                    mAdapter.replaceWith(groups);
-                                }else{
-                                    mAdapter.addAll(groups);
-                                }
-                                hasload = false;
-
-                            }
-                        }, new Action1<Throwable>() {
-                            @Override
-                            public void call(Throwable throwable) {
-                                LogUtils.e(throwable);
-                            }
-                        })
-
-
-        );
+                }));
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        realm = Realm.getInstance(getActivity());
-
+//        realm = Realm.getInstance(getActivity());
         mAdapter = new HomeAdapter(getContext()) {
             @Override
             protected void onItemClick(View v, int position) {
 
+                startGroupActivity(v,position);
             }
         };
         StartLoad("1");
         mRecyclerView.setAdapter(mAdapter);
     }
+    private void startGroupActivity(View view, int position) {
 
+        RadioImageView imageView = (RadioImageView) view.findViewById(R.id.iv_main_item);
+        Bitmap bitmap = null;
+        BitmapDrawable bd = (BitmapDrawable) imageView.getDrawable();
+        if (bd != null) {
+            bitmap = bd.getBitmap();
+        }
+        Intent intent1 = new Intent(getActivity(), GroupActivity.class);
+        intent1.putExtra("color", Utils.getPaletteColor(bitmap));
+        intent1.putExtra("index", position);
+        intent1.putExtra("groupid", Utils.url2groupid(mAdapter.get(position).getUrl()));
+        ActivityOptionsCompat options = ActivityOptionsCompat
+                .makeSceneTransitionAnimation(getActivity(), view, mAdapter.get(position).getUrl());
+        getActivity().startActivity(intent1, options.toBundle());
+    }
     @Override
     protected void loadMore() {
         if (hasload) {
@@ -96,7 +101,11 @@ public class HomeFragment extends BaseFragment {
     }
 
     @Override
-    public void onRefresh() {
+    protected void lazyLoad() {
+    }
 
+    @Override
+    public void onRefresh() {
+        StartLoad("1");
     }
 }

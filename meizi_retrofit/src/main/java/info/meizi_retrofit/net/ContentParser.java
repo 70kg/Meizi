@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import info.meizi_retrofit.model.Content;
 import info.meizi_retrofit.model.Group;
-import info.meizi_retrofit.utils.LogUtils;
 
 /**
  * Created by Mr_Wrong on 15/9/14.
@@ -20,7 +20,7 @@ import info.meizi_retrofit.utils.LogUtils;
 public class ContentParser {
 
 
-   /* public static Content ParserContent(String html) {
+    public static Content ParserContent(String html) {
         Content content = new Content();
         Document doc = Jsoup.parse(html);
         Elements links = doc.select("img[src~=(?i)\\.(png|jpe?g)]");
@@ -29,7 +29,7 @@ public class ContentParser {
         content.setUrl(element.attr("src"));
         content.setTitle(element.attr("alt"));
         return content;
-    }*/
+    }
 
     //获取首页的list
     public static List<Group> ParserGroups(String html, String type) {
@@ -54,14 +54,13 @@ public class ContentParser {
             bean.setGroupid(url2groupid(bean.getUrl()));//首页的这个是从大到小排序的 可以当做排序依据
             list.add(bean);
         }
-        LogUtils.e(list.size());
         return list;
     }
 
     public static int getCount(String html) {
         Document doc = Jsoup.parse(html);
         Elements pages = doc.select("span");
-        Element page = pages.get(11);
+        Element page = pages.get(11);//下标溢出 这个还得重新去匹配
 
         Pattern p = Pattern.compile("[\\d*]");
         Matcher m = p.matcher(page.toString());
