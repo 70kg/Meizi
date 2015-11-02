@@ -34,10 +34,15 @@ public class HomeFragment extends BaseFragment {
     private int page = 2;
     private boolean hasload = false;
 
+    public HomeFragment() {
+    }
+
     public HomeFragment(String type) {
         this.type = type;
     }
+
     private void StartLoad(String page) {
+        mRefresher.setRefreshing(true);
         mSubscriptions.add(mGroupApi.getGroup(type, page).map(new Func1<String, List<Group>>() {
             @Override
             public List<Group> call(String s) {
@@ -55,7 +60,7 @@ public class HomeFragment extends BaseFragment {
                             mAdapter.addAll(groups);
                         }
                         hasload = false;
-                        mRefresher.setRefreshing(false);
+//                        mRefresher.setRefreshing(false);
                     }
                 }));
     }
@@ -68,12 +73,14 @@ public class HomeFragment extends BaseFragment {
             @Override
             protected void onItemClick(View v, int position) {
 
-                startGroupActivity(v,position);
+                startGroupActivity(v, position);
             }
         };
         StartLoad("1");
+
         mRecyclerView.setAdapter(mAdapter);
     }
+
     private void startGroupActivity(View view, int position) {
 
         RadioImageView imageView = (RadioImageView) view.findViewById(R.id.iv_main_item);
@@ -90,6 +97,7 @@ public class HomeFragment extends BaseFragment {
                 .makeSceneTransitionAnimation(getActivity(), view, mAdapter.get(position).getUrl());
         getActivity().startActivity(intent1, options.toBundle());
     }
+
     @Override
     protected void loadMore() {
         if (hasload) {

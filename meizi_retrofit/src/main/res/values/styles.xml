@@ -13,4 +13,7 @@
     <style name="AppTheme" parent="AppTheme.Base">
 
     </style>
+
+    <style name="ViewerTheme" parent="AppTheme.Base">
+    </style>
 </resources>

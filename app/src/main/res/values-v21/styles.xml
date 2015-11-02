@@ -22,7 +22,6 @@
         <item name="colorPrimaryDark">@color/app_primary_color</item>
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:windowBackground">@color/app_color_background</item>
-
     </style>
 
     <style name="ViewerTheme" parent="ViewerThemeBase">

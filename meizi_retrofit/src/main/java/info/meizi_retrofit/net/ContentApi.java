@@ -16,4 +16,5 @@ public interface ContentApi {
 
     @GET("/{groupid}")
     Observable<String> getContentCount(@Path("groupid") String groupid);
+
 }

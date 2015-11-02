@@ -24,7 +24,8 @@ public class ContentParser {
         Content content = new Content();
         Document doc = Jsoup.parse(html);
         Elements links = doc.select("img[src~=(?i)\\.(png|jpe?g)]");
-        Element element = links.get(0).getElementsByTag("img").first();
+
+        Element element = links.get(1).getElementsByTag("img").first();
 
         content.setUrl(element.attr("src"));
         content.setTitle(element.attr("alt"));
@@ -60,7 +61,8 @@ public class ContentParser {
     public static int getCount(String html) {
         Document doc = Jsoup.parse(html);
         Elements pages = doc.select("span");
-        Element page = pages.get(11);//下标溢出 这个还得重新去匹配
+
+        Element page = pages.get(3);//下标溢出 这个还得重新去匹配
 
         Pattern p = Pattern.compile("[\\d*]");
         Matcher m = p.matcher(page.toString());
@@ -68,7 +70,7 @@ public class ContentParser {
         while (m.find()) {
             stringBuffer.append(m.group());
         }
-        return Integer.parseInt(stringBuffer.toString());
+        return Integer.parseInt(stringBuffer.toString().substring(1));
     }
 
     private static int url2groupid(String url) {

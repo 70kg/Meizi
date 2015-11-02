@@ -24,7 +24,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.GroupActivity"></activity>
+        <activity
+            android:name=".ui.GroupActivity"
+            android:theme="@style/ViewerTheme"></activity>
+        <activity
+            android:name=".ui.LargePicActivity"
+            ></activity>
     </application>
 
 </manifest>
