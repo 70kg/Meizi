@@ -83,10 +83,6 @@ public class GroupActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.remove(fragment);
-        transaction.commitAllowingStateLoss();
         super.onDestroy();
         RefWatcher refWatcher = MyApp.getRefWatcher(this);
         refWatcher.watch(this);

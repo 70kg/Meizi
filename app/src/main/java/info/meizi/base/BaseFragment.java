@@ -36,11 +36,9 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment, container, false);
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.id_recyclerview);
-        mRefresher = (SwipeRefreshLayout) rootView.findViewById(R.id.refresher);
+        ButterKnife.bind(this, rootView);
         mRefresher.setColorSchemeResources(R.color.app_primary_color);
         mRefresher.setOnRefreshListener(this);
-        ButterKnife.bind(this, rootView);
         isPrepared = true;
         return rootView;
     }
@@ -85,6 +83,7 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
                     Picasso.with(getContext()).pauseTag("1");
                 }
             }
+
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -98,6 +97,7 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
         });
 
     }
+
     protected abstract void loadMore();
 
     @Override

@@ -6,4 +6,7 @@
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
+    <style name="LargeImage" parent="ViewerTheme">
+        <item name="android:windowContentTransitions">true</item>
+    </style>
 </resources>

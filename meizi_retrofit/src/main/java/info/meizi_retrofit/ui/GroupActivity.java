@@ -28,8 +28,11 @@ import info.meizi_retrofit.base.BaseActivity;
 import info.meizi_retrofit.model.Content;
 import info.meizi_retrofit.net.ContentApi;
 import info.meizi_retrofit.net.ContentParser;
+import info.meizi_retrofit.utils.LogUtils;
 import info.meizi_retrofit.utils.StringConverter;
 import info.meizi_retrofit.utils.SystemBarTintManager;
+import info.meizi_retrofit.utils.Utils;
+import io.realm.Realm;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 import rx.Observable;
@@ -58,6 +61,7 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
     private StaggeredGridLayoutManager layoutManager;
     private Integer count = 0;
     private final OkHttpClient client = new OkHttpClient();
+    private Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +70,7 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
         ButterKnife.bind(this);
 
         mRefresher.setOnRefreshListener(this);
+        realm = Realm.getInstance(this);
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -82,7 +87,7 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
         setSystemBar();
 
         mRefresher.setColorSchemeColors(color);
-        sendToLoad();
+
 
         mAdapter = new GroupAdapter(this) {
             @Override
@@ -93,7 +98,7 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
         layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerview.setLayoutManager(layoutManager);
         mRecyclerview.setAdapter(mAdapter);
-
+        sendToLoad();
     }
 
 
@@ -108,25 +113,44 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
 
 
     private void sendToLoad() {
-        mRefresher.setRefreshing(true);
-        //先去获取count  然后根据count去查询全部的content
-        mSubscriptions.add(mApi.getContentCount(groupid)
-                .flatMap(new Func1<String, Observable<Integer>>() {
-                    @Override
-                    public Observable<Integer> call(String s) {
-                        return Observable.just(ContentParser.getCount(s));
-                    }
-                })
-                .flatMap(new Func1<Integer, Observable<List<Content>>>() {
-                    @Override
-                    public Observable<List<Content>> call(Integer integer) {
-                        count = integer;
-                        return mListObservable;
-                    }
-                })
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(mListSubscriber));
+        Utils.statrtRefresh(mRefresher, true);
+        if (!Content.all(realm, groupid).isEmpty()) {//数据库有 直接加载
+            List<Content> list = Content.all(realm, groupid);
+            mAdapter.replaceWith(list);
+            Utils.statrtRefresh(mRefresher, false);
+            LogUtils.e("获取本地资源");
+        } else {
+            LogUtils.e("加载网络资源");
+            //先去获取count  然后根据count去查询全部的content
+            mSubscriptions.add(mApi.getContentCount(groupid)
+                    .flatMap(new Func1<String, Observable<Integer>>() {
+                        @Override
+                        public Observable<Integer> call(String s) {
+                            return Observable.just(ContentParser.getCount(s));
+                        }
+                    })
+                    .flatMap(new Func1<Integer, Observable<List<Content>>>() {
+                        @Override
+                        public Observable<List<Content>> call(Integer integer) {
+                            count = integer;
+                            return mListObservable;
+                        }
+                    })
+//                    .flatMap(new Func1<List<Content>, Observable<Content>>() {
+//                        @Override
+//                        public Observable<Content> call(List<Content> list) {
+//                            return Observable.from(list);
+//                        }
+//                    })
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(mListSubscriber, new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                            LogUtils.e(throwable);
+                        }
+                    }));
+        }
     }
 
     Observable<List<Content>> mListObservable = Observable.create(new Observable.OnSubscribe<List<Content>>() {
@@ -149,11 +173,12 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
                         .subscribe(new Action1<Content>() {
                             @Override
                             public void call(Content content) {
-                                content.setGroupid(groupid);
                                 lists.add(content);
-                                if (lists.size() >= count - 1) {//这里有时候会少一个。。为啥
+                                LogUtils.e(lists.size() + "__" + count);
+                                if (lists.size() == count) {//这里有时候会少一个。。为啥
                                     subscriber.onNext(lists);
                                 }
+//                                subscriber.onNext(lists);
                             }
                         });
             }
@@ -164,11 +189,38 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
 
     Action1<List<Content>> mListSubscriber = new Action1<List<Content>>() {
         @Override
-        public void call(List<Content> list) {
-            mAdapter.replaceWith(list);
+        public void call(List<Content> list) {//从网络获取的图片也应该先存入数据库，方便排序
+            saveDB(lists);
+            mAdapter.replaceWith(Content.all(realm, groupid));
+//            mAdapter.replaceWith(list);
             mRefresher.setRefreshing(false);
         }
     };
+
+    Action1<Content> mListSubscriber1 = new Action1<Content>() {
+        @Override
+        public void call(Content content) {//如果每获得一个图片就去更新视图 这样虽然可以逐个显示  但是还是跳跃
+            saveDB(content);
+            mAdapter.add(content);
+            mRefresher.setRefreshing(false);
+        }
+    };
+
+    private void saveDB(List<Content> list) {
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(list);
+        realm.commitTransaction();
+        LogUtils.e("存入数据库");
+    }
+
+    private void saveDB(Content list) {
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(list);
+        realm.commitTransaction();
+        LogUtils.e("存入数据库");
+    }
+
+    int mI = 0;
 
     private Content handleContent(Content content) throws IOException {
         Response response = client.newCall(new Request.Builder().url(content.getUrl()).build()).execute();
@@ -177,6 +229,8 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
         BitmapFactory.decodeStream(response.body().byteStream(), null, options);
         content.setImagewidth(options.outWidth);
         content.setImageheight(options.outHeight);
+        content.setGroupid(groupid);
+        content.setOrder(mI++);
         return content;
     }
 
@@ -209,6 +263,7 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
         Intent intent = new Intent(this, LargePicActivity.class);
         intent.putExtra("index", position);
         intent.putExtra("groupid", groupid);
+//        intent.putExtra("images", (Serializable) lists);
         ActivityOptionsCompat options = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(this, view, mAdapter.get(position).getUrl());
         startActivity(intent, options.toBundle());

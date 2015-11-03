@@ -29,7 +29,7 @@
             android:theme="@style/ViewerTheme"></activity>
         <activity
             android:name=".ui.LargePicActivity"
-            ></activity>
+            android:theme="@style/LargeImage"></activity>
     </application>
 
 </manifest>

@@ -42,7 +42,7 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void StartLoad(String page) {
-        mRefresher.setRefreshing(true);
+        Utils.statrtRefresh(mRefresher,true);
         mSubscriptions.add(mGroupApi.getGroup(type, page).map(new Func1<String, List<Group>>() {
             @Override
             public List<Group> call(String s) {
@@ -60,7 +60,7 @@ public class HomeFragment extends BaseFragment {
                             mAdapter.addAll(groups);
                         }
                         hasload = false;
-//                        mRefresher.setRefreshing(false);
+                        mRefresher.setRefreshing(false);
                     }
                 }));
     }
@@ -72,7 +72,6 @@ public class HomeFragment extends BaseFragment {
         mAdapter = new HomeAdapter(getContext()) {
             @Override
             protected void onItemClick(View v, int position) {
-
                 startGroupActivity(v, position);
             }
         };
@@ -115,5 +114,10 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onRefresh() {
         StartLoad("1");
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
     }
 }

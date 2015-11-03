@@ -6,6 +6,7 @@ import java.util.List;
 import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Mr_Wrong on 15/9/22.
@@ -14,11 +15,12 @@ public class Content extends RealmObject implements Serializable {
     private int imagewidth;
     private int imageheight;
     private String url;
+    @PrimaryKey
     private int order;
     private String groupid;
 
 
-    public static List<Content> all(Realm realm,String groupid){
+    public static List<Content> all(Realm realm, String groupid) {
         return realm.where(Content.class)
                 .equalTo("groupid", groupid)
                 .findAllSorted("order", RealmResults.SORT_ORDER_DESCENDING);

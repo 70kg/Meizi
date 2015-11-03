@@ -63,8 +63,9 @@ public class LargePicActivity extends BaseActivity {
         index = getIntent().getIntExtra("index", 0);
         groupid = getIntent().getStringExtra("groupid");
 
-//        realm = Realm.getInstance(this);
-//        images = Content.all(realm, groupid);
+        realm = Realm.getInstance(this);
+        images = Content.all(realm, groupid);
+//        images = (List<Content>) getIntent().getSerializableExtra("images");
 
         adapter = new PagerAdapter();
 
@@ -88,7 +89,7 @@ public class LargePicActivity extends BaseActivity {
         Intent data = new Intent();
         data.putExtra("index", mPager.getCurrentItem());
         setResult(RESULT_OK, data);
-//        showSystemUi();
+        showSystemUi();
         super.supportFinishAfterTransition();
     }
 

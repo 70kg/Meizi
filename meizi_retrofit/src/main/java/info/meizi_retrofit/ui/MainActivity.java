@@ -3,6 +3,7 @@ package info.meizi_retrofit.ui;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -33,6 +34,7 @@ public class MainActivity extends BaseActivity {
             new HomeFragment("xinggan"),
             new HomeFragment("japan"),
             new HomeFragment("mm")};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +97,7 @@ public class MainActivity extends BaseActivity {
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
             case R.id.action_settings:
+                Snackbar.make(mDrawerLayout,"敬请期待",Snackbar.LENGTH_SHORT).show();
                 return true;
 
         }
@@ -106,4 +109,5 @@ public class MainActivity extends BaseActivity {
         transaction.replace(R.id.content, fragment);
         transaction.commit();
     }
+
 }

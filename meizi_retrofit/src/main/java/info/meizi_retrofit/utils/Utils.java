@@ -1,6 +1,7 @@
 package info.meizi_retrofit.utils;
 
 import android.graphics.Bitmap;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.graphics.Palette;
 
 /**
@@ -59,5 +60,14 @@ public class Utils {
             color = Mutedlight.getRgb();
         }
         return color;
+    }
+
+    public static void statrtRefresh(final SwipeRefreshLayout mRefresher, final boolean isrefresh) {
+        mRefresher.post(new Runnable() {
+            @Override
+            public void run() {
+                mRefresher.setRefreshing(isrefresh);
+            }
+        });
     }
 }
