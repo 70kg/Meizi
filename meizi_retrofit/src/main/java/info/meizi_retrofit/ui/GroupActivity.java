@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.SharedElementCallback;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -19,6 +20,7 @@ import com.squareup.okhttp.Response;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -53,7 +55,6 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
     @Bind(R.id.group_toolbar)
     Toolbar mToolbar;
     private String groupid;
-    public int index = -1;
     public int color;
     private GroupAdapter mAdapter;
     private ContentApi mApi;
@@ -62,6 +63,7 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
     private Integer count = 0;
     private final OkHttpClient client = new OkHttpClient();
     private Realm realm;
+    private Bundle reenterState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,8 +101,27 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
         mRecyclerview.setLayoutManager(layoutManager);
         mRecyclerview.setAdapter(mAdapter);
         sendToLoad();
+
+
+        setExitSharedElementCallback(new SharedElementCallback() {
+            @Override
+            public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                if (reenterState != null) {
+                    int i = reenterState.getInt("index", 0);
+                    sharedElements.clear();
+                    sharedElements.put(mAdapter.get(i).getUrl(), layoutManager.findViewByPosition(i));
+                    reenterState = null;
+                }
+            }
+        });
+
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        realm.close();
+    }
 
     private void setSystemBar() {
         SystemBarTintManager tintManager = new SystemBarTintManager(this);
@@ -118,9 +139,9 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
             List<Content> list = Content.all(realm, groupid);
             mAdapter.replaceWith(list);
             Utils.statrtRefresh(mRefresher, false);
-            LogUtils.e("获取本地资源");
+            LogUtils.d("获取本地资源");
         } else {
-            LogUtils.e("加载网络资源");
+            LogUtils.d("加载网络资源");
             //先去获取count  然后根据count去查询全部的content
             mSubscriptions.add(mApi.getContentCount(groupid)
                     .flatMap(new Func1<String, Observable<Integer>>() {
@@ -136,18 +157,12 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
                             return mListObservable;
                         }
                     })
-//                    .flatMap(new Func1<List<Content>, Observable<Content>>() {
-//                        @Override
-//                        public Observable<Content> call(List<Content> list) {
-//                            return Observable.from(list);
-//                        }
-//                    })
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(mListSubscriber, new Action1<Throwable>() {
                         @Override
                         public void call(Throwable throwable) {
-                            LogUtils.e(throwable);
+                            LogUtils.d(throwable);
                         }
                     }));
         }
@@ -174,11 +189,10 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
                             @Override
                             public void call(Content content) {
                                 lists.add(content);
-                                LogUtils.e(lists.size() + "__" + count);
-                                if (lists.size() == count) {//这里有时候会少一个。。为啥
+                                LogUtils.d(lists.size() + "__" + count);
+                                if (lists.size() >= count - 2) {//这里有时候会少一个。。为啥
                                     subscriber.onNext(lists);
                                 }
-//                                subscriber.onNext(lists);
                             }
                         });
             }
@@ -186,22 +200,15 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
         }
     });
 
-
+    //从网络获取的图片也应该先存入数据库，方便排序  不过这样获取要等待整个的list都获取完成才能显示  耗时太久  如果单个返回 排序也是个问题
+    //会造成图片的移动排序  效果也不好  暂时先整个list吧
+    // 而且不知道为什么 rxjava的请求  后面两三个总是很久才能返回  或者根本就没返回 在使用intentservice的时候，
+    //因为使用了queue队列，所以请求应该是串行的  不知道这个是并行还是串行 而且一次请求似乎还会执行多次？
     Action1<List<Content>> mListSubscriber = new Action1<List<Content>>() {
         @Override
-        public void call(List<Content> list) {//从网络获取的图片也应该先存入数据库，方便排序
+        public void call(List<Content> list) {
             saveDB(lists);
             mAdapter.replaceWith(Content.all(realm, groupid));
-//            mAdapter.replaceWith(list);
-            mRefresher.setRefreshing(false);
-        }
-    };
-
-    Action1<Content> mListSubscriber1 = new Action1<Content>() {
-        @Override
-        public void call(Content content) {//如果每获得一个图片就去更新视图 这样虽然可以逐个显示  但是还是跳跃
-            saveDB(content);
-            mAdapter.add(content);
             mRefresher.setRefreshing(false);
         }
     };
@@ -210,15 +217,9 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(list);
         realm.commitTransaction();
-        LogUtils.e("存入数据库");
+        LogUtils.d("存入数据库");
     }
 
-    private void saveDB(Content list) {
-        realm.beginTransaction();
-        realm.copyToRealmOrUpdate(list);
-        realm.commitTransaction();
-        LogUtils.e("存入数据库");
-    }
 
     int mI = 0;
 
@@ -230,7 +231,7 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
         content.setImagewidth(options.outWidth);
         content.setImageheight(options.outHeight);
         content.setGroupid(groupid);
-        content.setOrder(mI++);
+        content.setOrder(Integer.parseInt(groupid + mI++));
         return content;
     }
 
@@ -238,8 +239,8 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
     public void onActivityReenter(int resultCode, Intent data) {
         super.onActivityReenter(resultCode, data);
         supportStartPostponedEnterTransition();
-        index = data.getIntExtra("index", 0);
-        mRecyclerview.scrollToPosition(index);
+        reenterState = new Bundle(data.getExtras());
+        mRecyclerview.scrollToPosition(reenterState.getInt("index", 0));
         mRecyclerview.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
@@ -263,7 +264,6 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
         Intent intent = new Intent(this, LargePicActivity.class);
         intent.putExtra("index", position);
         intent.putExtra("groupid", groupid);
-//        intent.putExtra("images", (Serializable) lists);
         ActivityOptionsCompat options = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(this, view, mAdapter.get(position).getUrl());
         startActivity(intent, options.toBundle());

@@ -65,7 +65,6 @@ public class LargePicActivity extends BaseActivity {
 
         realm = Realm.getInstance(this);
         images = Content.all(realm, groupid);
-//        images = (List<Content>) getIntent().getSerializableExtra("images");
 
         adapter = new PagerAdapter();
 
