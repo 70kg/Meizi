@@ -45,6 +45,7 @@ public class LargePicActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        supportPostponeEnterTransition();
         setContentView(R.layout.large_pic);
         ButterKnife.bind(this);
         initviews();
@@ -130,8 +131,7 @@ public class LargePicActivity extends BaseActivity {
         @Override
         public Fragment getItem(int position) {
             return LargePicFragment.newFragment(
-                    images.get(position).getUrl(),
-                    position == index);
+                    images.get(position).getUrl(), position == index, groupid, position);
         }
 
     }

@@ -130,4 +130,12 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (this.mSubscriptions != null) {
+            this.mSubscriptions.unsubscribe();
+        }
+    }
 }

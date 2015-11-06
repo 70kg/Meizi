@@ -41,8 +41,8 @@ public class HomeFragment extends BaseFragment {
         this.type = type;
     }
 
-    private void StartLoad(String page) {
-        Utils.statrtRefresh(mRefresher,true);
+    private void StartLoad(int page) {
+        Utils.statrtRefresh(mRefresher, true);
         mSubscriptions.add(mGroupApi.getGroup(type, page).map(new Func1<String, List<Group>>() {
             @Override
             public List<Group> call(String s) {
@@ -75,7 +75,7 @@ public class HomeFragment extends BaseFragment {
                 startGroupActivity(v, position);
             }
         };
-        StartLoad("1");
+        StartLoad(1);
 
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -89,9 +89,9 @@ public class HomeFragment extends BaseFragment {
             bitmap = bd.getBitmap();
         }
         Intent intent1 = new Intent(getActivity(), GroupActivity.class);
-        intent1.putExtra("color", Utils.getPaletteColor(bitmap));
-        intent1.putExtra("index", position);
-        intent1.putExtra("groupid", Utils.url2groupid(mAdapter.get(position).getUrl()));
+        intent1.putExtra(GroupActivity.COLOR, Utils.getPaletteColor(bitmap));
+        intent1.putExtra(GroupActivity.INDEX, position);
+        intent1.putExtra(GroupActivity.GROUPID, Utils.url2groupid(mAdapter.get(position).getUrl()));
         ActivityOptionsCompat options = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(getActivity(), view, mAdapter.get(position).getUrl());
         getActivity().startActivity(intent1, options.toBundle());
@@ -102,7 +102,7 @@ public class HomeFragment extends BaseFragment {
         if (hasload) {
             return;
         }
-        StartLoad(page + "");
+        StartLoad(page);
         page++;
         hasload = true;
     }
@@ -113,11 +113,11 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     public void onRefresh() {
-        StartLoad("1");
+        StartLoad(1);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
+//        super.onSaveInstanceState(outState);//这个在这是因为fragment替换的时候会重叠  还不知道怎么去解决
     }
 }

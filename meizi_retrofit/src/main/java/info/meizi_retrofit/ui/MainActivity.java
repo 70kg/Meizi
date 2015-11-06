@@ -1,5 +1,6 @@
 package info.meizi_retrofit.ui;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -11,14 +12,19 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import info.meizi_retrofit.R;
 import info.meizi_retrofit.base.BaseActivity;
 import info.meizi_retrofit.ui.fragment.HomeFragment;
+import me.drakeet.materialdialog.MaterialDialog;
 
 public class MainActivity extends BaseActivity {
 
@@ -97,7 +103,36 @@ public class MainActivity extends BaseActivity {
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
             case R.id.action_settings:
-                Snackbar.make(mDrawerLayout,"敬请期待",Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(mDrawerLayout, "敬请期待", Snackbar.LENGTH_SHORT).show();
+                return true;
+            case R.id.input_groupid://显示输入框
+                final EditText content = new EditText(this);
+                content.setHint("输入ID，具体可以查看网站URL里面的数字，类似50087");
+                final MaterialDialog materialDialog = new MaterialDialog(this);
+                materialDialog.setTitle("输入ID");
+                materialDialog.setView(content);
+                materialDialog.setPositiveButton("查看", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        materialDialog.dismiss();
+                        String groupid = content.getText().toString().trim();
+                        if (!TextUtils.isEmpty(groupid)) {
+                            Toast.makeText(MainActivity.this, "ID可能是合法的", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(MainActivity.this, GroupActivity.class);
+                            intent.putExtra(GroupActivity.GROUPID, groupid);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(MainActivity.this, "ID不合法", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                materialDialog.setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        materialDialog.dismiss();
+                    }
+                });
+                materialDialog.show();
                 return true;
 
         }

@@ -18,9 +18,9 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -48,6 +48,9 @@ import rx.schedulers.Schedulers;
  * Created by Mr_Wrong on 15/10/31.
  */
 public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
+    public static final String INDEX= "index";
+    public static final String GROUPID= "groupid";
+    public static final String COLOR = "color";
     @Bind(R.id.group_recyclerview)
     RecyclerView mRecyclerview;
     @Bind(R.id.group_refresher)
@@ -58,7 +61,7 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
     public int color;
     private GroupAdapter mAdapter;
     private ContentApi mApi;
-    private List<Content> lists = new ArrayList<>();
+    private List<Content> lists = new CopyOnWriteArrayList<>();//多线程并发写
     private StaggeredGridLayoutManager layoutManager;
     private Integer count = 0;
     private final OkHttpClient client = new OkHttpClient();
@@ -83,8 +86,8 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
         });
 
         mApi = createApi();
-        groupid = getIntent().getStringExtra("groupid");
-        color = getIntent().getIntExtra("color", getResources().getColor(R.color.app_primary_color));
+        groupid = getIntent().getStringExtra(GROUPID);
+        color = getIntent().getIntExtra(COLOR, getResources().getColor(R.color.app_primary_color));
 
         setSystemBar();
 
@@ -107,7 +110,7 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
             @Override
             public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
                 if (reenterState != null) {
-                    int i = reenterState.getInt("index", 0);
+                    int i = reenterState.getInt(INDEX, 0);
                     sharedElements.clear();
                     sharedElements.put(mAdapter.get(i).getUrl(), layoutManager.findViewByPosition(i));
                     reenterState = null;
@@ -159,6 +162,12 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
                     })
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
+                    .doOnNext(new Action1<List<Content>>() {
+                        @Override
+                        public void call(List<Content> list) {
+                            saveDB(lists);//这个要在创建的线程使用
+                        }
+                    })
                     .subscribe(mListSubscriber, new Action1<Throwable>() {
                         @Override
                         public void call(Throwable throwable) {
@@ -190,7 +199,7 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
                             public void call(Content content) {
                                 lists.add(content);
                                 LogUtils.d(lists.size() + "__" + count);
-                                if (lists.size() >= count - 2) {//这里有时候会少一个。。为啥
+                                if (lists.size() == count) {
                                     subscriber.onNext(lists);
                                 }
                             }
@@ -207,7 +216,6 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
     Action1<List<Content>> mListSubscriber = new Action1<List<Content>>() {
         @Override
         public void call(List<Content> list) {
-            saveDB(lists);
             mAdapter.replaceWith(Content.all(realm, groupid));
             mRefresher.setRefreshing(false);
         }
@@ -240,7 +248,7 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
         super.onActivityReenter(resultCode, data);
         supportStartPostponedEnterTransition();
         reenterState = new Bundle(data.getExtras());
-        mRecyclerview.scrollToPosition(reenterState.getInt("index", 0));
+        mRecyclerview.scrollToPosition(reenterState.getInt(INDEX, 0));
         mRecyclerview.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
@@ -253,7 +261,7 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
 
     private ContentApi createApi() {
         RestAdapter adapter = new RestAdapter.Builder()
-                .setEndpoint("http://www.mzitu.com/")
+                .setEndpoint(ContentApi.BASE_URL)
                 .setConverter(new StringConverter())
                 .setClient(new OkClient())
                 .build();
@@ -262,8 +270,8 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
 
     private void startLargePicActivity(View view, int position) {
         Intent intent = new Intent(this, LargePicActivity.class);
-        intent.putExtra("index", position);
-        intent.putExtra("groupid", groupid);
+        intent.putExtra(INDEX, position);
+        intent.putExtra(GROUPID, groupid);
         ActivityOptionsCompat options = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(this, view, mAdapter.get(position).getUrl());
         startActivity(intent, options.toBundle());
