@@ -213,6 +213,8 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
     //会造成图片的移动排序  效果也不好  暂时先整个list吧
     // 而且不知道为什么 rxjava的请求  后面两三个总是很久才能返回  或者根本就没返回 在使用intentservice的时候，
     //因为使用了queue队列，所以请求应该是串行的  不知道这个是并行还是串行 而且一次请求似乎还会执行多次？
+
+    //这个是我蠢了  并不是请求的锅，是并发写出问题了。。。
     Action1<List<Content>> mListSubscriber = new Action1<List<Content>>() {
         @Override
         public void call(List<Content> list) {
