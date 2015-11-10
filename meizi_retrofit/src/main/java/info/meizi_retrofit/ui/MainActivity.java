@@ -24,6 +24,7 @@ import butterknife.ButterKnife;
 import info.meizi_retrofit.R;
 import info.meizi_retrofit.base.BaseActivity;
 import info.meizi_retrofit.ui.fragment.HomeFragment;
+import info.meizi_retrofit.utils.Utils;
 import me.drakeet.materialdialog.MaterialDialog;
 
 public class MainActivity extends BaseActivity {
@@ -49,7 +50,7 @@ public class MainActivity extends BaseActivity {
 
         mToolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(mToolbar);
-
+        Utils.setSystemBar(this,mToolbar,getResources().getColor(R.color.app_primary_color));
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
             supportActionBar.setHomeAsUpIndicator(R.drawable.ic_menu);

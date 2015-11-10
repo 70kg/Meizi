@@ -2,7 +2,6 @@ package info.meizi_retrofit.ui;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.SharedElementCallback;
@@ -32,7 +31,6 @@ import info.meizi_retrofit.net.ContentApi;
 import info.meizi_retrofit.net.ContentParser;
 import info.meizi_retrofit.utils.LogUtils;
 import info.meizi_retrofit.utils.StringConverter;
-import info.meizi_retrofit.utils.SystemBarTintManager;
 import info.meizi_retrofit.utils.Utils;
 import io.realm.Realm;
 import retrofit.RestAdapter;
@@ -48,8 +46,8 @@ import rx.schedulers.Schedulers;
  * Created by Mr_Wrong on 15/10/31.
  */
 public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
-    public static final String INDEX= "index";
-    public static final String GROUPID= "groupid";
+    public static final String INDEX = "index";
+    public static final String GROUPID = "groupid";
     public static final String COLOR = "color";
     @Bind(R.id.group_recyclerview)
     RecyclerView mRecyclerview;
@@ -63,7 +61,6 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
     private ContentApi mApi;
     private List<Content> lists = new CopyOnWriteArrayList<>();//多线程并发写
     private StaggeredGridLayoutManager layoutManager;
-    private Integer count = 0;
     private final OkHttpClient client = new OkHttpClient();
     private Realm realm;
     private Bundle reenterState;
@@ -89,10 +86,9 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
         groupid = getIntent().getStringExtra(GROUPID);
         color = getIntent().getIntExtra(COLOR, getResources().getColor(R.color.app_primary_color));
 
-        setSystemBar();
+        Utils.setSystemBar(this,mToolbar,color);
 
         mRefresher.setColorSchemeColors(color);
-
 
         mAdapter = new GroupAdapter(this) {
             @Override
@@ -126,16 +122,6 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
         realm.close();
     }
 
-    private void setSystemBar() {
-        SystemBarTintManager tintManager = new SystemBarTintManager(this);
-        tintManager.setStatusBarTintEnabled(true);
-        mToolbar.setBackgroundColor(color);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            tintManager.setStatusBarTintColor(color);
-        }
-    }
-
-
     private void sendToLoad() {
         Utils.statrtRefresh(mRefresher, true);
         if (!Content.all(realm, groupid).isEmpty()) {//数据库有 直接加载
@@ -145,91 +131,80 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
             LogUtils.d("获取本地资源");
         } else {
             LogUtils.d("加载网络资源");
-            //先去获取count  然后根据count去查询全部的content
-            mSubscriptions.add(mApi.getContentCount(groupid)
-                    .flatMap(new Func1<String, Observable<Integer>>() {
-                        @Override
-                        public Observable<Integer> call(String s) {
-                            return Observable.just(ContentParser.getCount(s));
-                        }
-                    })
-                    .flatMap(new Func1<Integer, Observable<List<Content>>>() {
-                        @Override
-                        public Observable<List<Content>> call(Integer integer) {
-                            count = integer;
-                            return mListObservable;
-                        }
-                    })
-                    .subscribeOn(Schedulers.newThread())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .doOnNext(new Action1<List<Content>>() {
-                        @Override
-                        public void call(List<Content> list) {
-                            saveDB(lists);//这个要在创建的线程使用
-                        }
-                    })
-                    .subscribe(mListSubscriber, new Action1<Throwable>() {
-                        @Override
-                        public void call(Throwable throwable) {
-                            LogUtils.d(throwable);
-                        }
-                    }));
+            loadData();
         }
     }
 
-    Observable<List<Content>> mListObservable = Observable.create(new Observable.OnSubscribe<List<Content>>() {
-        @Override
-        public void call(final Subscriber<? super List<Content>> subscriber) {
-            for (int i = 1; i < count + 1; i++) {
-                mApi.getContent(groupid, i)
-                        .map(new Func1<String, Content>() {
-                            @Override
-                            public Content call(String s) {
-                                Content content = null;//这里没有使用接口，是因为一定要setEndpoint 所以作罢。。
-                                try {
-                                    content = handleContent(ContentParser.ParserContent(s));
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                                return content;
-                            }
-                        })
-                        .subscribe(new Action1<Content>() {
-                            @Override
-                            public void call(Content content) {
-                                lists.add(content);
-                                LogUtils.d(lists.size() + "__" + count);
-                                if (lists.size() == count) {
-                                    subscriber.onNext(lists);
-                                }
-                            }
-                        });
-            }
+    private void loadData() {
+        //先去获取count  然后根据count去查询全部的content
+        mSubscriptions.add(mApi.getContentCount(groupid)
+                .flatMap(new Func1<String, Observable<Integer>>() {
+                    @Override
+                    public Observable<Integer> call(String s) {
+                        return Observable.just(ContentParser.getCount(s));
+                    }
+                })
+                .flatMap(new Func1<Integer, Observable<Integer>>() {
+                    @Override
+                    public Observable<Integer> call(Integer integer) {
+                        return Observable.range(1, integer);
+                    }
+                })
+                .flatMap(new Func1<Integer, Observable<String>>() {
+                    @Override
+                    public Observable<String> call(Integer integer) {
+                        return mApi.getContent(groupid, integer);
+                    }
+                })
+                .map(new Func1<String, Content>() {
+                    @Override
+                    public Content call(String s) {
+                        Content content = null;//这里没有使用接口，是因为一定要setEndpoint 所以作罢。。
+                        try {
+                            content = handleContent(ContentParser.ParserContent(s));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        return content;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(new Action1<Content>() {
+                    @Override
+                    public void call(Content content) {
+                        saveDB(content);
+                    }
+                })
+                .subscribe(new Subscriber<Content>() {
+                    @Override
+                    public void onCompleted() {
+                        mAdapter.replaceWith(Content.all(realm, groupid));
+                        mRefresher.setRefreshing(false);
+                    }
 
-        }
-    });
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtils.d(e);
+                    }
 
-    //从网络获取的图片也应该先存入数据库，方便排序  不过这样获取要等待整个的list都获取完成才能显示  耗时太久  如果单个返回 排序也是个问题
+                    @Override
+                    public void onNext(Content content) {
+                        lists.add(content);
+                    }
+                }));
+
+    }
+
+    //从网络获取的图片也应该先存入数据库，方便排序
+    //不过这样获取要等待整个的list都获取完成才能显示  耗时太久  如果单个返回 排序也是个问题
     //会造成图片的移动排序  效果也不好  暂时先整个list吧
-    // 而且不知道为什么 rxjava的请求  后面两三个总是很久才能返回  或者根本就没返回 在使用intentservice的时候，
-    //因为使用了queue队列，所以请求应该是串行的  不知道这个是并行还是串行 而且一次请求似乎还会执行多次？
-
-    //这个是我蠢了  并不是请求的锅，是并发写出问题了。。。
-    Action1<List<Content>> mListSubscriber = new Action1<List<Content>>() {
-        @Override
-        public void call(List<Content> list) {
-            mAdapter.replaceWith(Content.all(realm, groupid));
-            mRefresher.setRefreshing(false);
-        }
-    };
-
-    private void saveDB(List<Content> list) {
+    private void saveDB(Content content) {
         realm.beginTransaction();
-        realm.copyToRealmOrUpdate(list);
+        realm.copyToRealmOrUpdate(content);
         realm.commitTransaction();
         LogUtils.d("存入数据库");
     }
-
 
     int mI = 0;
 
@@ -283,4 +258,5 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
     public void onRefresh() {
         sendToLoad();
     }
+
 }

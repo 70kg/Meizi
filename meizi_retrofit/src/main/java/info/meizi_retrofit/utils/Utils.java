@@ -1,8 +1,11 @@
 package info.meizi_retrofit.utils;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.graphics.Palette;
+import android.support.v7.widget.Toolbar;
 
 /**
  * Created by Mr_Wrong on 15/10/13.
@@ -69,5 +72,14 @@ public class Utils {
                 mRefresher.setRefreshing(isrefresh);
             }
         });
+    }
+
+    public static  void setSystemBar(Activity context,Toolbar mToolbar,int color) {
+        SystemBarTintManager tintManager = new SystemBarTintManager(context);
+        tintManager.setStatusBarTintEnabled(true);
+        mToolbar.setBackgroundColor(color);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            tintManager.setStatusBarTintColor(color);
+        }
     }
 }
