@@ -97,8 +97,8 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
         });
 
     }
-
     protected abstract void loadMore();
+
 
     @Override
     public void onDestroyView() {

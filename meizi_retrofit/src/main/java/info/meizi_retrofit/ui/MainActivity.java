@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -19,6 +18,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.umeng.update.UmengUpdateAgent;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import info.meizi_retrofit.R;
@@ -27,30 +28,36 @@ import info.meizi_retrofit.ui.fragment.HomeFragment;
 import info.meizi_retrofit.utils.Utils;
 import me.drakeet.materialdialog.MaterialDialog;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
     @Bind(R.id.id_nv_menu)
     NavigationView mMenu;
+    @Bind(R.id.navigation_drawer_bottom)
+    NavigationView mBottomMenu;
     @Bind(R.id.layout_drawerlayouy)
     DrawerLayout mDrawerLayout;
 
     private HomeFragment[] mHomeFragments = new HomeFragment[]{
-            new HomeFragment(""),
-            new HomeFragment("xinggan"),
-            new HomeFragment("japan"),
-            new HomeFragment("mm")};
+            HomeFragment.newFragment(""),
+            HomeFragment.newFragment("xinggan"),
+            HomeFragment.newFragment("taiwan"),
+            HomeFragment.newFragment("japan"),
+            HomeFragment.newFragment("mm")};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        UmengUpdateAgent.setDeltaUpdate(false);
+        UmengUpdateAgent.update(this);
+
 
         mToolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(mToolbar);
-        Utils.setSystemBar(this,mToolbar,getResources().getColor(R.color.app_primary_color));
+        Utils.setSystemBar(this, mToolbar, getResources().getColor(R.color.app_primary_color));
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
             supportActionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
@@ -61,33 +68,42 @@ public class MainActivity extends BaseActivity {
         mDrawerLayout.setDrawerListener(new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close));
 
         replaceFragment(mHomeFragments[0]);
-        mMenu.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
+        mMenu.setNavigationItemSelectedListener(this);
+        mBottomMenu.setNavigationItemSelectedListener(this);
+    }
 
-                switch (menuItem.getItemId()) {
-                    case R.id.menu_home:
-                        mToolbar.setTitle("Meizi");
-                        replaceFragment(mHomeFragments[0]);
-                        break;
-                    case R.id.menu_xinggan:
-                        mToolbar.setTitle("性感妹子");
-                        replaceFragment(mHomeFragments[1]);
-                        break;
-                    case R.id.menu_riben:
-                        mToolbar.setTitle("日本妹子");
-                        replaceFragment(mHomeFragments[2]);
-                        break;
-                    case R.id.menu_qingchun:
-                        mToolbar.setTitle("清纯妹子");
-                        replaceFragment(mHomeFragments[3]);
-                        break;
-
-                }
-                mDrawerLayout.closeDrawers();
-                return true;
-            }
-        });
+    @Override
+    public boolean onNavigationItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.menu_home:
+                mToolbar.setTitle("Meizi");
+                replaceFragment(mHomeFragments[0]);
+                break;
+            case R.id.menu_xinggan:
+                mToolbar.setTitle("性感妹子");
+                replaceFragment(mHomeFragments[1]);
+                break;
+            case R.id.menu_taiwan:
+                mToolbar.setTitle("台湾妹子");
+                replaceFragment(mHomeFragments[2]);
+                break;
+            case R.id.menu_riben:
+                mToolbar.setTitle("日本妹子");
+                replaceFragment(mHomeFragments[3]);
+                break;
+            case R.id.menu_qingchun:
+                mToolbar.setTitle("清纯妹子");
+                replaceFragment(mHomeFragments[4]);
+                break;
+            case R.id.menu_about:
+                startActivity(new Intent(MainActivity.this, AboutActivity.class));
+                break;
+            case R.id.menu_setting:
+                Toast.makeText(this, "这是", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        mDrawerLayout.closeDrawers();
+        return true;
     }
 
     @Override
@@ -102,9 +118,6 @@ public class MainActivity extends BaseActivity {
         switch (id) {
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
-            case R.id.action_settings:
-                Snackbar.make(mDrawerLayout, "敬请期待", Snackbar.LENGTH_SHORT).show();
                 return true;
             case R.id.input_groupid://显示输入框
                 final EditText content = new EditText(this);

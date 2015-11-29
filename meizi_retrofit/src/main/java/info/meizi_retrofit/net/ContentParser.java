@@ -62,7 +62,7 @@ public class ContentParser {
         Document doc = Jsoup.parse(html);
         Elements pages = doc.select("span");
 
-        Element page = pages.get(3);//下标溢出 这个还得重新去匹配
+        Element page = pages.get(3);
 
         Pattern p = Pattern.compile("[\\d*]");
         Matcher m = p.matcher(page.toString());

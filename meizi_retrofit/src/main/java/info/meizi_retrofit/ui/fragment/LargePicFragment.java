@@ -45,16 +45,16 @@ public class LargePicFragment extends Fragment {
         activity.toggleToolbar();
     }
 
-    LargePicFragment(String groupid, int position) {
-        this.groupid = groupid;
-        this.position = position;
+    public LargePicFragment() {
     }
 
     public static Fragment newFragment(String url, boolean initialShown, String groupid, int position) {
         Bundle bundle = new Bundle();
         bundle.putString("url", url);
         bundle.putBoolean("initial_shown", initialShown);
-        LargePicFragment fragment = new LargePicFragment(groupid, position);
+        bundle.putString("groupid", groupid);
+        bundle.putInt("position", position);
+        LargePicFragment fragment = new LargePicFragment();
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -70,6 +70,8 @@ public class LargePicFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         url = getArguments().getString("url");
+        groupid = getArguments().getString("groupid");
+        position = getArguments().getInt("position");
         initialShown = getArguments().getBoolean("initial_shown", false);
     }
 

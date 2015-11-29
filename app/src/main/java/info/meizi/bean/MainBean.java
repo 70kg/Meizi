@@ -20,10 +20,7 @@ public class MainBean extends RealmObject implements Serializable {
     private String url;
     private String title;
     private String type;
-
     private int groupid;
-
-
     private int order;
 
     public int getGroupid() {

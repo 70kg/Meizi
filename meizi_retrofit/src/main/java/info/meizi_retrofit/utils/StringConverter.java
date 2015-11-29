@@ -16,13 +16,6 @@ import retrofit.mime.TypedOutput;
  */
 public class StringConverter implements Converter {
 
-    /*
-     * In default cases Retrofit calls on GSON which expects a JSON which gives
-     * us the following error, com.google.gson.JsonSyntaxException:
-     * java.lang.IllegalStateException: Expected BEGIN_OBJECT but was
-     * BEGIN_ARRAY at line x column x
-     */
-
     @Override
     public Object fromBody(TypedInput typedInput, Type type)
             throws ConversionException {

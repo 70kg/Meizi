@@ -25,7 +25,6 @@ public class ContentParser {
         Document doc = Jsoup.parse(html);
         Elements links = doc.select("img[src~=(?i)\\.(png|jpe?g)]");
         Element element = links.get(0).getElementsByTag("img").first();
-
         content.setUrl(element.attr("src"));
         content.setTitle(element.attr("alt"));
         return content;

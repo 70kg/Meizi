@@ -2,6 +2,8 @@ package info.meizi_retrofit.base;
 
 import android.support.v7.app.AppCompatActivity;
 
+import com.umeng.analytics.MobclickAgent;
+
 import info.meizi_retrofit.utils.RxUtils;
 import rx.subscriptions.CompositeSubscription;
 
@@ -14,12 +16,16 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        MobclickAgent.onResume(this);
+
         mSubscriptions = RxUtils.getNewCompositeSubIfUnsubscribed(mSubscriptions);
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        MobclickAgent.onPause(this);
+
         RxUtils.unsubscribeIfNotNull(mSubscriptions);
     }
 }

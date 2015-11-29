@@ -1,20 +1,43 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        key {
+            keyAlias 'key'
+            keyPassword 'hao1234'
+            storeFile file('/Users/Mr_Wrong/AndroidAppKey.jks')
+            storePassword 'hao123'
+        }
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
-
     defaultConfig {
         applicationId "info.meizi_retrofit"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 4
+        versionName "1.0.3"
+        manifestPlaceholders = [CHANNEL_VALUE: "yanbober"]
+    }
+    productFlavors {
+        yanbober {}
+        wandoujia {}
+        xiaomi {}
+        baidu {}
+    }
+    productFlavors.all { flavor ->
+        flavor.manifestPlaceholders = [CHANNEL_VALUE: name]
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.key
+            zipAlignEnabled true
         }
     }
     packagingOptions {
@@ -32,7 +55,7 @@ dependencies {
     compile 'com.android.support:palette-v7:23.0.+'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'io.realm:realm-android:0.81.1'
-
+    compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'io.reactivex:rxandroid:1.0.1'
     compile 'io.reactivex:rxjava:1.0.14'
     compile 'io.reactivex:rxjava-math:1.0.0'
@@ -43,6 +66,7 @@ dependencies {
     compile 'org.jsoup:jsoup:1.8.2'
     compile 'me.drakeet.materialdialog:library:1.2.2'
     compile files('libs/butterknife-7.0.1.jar')
-//    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3'
-//    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3'
+    //    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3'
+    //    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3'
+    compile files('libs/umeng-update-v2.6.0.1.jar')
 }

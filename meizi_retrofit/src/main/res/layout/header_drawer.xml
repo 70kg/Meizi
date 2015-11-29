@@ -13,21 +13,26 @@
         android:id="@+id/id_link"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/imageView"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="16dp"
-        android:text="http://70kg.info"/>
+        android:layout_alignParentStart="true"
+        android:layout_alignStart="@+id/imageView"
+        android:layout_marginBottom="17dp"
+        android:gravity="center"
+        android:text="看妹子"/>
 
-    <TextView
-        android:id="@+id/id_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/id_link"
-        android:text="70kg"/>
+    <!--<TextView-->
+    <!--android:id="@+id/id_username"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_above="@id/id_link"-->
+    <!--android:text="70kg"/>-->
 
     <ImageView
+        android:id="@+id/imageView"
         android:layout_width="72dp"
         android:layout_height="72dp"
-        android:layout_above="@id/id_username"
+        android:layout_above="@id/id_link"
         android:layout_marginBottom="16dp"
         android:src="@mipmap/ic_launcher"/>
 

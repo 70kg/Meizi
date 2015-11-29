@@ -7,22 +7,33 @@
         <item
             android:id="@+id/menu_home"
             android:checkable="true"
+            android:icon="@drawable/cricle"
             android:title="首页"
             app:itemTextColor="@color/md_grey_900"
             />
         <item
             android:id="@+id/menu_xinggan"
             android:checkable="true"
+            android:icon="@drawable/cricle"
             android:title="性感妹子"/>
+        <item
+            android:id="@+id/menu_taiwan"
+            android:checkable="true"
+            android:icon="@drawable/cricle"
+            android:title="台湾妹子"/>
         <item
             android:id="@+id/menu_riben"
             android:checkable="true"
+            android:icon="@drawable/cricle"
             android:title="日本妹子"/>
         <item
             android:id="@+id/menu_qingchun"
             android:checkable="true"
+            android:icon="@drawable/cricle"
             android:title="清纯妹子"/>
     </group>
-
+    <group android:id="@+id/my_id">
+        <item android:title=""></item>
+    </group>
 
 </menu>

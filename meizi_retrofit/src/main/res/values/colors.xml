@@ -5,4 +5,7 @@
     <color name="app_color_background">#FFF</color>
     <color name="primary_black">#212121</color>
     <color name="md_grey_900">#212121</color>
+    <color name="md_grey_800">#424242</color>
+    <color name="white">#ffffff</color>
+    <color name="md_grey_300">#e0e0e0</color>
 </resources>

@@ -32,6 +32,23 @@
         <activity
             android:name=".ui.LargePicActivity"
             android:theme="@style/LargeImage"></activity>
+        <activity android:name=".ui.AboutActivity"></activity>
+
+        <service
+            android:name="com.umeng.update.net.DownloadingService"
+            android:process=":DownloadingService">
+        </service>
+        <activity
+            android:name="com.umeng.update.UpdateDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+        </activity>
+
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="56584736e0f55aa1b60052ea"></meta-data>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="${CHANNEL_VALUE}"/>
     </application>
 
 </manifest>

@@ -18,7 +18,6 @@ import info.meizi_retrofit.net.ContentParser;
 import info.meizi_retrofit.ui.GroupActivity;
 import info.meizi_retrofit.utils.Utils;
 import info.meizi_retrofit.widget.RadioImageView;
-import io.realm.Realm;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -28,7 +27,6 @@ import rx.schedulers.Schedulers;
  * Created by Mr_Wrong on 15/10/30.
  */
 public class HomeFragment extends BaseFragment {
-    private Realm realm;
     private HomeAdapter mAdapter;
     private String type;
     private int page = 2;
@@ -37,8 +35,18 @@ public class HomeFragment extends BaseFragment {
     public HomeFragment() {
     }
 
-    public HomeFragment(String type) {
-        this.type = type;
+    public static HomeFragment newFragment(String type) {
+        Bundle bundle = new Bundle();
+        bundle.putString("type", type);
+        HomeFragment fragment = new HomeFragment();
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        type = getArguments().getString("type");
     }
 
     private void StartLoad(int page) {
@@ -68,7 +76,6 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        realm = Realm.getInstance(getActivity());
         mAdapter = new HomeAdapter(getContext()) {
             @Override
             protected void onItemClick(View v, int position) {

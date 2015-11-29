@@ -1,6 +1,7 @@
 package info.meizi.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.annotation.LayoutRes;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -18,6 +18,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import info.meizi.R;
 import info.meizi.bean.MainBean;
+import info.meizi.utils.CropSquareTransformation;
 import info.meizi.widget.RadioImageView;
 
 /**
@@ -43,8 +44,8 @@ public abstract  class MainAdapter extends ArrayRecyclerAdapter<MainBean, MainAd
     public void onBindViewHolder(ViewHolder holder, int position) {
         MainBean bean = get(position);
         holder.imageView.setOriginalSize(bean.getWidth(), bean.getHeight());
-        Picasso.with(context).load(bean.getImageurl()).tag("1").//config(Bitmap.Config.RGB_565).
-                transform(new CopyOnWriteArrayList<Transformation>()).
+        Picasso.with(context).load(bean.getImageurl()).tag("1").config(Bitmap.Config.RGB_565).
+                transform(new CopyOnWriteArrayList<CropSquareTransformation>()).
                 into(holder.imageView);
         holder.title.setText(bean.getTitle());
         ViewCompat.setTransitionName(holder.imageView, bean.getUrl());
