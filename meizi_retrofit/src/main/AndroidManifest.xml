@@ -33,6 +33,7 @@
             android:name=".ui.LargePicActivity"
             android:theme="@style/LargeImage"></activity>
         <activity android:name=".ui.AboutActivity"></activity>
+        <activity android:name=".ui.SettingActivity"></activity>
 
         <service
             android:name="com.umeng.update.net.DownloadingService"

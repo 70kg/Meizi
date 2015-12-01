@@ -8,4 +8,7 @@
     <string name="drawer_close">Close navigation drawer</string>
 
     <string name="about">这是个看妹子的应用\n\n数据来源http://www.mzitu.com</string>
+    <string name="notify_priority">notify_priority</string>
+    <string name="toast_close">当前为关闭。\\n开启后会在你使用其他 APP         的时，定时弹出可爱的小『吐司』</string>
+    <string name="toast_open">当前为开启。\\n开启后会在你使用其他 APP</string>
 </resources>

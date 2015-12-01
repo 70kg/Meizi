@@ -16,4 +16,7 @@
 
     <style name="ViewerTheme" parent="AppTheme.Base">
     </style>
+
+    <style name="LargeImage" parent="ViewerTheme">
+    </style>
 </resources>

@@ -8,4 +8,6 @@
     <color name="md_grey_800">#424242</color>
     <color name="white">#ffffff</color>
     <color name="md_grey_300">#e0e0e0</color>
+    <color name="colorAccent">#18b000</color>
+    <color name="list_item_press">#216b74ff</color>
 </resources>
