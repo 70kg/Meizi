@@ -17,3 +17,10 @@
 ---
 ---
 算是重构完了，感觉写的还可以吧，也不是特别满意，重写了界面，使用了RxJava和Retrofit进行请求，具体看meizi_retrofi的tmodel
+
+![](https://github.com/70kg/Meizi/blob/master/screenshots/meizi_21.png)
+![](https://github.com/70kg/Meizi/blob/master/screenshots/meizi_22.png)
+![](https://github.com/70kg/Meizi/blob/master/screenshots/meizi_23.png)
+![](https://github.com/70kg/Meizi/blob/master/screenshots/meizi_24.png)
+
+参考了@XiNGRZ 和@drakeet的项目，感谢
