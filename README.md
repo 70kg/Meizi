@@ -17,3 +17,6 @@
 ---
 ---
 算是重构完了，感觉写的还可以吧，也不是特别满意，重写了界面，使用了RxJava和Retrofit进行请求，具体看meizi_retrofi的tmodel
+
+
+参考了@XiNGRZ 和@drakeet的项目，感谢
