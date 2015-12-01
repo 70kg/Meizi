@@ -21,11 +21,38 @@ public class Group extends RealmObject implements Serializable {
     private String url;
     private String title;
     private String type;
-
+    private int order;
+    private long date;
+    private int color;
+    private boolean iscollected;
     private int groupid;
 
+    public int getColor() {
+        return color;
+    }
 
-    private int order;
+    public void setColor(int color) {
+        this.color = color;
+    }
+
+
+    public long getDate() {
+        return date;
+    }
+
+    public void setDate(long date) {
+        this.date = date;
+    }
+
+
+    public boolean getIscollected() {
+        return iscollected;
+    }
+
+    public void setIscollected(boolean iscollected) {
+        this.iscollected = iscollected;
+    }
+
 
     public int getGroupid() {
         return groupid;
@@ -39,6 +66,12 @@ public class Group extends RealmObject implements Serializable {
         return realm.where(Group.class)
                 .equalTo("type", type)
                 .findAllSorted("groupid", RealmResults.SORT_ORDER_DESCENDING);
+    }
+
+    public static List<Group> allCollected(Realm realm) {
+        return realm.where(Group.class)
+                .equalTo("iscollected", true)
+                .findAllSorted("date", RealmResults.SORT_ORDER_DESCENDING);
     }
 
     public int getOrder() {

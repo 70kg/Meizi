@@ -18,6 +18,7 @@ import info.meizi_retrofit.net.ContentParser;
 import info.meizi_retrofit.ui.GroupActivity;
 import info.meizi_retrofit.utils.Utils;
 import info.meizi_retrofit.widget.RadioImageView;
+import io.realm.Realm;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -51,26 +52,45 @@ public class HomeFragment extends BaseFragment {
 
     private void StartLoad(int page) {
         Utils.statrtRefresh(mRefresher, true);
-        mSubscriptions.add(mGroupApi.getGroup(type, page).map(new Func1<String, List<Group>>() {
-            @Override
-            public List<Group> call(String s) {
-                return ContentParser.ParserGroups(s, type);
-            }
-        })
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<Group>>() {
-                    @Override
-                    public void call(List<Group> groups) {
-                        if (!hasload) {
-                            mAdapter.replaceWith(groups);
-                        } else {
-                            mAdapter.addAll(groups);
+
+        if (Group.all(realm, type) != null) {//这样刷新的时候还是会覆盖
+            mAdapter.replaceWith(Group.all(realm, type));
+        } else {
+            mSubscriptions.add(mGroupApi.getGroup(type, page).map(new Func1<String, List<Group>>() {
+                @Override
+                public List<Group> call(String s) {
+                    return ContentParser.ParserGroups(s, type);
+                }
+            })
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnNext(new Action1<List<Group>>() {
+                        @Override
+                        public void call(List<Group> groups) {
+                            // TODO: 15/12/1 这里会把设置的 收藏 覆盖掉
+                            saveDb(groups, realm);
                         }
-                        hasload = false;
-                        mRefresher.setRefreshing(false);
-                    }
-                }));
+                    })
+                    .subscribe(new Action1<List<Group>>() {
+                        @Override
+                        public void call(List<Group> groups) {
+                            if (!hasload) {
+                                mAdapter.replaceWith(groups);
+                            } else {
+                                mAdapter.addAll(groups);
+                            }
+                            hasload = false;
+                            mRefresher.setRefreshing(false);
+                        }
+                    }));
+        }
+    }
+
+    private void saveDb(List<Group> groups, Realm realm) {
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(groups);
+        realm.commitTransaction();
+
     }
 
     @Override
@@ -96,6 +116,7 @@ public class HomeFragment extends BaseFragment {
             bitmap = bd.getBitmap();
         }
         Intent intent1 = new Intent(getActivity(), GroupActivity.class);
+        intent1.putExtra("group", mAdapter.get(position));
         intent1.putExtra(GroupActivity.COLOR, Utils.getPaletteColor(bitmap));
         intent1.putExtra(GroupActivity.INDEX, position);
         intent1.putExtra(GroupActivity.GROUPID, Utils.url2groupid(mAdapter.get(position).getUrl()));

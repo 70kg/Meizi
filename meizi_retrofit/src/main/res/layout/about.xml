@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:fitsSystemWindows="true"
               android:background="@color/md_grey_300"
+              android:fitsSystemWindows="true"
               android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -18,20 +19,149 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="8dp"
-        android:background="@drawable/bg_card_nopic"
-        android:padding="16dp">
+        android:background="@color/white"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_about_content"
+        <ImageView
+            android:id="@+id/background_img"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:layout_marginTop="-100dp"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop"
+            android:src="@drawable/test"/>
+
+        <info.meizi_retrofit.widget.PullScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:autoLink="web"
-            android:text="@string/about"
-            android:textColor="@color/md_grey_800"
-            android:textIsSelectable="true"
-            android:textSize="14sp"/>
-    </RelativeLayout>
+            android:fillViewport="true"
+            app:headerHeight="300dp"
+            app:headerVisibleHeight="100dp">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/transparent"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/scroll_view_head"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="150dp"
+                    android:background="@color/md_grey_100"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/text_about"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autoLink="web"
+                        android:background="@drawable/bg_card_nopic"
+                        android:clickable="true"
+                        android:padding="8dp"
+                        android:text="@string/about"
+                        android:textColor="@color/md_grey_800"
+                        android:textIsSelectable="true"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:id="@+id/text_tem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/text_about"
+                        android:layout_marginBottom="12dp"
+                        android:layout_marginTop="12dp"
+                        android:text="开发者"
+                        android:textColor="@color/md_grey_600"/>
+
+                    <RelativeLayout
+                        android:id="@+id/layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/text_tem"
+                        android:background="@drawable/bg_card_nopic">
+
+                        <ImageView
+                            android:id="@+id/ig_avatar"
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:layout_centerVertical="true"
+                            android:layout_margin="16dp"
+                            android:src="@drawable/avatar1"/>
+
+                        <TextView
+                            android:id="@+id/tv_70kg"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignTop="@id/ig_avatar"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@id/ig_avatar"
+                            android:layout_toRightOf="@id/ig_avatar"
+                            android:text="70kg"
+                            android:textColor="@color/md_grey_800"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/layout_weibo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/layout"
+                        android:background="@drawable/bg_card_nopic">
+
+                        <ImageView
+                            android:id="@+id/weibo"
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:layout_centerVertical="true"
+                            android:layout_margin="16dp"
+                            android:gravity="center"
+                            android:src="@drawable/weibo"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignTop="@id/weibo"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@id/weibo"
+                            android:layout_toRightOf="@id/weibo"
+                            android:text="Mr_Wrong丶"
+                            android:textColor="@color/md_grey_800"/>
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/text_lib"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/layout_weibo"
+                        android:layout_marginBottom="12dp"
+                        android:layout_marginTop="12dp"
+                        android:text="使用的开源库"
+                        android:textColor="@color/md_grey_600"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/text_lib"
+                        android:layout_marginBottom="16dp"
+                        android:background="@drawable/bg_card_nopic"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/libs_list"
+                            android:textColor="@color/md_grey_600"
+                            android:textSize="13sp"/>
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+        </info.meizi_retrofit.widget.PullScrollView>
+
+    </RelativeLayout>
 
 </LinearLayout>

@@ -82,4 +82,5 @@ public class Utils {
             tintManager.setStatusBarTintColor(color);
         }
     }
+
 }

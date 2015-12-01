@@ -9,14 +9,18 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.Toast;
 
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -27,6 +31,7 @@ import info.meizi_retrofit.R;
 import info.meizi_retrofit.adapter.GroupAdapter;
 import info.meizi_retrofit.base.BaseActivity;
 import info.meizi_retrofit.model.Content;
+import info.meizi_retrofit.model.Group;
 import info.meizi_retrofit.net.ContentApi;
 import info.meizi_retrofit.net.ContentParser;
 import info.meizi_retrofit.utils.LogUtils;
@@ -49,6 +54,7 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
     public static final String INDEX = "index";
     public static final String GROUPID = "groupid";
     public static final String COLOR = "color";
+    public static final String COLLECTED = "iscollected";
     @Bind(R.id.group_recyclerview)
     RecyclerView mRecyclerview;
     @Bind(R.id.group_refresher)
@@ -64,6 +70,8 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
     private final OkHttpClient client = new OkHttpClient();
     private Realm realm;
     private Bundle reenterState;
+    private boolean iscollected;
+    private Group mGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +80,7 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
         ButterKnife.bind(this);
 
         mRefresher.setOnRefreshListener(this);
-        realm = Realm.getInstance(this);
+        realm = Realm.getDefaultInstance();
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -85,8 +93,11 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
         mApi = createApi();
         groupid = getIntent().getStringExtra(GROUPID);
         color = getIntent().getIntExtra(COLOR, getResources().getColor(R.color.app_primary_color));
+        mGroup = realm.where(Group.class).equalTo("groupid", Integer.parseInt(groupid)).findFirst();
+        iscollected = mGroup.getIscollected();
 
-        Utils.setSystemBar(this,mToolbar,color);
+
+        Utils.setSystemBar(this, mToolbar, color);
 
         mRefresher.setColorSchemeColors(color);
 
@@ -259,4 +270,44 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
         sendToLoad();
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.group_menu, menu);
+        if (iscollected) {
+            menu.findItem(R.id.menu_collect).setIcon(R.drawable.collected);
+        } else {
+            menu.findItem(R.id.menu_collect).setIcon(R.drawable.collect);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_collect:
+                realm.beginTransaction();
+                mGroup.setIscollected(!iscollected);
+                mGroup.setDate(new Date().getTime());
+                mGroup.setColor(color);
+                realm.copyToRealmOrUpdate(mGroup);
+                realm.commitTransaction();
+
+
+                LogUtils.e("点击收藏后的个数:" + Group.allCollected(realm).size());
+
+                if (!iscollected) {
+                    item.setIcon(R.drawable.collected);
+                    Toast.makeText(GroupActivity.this, "收藏成功", Toast.LENGTH_SHORT).show();
+                } else {
+                    item.setIcon(R.drawable.collect);
+                    Toast.makeText(GroupActivity.this, "取消收藏成功", Toast.LENGTH_SHORT).show();
+                }
+                iscollected = mGroup.getIscollected();
+
+                break;
+        }
+        return true;
+    }
 }

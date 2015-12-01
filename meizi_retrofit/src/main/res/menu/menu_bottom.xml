@@ -4,11 +4,15 @@
         <item android:title=""></item>
     </group>
     <item
+        android:id="@+id/menu_collect1"
+        android:icon="@drawable/about"
+        android:title="收藏"></item>
+    <item
         android:id="@+id/menu_about"
         android:icon="@drawable/about"
         android:title="关于"></item>
-    <item
-        android:id="@+id/menu_setting"
-        android:icon="@drawable/setting"
-        android:title="设置"></item>
+    <!--<item-->
+    <!--android:id="@+id/menu_setting"-->
+    <!--android:icon="@drawable/setting"-->
+    <!--android:title="设置"></item>-->
 </menu>

@@ -24,6 +24,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import info.meizi_retrofit.R;
 import info.meizi_retrofit.base.BaseActivity;
+import info.meizi_retrofit.ui.fragment.CollectedFragment;
 import info.meizi_retrofit.ui.fragment.HomeFragment;
 import info.meizi_retrofit.utils.Utils;
 import me.drakeet.materialdialog.MaterialDialog;
@@ -38,13 +39,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     NavigationView mBottomMenu;
     @Bind(R.id.layout_drawerlayouy)
     DrawerLayout mDrawerLayout;
-
-    private HomeFragment[] mHomeFragments = new HomeFragment[]{
-            HomeFragment.newFragment(""),
-            HomeFragment.newFragment("xinggan"),
-            HomeFragment.newFragment("taiwan"),
-            HomeFragment.newFragment("japan"),
-            HomeFragment.newFragment("mm")};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +61,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         mDrawerLayout.setDrawerListener(new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close));
 
-        replaceFragment(mHomeFragments[0]);
+        replaceFragment(HomeFragment.newFragment(""));
         mMenu.setNavigationItemSelectedListener(this);
         mBottomMenu.setNavigationItemSelectedListener(this);
     }
@@ -77,29 +71,30 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         switch (menuItem.getItemId()) {
             case R.id.menu_home:
                 mToolbar.setTitle("Meizi");
-                replaceFragment(mHomeFragments[0]);
+                replaceFragment(HomeFragment.newFragment(""));
                 break;
             case R.id.menu_xinggan:
                 mToolbar.setTitle("性感妹子");
-                replaceFragment(mHomeFragments[1]);
+                replaceFragment(HomeFragment.newFragment("xinggan"));
                 break;
             case R.id.menu_taiwan:
                 mToolbar.setTitle("台湾妹子");
-                replaceFragment(mHomeFragments[2]);
+                replaceFragment(HomeFragment.newFragment("taiwan"));
                 break;
             case R.id.menu_riben:
                 mToolbar.setTitle("日本妹子");
-                replaceFragment(mHomeFragments[3]);
+                replaceFragment(HomeFragment.newFragment("japan"));
                 break;
             case R.id.menu_qingchun:
                 mToolbar.setTitle("清纯妹子");
-                replaceFragment(mHomeFragments[4]);
+                replaceFragment(HomeFragment.newFragment("mm"));
                 break;
             case R.id.menu_about:
                 startActivity(new Intent(MainActivity.this, AboutActivity.class));
                 break;
-            case R.id.menu_setting:
-                Toast.makeText(this, "这是", Toast.LENGTH_SHORT).show();
+            case R.id.menu_collect1:
+                mToolbar.setTitle("收藏");
+                replaceFragment(CollectedFragment.newFragment());
                 break;
         }
         mDrawerLayout.closeDrawers();
