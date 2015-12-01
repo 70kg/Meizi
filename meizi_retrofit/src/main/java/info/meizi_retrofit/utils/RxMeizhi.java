@@ -21,7 +21,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by Mr_Wrong on 15/11/6.
  */
-public class RxMeizi {
+public class RxMeizhi {
     public static Observable<Uri> saveImageAndGetPathObservable(final Context context, final String url, final String name) {
         return Observable.create(new Observable.OnSubscribe<Bitmap>() {
             @Override

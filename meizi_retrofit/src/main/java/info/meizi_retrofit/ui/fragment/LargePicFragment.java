@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import info.meizi_retrofit.R;
 import info.meizi_retrofit.ui.LargePicActivity;
-import info.meizi_retrofit.utils.RxMeizi;
+import info.meizi_retrofit.utils.RxMeizhi;
 import info.meizi_retrofit.widget.TouchImageView;
 import me.drakeet.materialdialog.MaterialDialog;
 import rx.android.schedulers.AndroidSchedulers;
@@ -92,7 +92,7 @@ public class LargePicFragment extends Fragment {
                     public void onClick(View v) {
                         dialog.dismiss();
                         mSubscriptions.add(
-                                RxMeizi.saveImageAndGetPathObservable(getContext(), url, groupid + "_" + position)
+                                RxMeizhi.saveImageAndGetPathObservable(getContext(), url, groupid + "_" + position)
                                         .observeOn(AndroidSchedulers.mainThread())
                                         .subscribe(new Action1<Uri>() {
                                             @Override

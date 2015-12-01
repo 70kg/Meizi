@@ -1,11 +1,6 @@
 apply plugin: 'com.android.application'
 
-def releaseTime() {
-    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
-}
-
 android {
-    //签名配置
     signingConfigs {
         key {
             keyAlias 'key'
@@ -24,50 +19,29 @@ android {
         applicationId "info.meizi_retrofit"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 5
-        versionName "1.0.4"
+        versionCode 4
+        versionName "1.0.3"
         manifestPlaceholders = [CHANNEL_VALUE: "yanbober"]
     }
-    //渠道
     productFlavors {
         yanbober {}
         wandoujia {}
         xiaomi {}
         baidu {}
     }
-    //批量替换渠道名
     productFlavors.all { flavor ->
         flavor.manifestPlaceholders = [CHANNEL_VALUE: name]
     }
-
-    applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            def outputFile = output.outputFile
-            if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                // 输出apk名称为Meizi_v1.0_2015-11-30_wandoujia.apk
-                def fileName = "Meizi_v${defaultConfig.versionName}_${releaseTime()}_${variant.productFlavors[0].name}.apk"
-                output.outputFile = new File(outputFile.parent, fileName)
-            }
-        }
-    }
-
-
-
-
     buildTypes {
         release {
-            // 不显示Log
-            buildConfigField "boolean", "LOG_DEBUG", "false"
-
-            debuggable false
-            minifyEnabled false//混淆
-            zipAlignEnabled true//优化
-            shrinkResources true//去除无用资源
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'//混淆文件
-            signingConfig signingConfigs.key//签名
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.key
+            zipAlignEnabled true
         }
     }
     packagingOptions {
+
         exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
 }
