@@ -53,38 +53,39 @@ public class HomeFragment extends BaseFragment {
     private void StartLoad(int page) {
         Utils.statrtRefresh(mRefresher, true);
 
-        if (Group.all(realm, type) != null) {//这样刷新的时候还是会覆盖
-            mAdapter.replaceWith(Group.all(realm, type));
-        } else {
-            mSubscriptions.add(mGroupApi.getGroup(type, page).map(new Func1<String, List<Group>>() {
-                @Override
-                public List<Group> call(String s) {
-                    return ContentParser.ParserGroups(s, type);
-                }
-            })
-                    .subscribeOn(Schedulers.newThread())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .doOnNext(new Action1<List<Group>>() {
-                        @Override
-                        public void call(List<Group> groups) {
-                            // TODO: 15/12/1 这里会把设置的 收藏 覆盖掉
-                            saveDb(groups, realm);
+//        if (Group.all(realm, type) != null) {//这样刷新的时候还是会覆盖
+//            mAdapter.replaceWith(Group.all(realm, type));
+//            mRefresher.setRefreshing(false);
+//        } else {
+        mSubscriptions.add(mGroupApi.getGroup(type, page).map(new Func1<String, List<Group>>() {
+            @Override
+            public List<Group> call(String s) {
+                return ContentParser.ParserGroups(s, type);
+            }
+        })
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(new Action1<List<Group>>() {
+                    @Override
+                    public void call(List<Group> groups) {
+                        //这里会去覆盖收藏的标志
+                        saveDb(groups, realm);
+                    }
+                })
+                .subscribe(new Action1<List<Group>>() {
+                    @Override
+                    public void call(List<Group> groups) {
+                        if (!hasload) {
+                            mAdapter.replaceWith(groups);
+                        } else {
+                            mAdapter.addAll(groups);
                         }
-                    })
-                    .subscribe(new Action1<List<Group>>() {
-                        @Override
-                        public void call(List<Group> groups) {
-                            if (!hasload) {
-                                mAdapter.replaceWith(groups);
-                            } else {
-                                mAdapter.addAll(groups);
-                            }
-                            hasload = false;
-                            mRefresher.setRefreshing(false);
-                        }
-                    }));
-        }
+                        hasload = false;
+                        mRefresher.setRefreshing(false);
+                    }
+                }));
     }
+//    }
 
     private void saveDb(List<Group> groups, Realm realm) {
         realm.beginTransaction();

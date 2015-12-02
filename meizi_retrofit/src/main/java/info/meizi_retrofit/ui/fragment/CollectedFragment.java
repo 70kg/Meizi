@@ -12,17 +12,16 @@ import java.util.List;
 import info.meizi_retrofit.R;
 import info.meizi_retrofit.adapter.CollectedAdapter;
 import info.meizi_retrofit.base.BaseFragment;
-import info.meizi_retrofit.model.Group;
+import info.meizi_retrofit.model.WrapGroup;
 import info.meizi_retrofit.ui.GroupActivity;
 import info.meizi_retrofit.utils.LogUtils;
 import info.meizi_retrofit.utils.Utils;
 import info.meizi_retrofit.widget.RadioImageView;
-import io.realm.RealmChangeListener;
 
 /**
  * Created by Mr_Wrong on 15/12/1.
  */
-public class CollectedFragment extends BaseFragment implements RealmChangeListener {
+public class CollectedFragment extends BaseFragment {
     private CollectedAdapter mAdapter;
 
     CollectedFragment() {
@@ -48,7 +47,7 @@ public class CollectedFragment extends BaseFragment implements RealmChangeListen
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        List<Group> groups = Group.allCollected(realm);
+        List<WrapGroup> groups = WrapGroup.all(realm);
         LogUtils.e("收藏的个数：" + groups.size());
         mAdapter = new CollectedAdapter(getContext()) {
             @Override
@@ -73,26 +72,22 @@ public class CollectedFragment extends BaseFragment implements RealmChangeListen
         intent1.putExtra("group", mAdapter.get(position));
         intent1.putExtra(GroupActivity.COLOR, Utils.getPaletteColor(bitmap));
         intent1.putExtra(GroupActivity.INDEX, position);
-        intent1.putExtra(GroupActivity.GROUPID, Utils.url2groupid(mAdapter.get(position).getUrl()));
+        intent1.putExtra(GroupActivity.GROUPID, Utils.url2groupid(mAdapter.get(position).getGroup().getUrl()));
         getActivity().startActivity(intent1);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        List<Group> groups = Group.allCollected(realm);
+        List<WrapGroup> groups = WrapGroup.all(realm);
         mAdapter.replaceWith(groups);
     }
 
     @Override
     public void onRefresh() {
-        List<Group> groups = Group.allCollected(realm);
+        List<WrapGroup> groups = WrapGroup.all(realm);
         mAdapter.replaceWith(groups);
         mRefresher.setRefreshing(false);
     }
 
-    @Override
-    public void onChange() {
-        LogUtils.e("数据库改变");
-    }
 }

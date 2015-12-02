@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
     <group android:id="@+id/my_id">
-        <item android:title=""></item>
+        <item
+            android:id="@+id/menu_about"
+            android:icon="@drawable/about"
+            android:title="关于"></item>
     </group>
-    <item
-        android:id="@+id/menu_collect1"
-        android:icon="@drawable/about"
-        android:title="收藏"></item>
-    <item
-        android:id="@+id/menu_about"
-        android:icon="@drawable/about"
-        android:title="关于"></item>
+
+
     <!--<item-->
     <!--android:id="@+id/menu_setting"-->
     <!--android:icon="@drawable/setting"-->

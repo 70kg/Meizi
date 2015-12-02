@@ -32,6 +32,7 @@ import info.meizi_retrofit.adapter.GroupAdapter;
 import info.meizi_retrofit.base.BaseActivity;
 import info.meizi_retrofit.model.Content;
 import info.meizi_retrofit.model.Group;
+import info.meizi_retrofit.model.WrapGroup;
 import info.meizi_retrofit.net.ContentApi;
 import info.meizi_retrofit.net.ContentParser;
 import info.meizi_retrofit.utils.LogUtils;
@@ -71,6 +72,7 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
     private Realm realm;
     private Bundle reenterState;
     private boolean iscollected;
+
     private Group mGroup;
 
     @Override
@@ -93,8 +95,16 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
         mApi = createApi();
         groupid = getIntent().getStringExtra(GROUPID);
         color = getIntent().getIntExtra(COLOR, getResources().getColor(R.color.app_primary_color));
+
+        List<WrapGroup> list = WrapGroup.all(realm);
+        LogUtils.e("进入时的收藏个数" + list.size() + "_" + isContain(groupid, list));
+        if (isContain(groupid, list)) {
+            iscollected = true;
+        } else {
+            iscollected = false;
+        }
         mGroup = realm.where(Group.class).equalTo("groupid", Integer.parseInt(groupid)).findFirst();
-        iscollected = mGroup.getIscollected();
+//        iscollected = mGroup.getIscollected();
 
 
         Utils.setSystemBar(this, mToolbar, color);
@@ -110,7 +120,7 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
         layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerview.setLayoutManager(layoutManager);
         mRecyclerview.setAdapter(mAdapter);
-        sendToLoad();
+        sendToLoad(false);
 
 
         setExitSharedElementCallback(new SharedElementCallback() {
@@ -127,15 +137,29 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
 
     }
 
+
+    private boolean isContain(String id, List<WrapGroup> list) {
+        boolean b = false;
+        for (WrapGroup test : list) {
+            if (test.getGroupid().endsWith(id)) {
+                b = true;
+                break;
+            }
+        }
+        return b;
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         realm.close();
     }
 
-    private void sendToLoad() {
+    private void sendToLoad(boolean isrefresh) {
         Utils.statrtRefresh(mRefresher, true);
-        if (!Content.all(realm, groupid).isEmpty()) {//数据库有 直接加载
+        if (isrefresh) {
+            loadData();
+        } else if (!Content.all(realm, groupid).isEmpty()) {//数据库有 直接加载
             List<Content> list = Content.all(realm, groupid);
             mAdapter.replaceWith(list);
             Utils.statrtRefresh(mRefresher, false);
@@ -267,13 +291,14 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
 
     @Override
     public void onRefresh() {
-        sendToLoad();
+        sendToLoad(true);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
+        mTest = new WrapGroup();
+        mTest.setGroup(mGroup);
         getMenuInflater().inflate(R.menu.group_menu, menu);
         if (iscollected) {
             menu.findItem(R.id.menu_collect).setIcon(R.drawable.collected);
@@ -283,19 +308,21 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
         return true;
     }
 
+    WrapGroup mTest;
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_collect:
                 realm.beginTransaction();
-                mGroup.setIscollected(!iscollected);
-                mGroup.setDate(new Date().getTime());
-                mGroup.setColor(color);
-                realm.copyToRealmOrUpdate(mGroup);
+                mTest.setGroupid(groupid);
+                mTest.setDate(new Date().getTime());
+                mTest.setIscollected(!iscollected);
+                realm.copyToRealmOrUpdate(mTest);
                 realm.commitTransaction();
 
 
-                LogUtils.e("点击收藏后的个数:" + Group.allCollected(realm).size());
+                LogUtils.e("点击收藏后的个数:" + WrapGroup.all(realm).size());
 
                 if (!iscollected) {
                     item.setIcon(R.drawable.collected);
@@ -304,7 +331,7 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
                     item.setIcon(R.drawable.collect);
                     Toast.makeText(GroupActivity.this, "取消收藏成功", Toast.LENGTH_SHORT).show();
                 }
-                iscollected = mGroup.getIscollected();
+                iscollected = mTest.iscollected();
 
                 break;
         }

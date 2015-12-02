@@ -33,7 +33,11 @@
             android:title="清纯妹子"/>
     </group>
     <group android:id="@+id/my_id">
-        <item android:title=""></item>
+        <item
+            android:id="@+id/menu_collect1"
+            android:checkable="true"
+            android:icon="@drawable/menu_collect"
+            android:title="我的收藏"/>
     </group>
 
 </menu>

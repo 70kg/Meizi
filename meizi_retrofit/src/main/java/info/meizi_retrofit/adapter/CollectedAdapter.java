@@ -17,13 +17,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import info.meizi_retrofit.R;
-import info.meizi_retrofit.model.Group;
+import info.meizi_retrofit.model.WrapGroup;
 import info.meizi_retrofit.widget.RadioImageView;
 
 /**
  * Created by Mr_Wrong on 15/12/1.
  */
-public abstract class CollectedAdapter extends ArrayRecyclerAdapter<Group, CollectedAdapter.ViewHolder> {
+public abstract class CollectedAdapter extends ArrayRecyclerAdapter<WrapGroup, CollectedAdapter.ViewHolder> {
 
     private final Context context;
     private final LayoutInflater inflater;
@@ -41,18 +41,18 @@ public abstract class CollectedAdapter extends ArrayRecyclerAdapter<Group, Colle
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Group bean = get(position);
-        holder.imageView.setOriginalSize(bean.getWidth(), bean.getHeight());
-        Picasso.with(context).load(bean.getImageurl()).tag("1").//config(Bitmap.Config.RGB_565).
+        WrapGroup bean = get(position);
+        holder.imageView.setOriginalSize(bean.getGroup().getWidth(), bean.getGroup().getHeight());
+        Picasso.with(context).load(bean.getGroup().getImageurl()).tag("1").//config(Bitmap.Config.RGB_565).
                 transform(new CopyOnWriteArrayList<Transformation>()).
                 into(holder.imageView);
-        holder.title.setText(bean.getTitle());
-        ViewCompat.setTransitionName(holder.imageView, bean.getUrl());
+        holder.title.setText(bean.getGroup().getTitle());
+        ViewCompat.setTransitionName(holder.imageView, bean.getGroup().getUrl());
     }
 
     @Override
     public long getItemId(int position) {
-        return get(position).getUrl().hashCode();
+        return get(position).getGroup().getUrl().hashCode();
     }
 
     protected abstract void onItemClick(View v, int position);

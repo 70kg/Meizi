@@ -19,8 +19,8 @@ android {
         applicationId "info.meizi_retrofit"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 4
-        versionName "1.0.3"
+        versionCode 6
+        versionName "1.0.6"
         manifestPlaceholders = [CHANNEL_VALUE: "yanbober"]
     }
     productFlavors {
@@ -32,12 +32,29 @@ android {
     productFlavors.all { flavor ->
         flavor.manifestPlaceholders = [CHANNEL_VALUE: name]
     }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                // 输出apk名称为Meizi_v1.0_wandoujia.apk
+                def fileName = "Meizi_v${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
+                output.outputFile = new File(outputFile.parent, fileName)
+            }
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.key
-            zipAlignEnabled true
+            // 不显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+
+            debuggable false
+            minifyEnabled false//混淆 还有点问题
+            zipAlignEnabled true//优化
+            shrinkResources true//去除无用资源
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'//混淆文件
+            signingConfig signingConfigs.key//签名
         }
     }
     packagingOptions {

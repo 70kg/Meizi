@@ -18,8 +18,16 @@ public class App extends Application {
         super.onCreate();
         //mRefWatcher = LeakCanary.install(this);
         mContext = getApplicationContext();
-        RealmConfiguration config = new RealmConfiguration.Builder(getContext()).build();
-        Realm.setDefaultConfiguration(config);
+
+        RealmConfiguration myConfig = new RealmConfiguration.Builder(getContext())
+                .name("myrealm.realm")
+                .schemaVersion(2)
+//                .setModules(new MyCustomSchema())
+                .build();
+
+
+//        RealmConfiguration config = new RealmConfiguration.Builder(getContext()).build();
+        Realm.setDefaultConfiguration(myConfig);
     }
 
     public static Context getContext() {

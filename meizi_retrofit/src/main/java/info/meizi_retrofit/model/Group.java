@@ -12,7 +12,6 @@ import io.realm.annotations.PrimaryKey;
  * Created by Mr_Wrong on 15/10/30.
  */
 public class Group extends RealmObject implements Serializable {
-
     private int count;
     private int width;
     private int height;
@@ -26,6 +25,21 @@ public class Group extends RealmObject implements Serializable {
     private int color;
     private boolean iscollected;
     private int groupid;
+
+
+    private static volatile Group instance = null;
+
+    public static Group getInstance() {
+        if (instance == null) {
+            synchronized (Group.class) {
+                if (instance == null) {
+                    instance = new Group();
+                }
+            }
+        }
+        return instance;
+    }
+
 
     public int getColor() {
         return color;

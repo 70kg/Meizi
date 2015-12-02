@@ -4,7 +4,6 @@
     <style name="ViewerTheme" parent="AppTheme.Base">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
-        <item name="android:windowContentTransitions">true</item>
     </style>
 
 </resources>
