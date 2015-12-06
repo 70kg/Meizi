@@ -1,14 +1,38 @@
 apply plugin: 'com.android.application'
 
+
+
 android {
+
     signingConfigs {
+        debug {
+
+        }
         key {
             keyAlias 'key'
             keyPassword 'hao1234'
             storeFile file('/Users/Mr_Wrong/AndroidAppKey.jks')
-            storePassword 'hao123'
+            storePassword project.getProperties().get('storePassword')
+        }
+        key1 {
+            File propFile = file('sign.properties');
+            if (propFile.exists()) {
+                println("文件存在")
+                def Properties props = new Properties()
+                props.load(new FileInputStream(propFile))
+                if (props.containsKey('STORE_FILE') && props.containsKey('STORE_PASSWORD') &&
+                        props.containsKey('KEY_ALIAS') && props.containsKey('KEY_PASSWORD')) {
+                    storeFile file(props['STORE_FILE'])
+                    storePassword props['STORE_PASSWORD']
+                    keyAlias props['KEY_ALIAS']
+                    keyPassword props['KEY_PASSWORD']
+                }
+            } else {
+                println("文件不存在")
+            }
         }
     }
+
     lintOptions {
         checkReleaseBuilds false
         abortOnError false
@@ -21,10 +45,10 @@ android {
         targetSdkVersion 23
         versionCode 6
         versionName "1.0.6"
-        manifestPlaceholders = [CHANNEL_VALUE: "yanbober"]
+        manifestPlaceholders = [CHANNEL_VALUE: "xiaomi"]
     }
     productFlavors {
-        yanbober {}
+        meizu {}
         wandoujia {}
         xiaomi {}
         baidu {}
@@ -45,16 +69,23 @@ android {
     }
 
     buildTypes {
+        debug {
+            minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.debug
+        }
         release {
             // 不显示Log
             buildConfigField "boolean", "LOG_DEBUG", "false"
 
             debuggable false
-            minifyEnabled false//混淆 还有点问题
+            minifyEnabled true//混淆 还有点问题
             zipAlignEnabled true//优化
             shrinkResources true//去除无用资源
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'//混淆文件
-            signingConfig signingConfigs.key//签名
+            signingConfig signingConfigs.key1//使用key这个闭包进行签名
+
         }
     }
     packagingOptions {
@@ -71,7 +102,7 @@ dependencies {
     compile 'com.android.support:design:23.0.+'
     compile 'com.android.support:palette-v7:23.0.+'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'io.realm:realm-android:0.81.1'
+    compile 'io.realm:realm-android:0.86.0'
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'io.reactivex:rxandroid:1.0.1'
     compile 'io.reactivex:rxjava:1.0.14'

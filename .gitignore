@@ -5,3 +5,5 @@
 .DS_Store
 /build
 /captures
+
+meizi_retrofit/sign.properties
