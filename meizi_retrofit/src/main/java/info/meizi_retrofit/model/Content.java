@@ -5,7 +5,7 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmObject;
-import io.realm.RealmResults;
+import io.realm.Sort;
 import io.realm.annotations.PrimaryKey;
 
 /**
@@ -23,7 +23,7 @@ public class Content extends RealmObject implements Serializable {
     public static List<Content> all(Realm realm, String groupid) {
         return realm.where(Content.class)
                 .equalTo("groupid", groupid)
-                .findAllSorted("order", RealmResults.SORT_ORDER_DESCENDING);
+                .findAllSorted("order", Sort.DESCENDING);
     }
 
     public String getGroupid() {

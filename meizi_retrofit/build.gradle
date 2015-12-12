@@ -1,44 +1,13 @@
 apply plugin: 'com.android.application'
-
-
-
 android {
-
-    signingConfigs {
-        debug {
-
-        }
-        key {
-            keyAlias 'key'
-            keyPassword 'hao1234'
-            storeFile file('/Users/Mr_Wrong/AndroidAppKey.jks')
-            storePassword project.getProperties().get('storePassword')
-        }
-        key1 {
-            File propFile = file('sign.properties');
-            if (propFile.exists()) {
-                println("文件存在")
-                def Properties props = new Properties()
-                props.load(new FileInputStream(propFile))
-                if (props.containsKey('STORE_FILE') && props.containsKey('STORE_PASSWORD') &&
-                        props.containsKey('KEY_ALIAS') && props.containsKey('KEY_PASSWORD')) {
-                    storeFile file(props['STORE_FILE'])
-                    storePassword props['STORE_PASSWORD']
-                    keyAlias props['KEY_ALIAS']
-                    keyPassword props['KEY_PASSWORD']
-                }
-            } else {
-                println("文件不存在")
-            }
-        }
-    }
-
     lintOptions {
         checkReleaseBuilds false
         abortOnError false
     }
+
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
+
     defaultConfig {
         applicationId "info.meizi_retrofit"
         minSdkVersion 19
@@ -67,6 +36,34 @@ android {
             }
         }
     }
+    signingConfigs {
+        debug {
+
+        }
+        release {
+            keyAlias 'key'
+            keyPassword 'keyPassword'
+            storeFile file('storeFile')
+            storePassword 'storePassword'
+        }
+        release1 {
+            File propFile = file('sign.properties');
+            if (propFile.exists()) {
+                println("文件存在")
+                def Properties props = new Properties()
+                props.load(new FileInputStream(propFile))
+                if (props.containsKey('STORE_FILE') && props.containsKey('STORE_PASSWORD') &&
+                        props.containsKey('KEY_ALIAS') && props.containsKey('KEY_PASSWORD')) {
+                    storeFile file(props['STORE_FILE'])
+                    storePassword props['STORE_PASSWORD']
+                    keyAlias props['KEY_ALIAS']
+                    keyPassword props['KEY_PASSWORD']
+                }
+            } else {
+                println("文件不存在")
+            }
+        }
+    }
 
     buildTypes {
         debug {
@@ -78,13 +75,14 @@ android {
         release {
             // 不显示Log
             buildConfigField "boolean", "LOG_DEBUG", "false"
+            buildConfigField "boolean", "TEST_CONFIG", "false"
 
             debuggable false
             minifyEnabled true//混淆 还有点问题
             zipAlignEnabled true//优化
             shrinkResources true//去除无用资源
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'//混淆文件
-            signingConfig signingConfigs.key1//使用key这个闭包进行签名
+            signingConfig signingConfigs.release1//使用key这个闭包进行签名
 
         }
     }

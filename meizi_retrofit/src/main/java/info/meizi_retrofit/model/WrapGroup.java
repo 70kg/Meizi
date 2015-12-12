@@ -5,7 +5,7 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmObject;
-import io.realm.RealmResults;
+import io.realm.Sort;
 import io.realm.annotations.PrimaryKey;
 
 /**
@@ -59,6 +59,6 @@ public class WrapGroup extends RealmObject implements Serializable {
     public static List<WrapGroup> all(Realm realm) {
         return realm.where(WrapGroup.class)
                 .equalTo("iscollected", true)
-                .findAllSorted("date", RealmResults.SORT_ORDER_DESCENDING);
+                .findAllSorted("date", Sort.DESCENDING);
     }
 }

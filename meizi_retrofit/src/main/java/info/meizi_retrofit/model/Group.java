@@ -5,7 +5,7 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmObject;
-import io.realm.RealmResults;
+import io.realm.Sort;
 import io.realm.annotations.PrimaryKey;
 
 /**
@@ -79,13 +79,13 @@ public class Group extends RealmObject implements Serializable {
     public static List<Group> all(Realm realm, String type) {
         return realm.where(Group.class)
                 .equalTo("type", type)
-                .findAllSorted("groupid", RealmResults.SORT_ORDER_DESCENDING);
+                .findAllSorted("groupid", Sort.DESCENDING);
     }
 
     public static List<Group> allCollected(Realm realm) {
         return realm.where(Group.class)
                 .equalTo("iscollected", true)
-                .findAllSorted("date", RealmResults.SORT_ORDER_DESCENDING);
+                .findAllSorted("date", Sort.DESCENDING);
     }
 
     public int getOrder() {
