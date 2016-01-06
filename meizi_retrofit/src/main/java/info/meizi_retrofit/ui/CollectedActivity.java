@@ -1,4 +1,4 @@
-package info.meizi_retrofit.ui.fragment;
+package info.meizi_retrofit.ui;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,45 +11,25 @@ import java.util.List;
 
 import info.meizi_retrofit.R;
 import info.meizi_retrofit.adapter.CollectedAdapter;
-import info.meizi_retrofit.base.BaseFragment;
 import info.meizi_retrofit.model.WrapGroup;
-import info.meizi_retrofit.ui.GroupActivity;
+import info.meizi_retrofit.ui.base.ListActivity;
 import info.meizi_retrofit.utils.LogUtils;
 import info.meizi_retrofit.utils.Utils;
 import info.meizi_retrofit.widget.RadioImageView;
 
 /**
- * Created by Mr_Wrong on 15/12/1.
+ * Created by Mr_Wrong on 16/1/6.
  */
-public class CollectedFragment extends BaseFragment {
+public class CollectedActivity extends ListActivity {
     private CollectedAdapter mAdapter;
 
-    CollectedFragment() {
-    }
-
-    public static CollectedFragment newFragment() {
-        Bundle bundle = new Bundle();
-        CollectedFragment fragment = new CollectedFragment();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
     @Override
-    protected void lazyLoad() {
-
-    }
-
-    @Override
-    protected void loadMore() {
-
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Utils.setSystemBar(this, mToolbar, getResources().getColor(R.color.app_primary_color));
         List<WrapGroup> groups = WrapGroup.all(realm);
         LogUtils.e("收藏的个数：" + groups.size());
-        mAdapter = new CollectedAdapter(getContext()) {
+        mAdapter = new CollectedAdapter(this) {
             @Override
             protected void onItemClick(View v, int position) {
                 startGroupActivity(v, position);
@@ -68,19 +48,13 @@ public class CollectedFragment extends BaseFragment {
             bitmap = bd.getBitmap();
         }
 
-        Intent intent1 = new Intent(getActivity(), GroupActivity.class);
-        intent1.putExtra("group", mAdapter.get(position));
-        intent1.putExtra(GroupActivity.COLOR, Utils.getPaletteColor(bitmap));
+        Intent intent1 = new Intent(this, GroupActivity.class);
+        if (bitmap != null && !bitmap.isRecycled()) {
+            intent1.putExtra(GroupActivity.COLOR, Utils.getPaletteColor(bitmap));
+        }
         intent1.putExtra(GroupActivity.INDEX, position);
         intent1.putExtra(GroupActivity.GROUPID, Utils.url2groupid(mAdapter.get(position).getGroup().getUrl()));
-        getActivity().startActivity(intent1);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        List<WrapGroup> groups = WrapGroup.all(realm);
-        mAdapter.replaceWith(groups);
+        startActivity(intent1);
     }
 
     @Override
@@ -90,4 +64,8 @@ public class CollectedFragment extends BaseFragment {
         mRefresher.setRefreshing(false);
     }
 
+    @Override
+    protected String setTitle() {
+        return "我的收藏";
+    }
 }

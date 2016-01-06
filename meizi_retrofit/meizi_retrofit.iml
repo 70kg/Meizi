@@ -112,28 +112,28 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 23 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="okhttp-urlconnection-2.0.0" level="project" />
-    <orderEntry type="library" exported="" name="rxandroid-1.0.1" level="project" />
     <orderEntry type="library" exported="" name="gson-2.2.4" level="project" />
     <orderEntry type="library" exported="" name="butterknife-7.0.1" level="project" />
-    <orderEntry type="library" exported="" name="library-1.2.2" level="project" />
-    <orderEntry type="library" exported="" name="okio-1.0.0" level="project" />
-    <orderEntry type="library" exported="" name="picasso-2.5.2" level="project" />
-    <orderEntry type="library" exported="" name="rxbinding-0.2.0" level="project" />
-    <orderEntry type="library" exported="" name="support-v4-23.0.1" level="project" />
-    <orderEntry type="library" exported="" name="realm-android-0.86.0" level="project" />
+    <orderEntry type="library" exported="" name="jsoup-1.8.2" level="project" />
     <orderEntry type="library" exported="" name="palette-v7-23.0.1" level="project" />
-    <orderEntry type="library" exported="" name="rxjava-1.0.14" level="project" />
+    <orderEntry type="library" exported="" name="picasso-2.5.2" level="project" />
+    <orderEntry type="library" exported="" name="realm-android-0.87.0" level="project" />
     <orderEntry type="library" exported="" name="cardview-v7-23.0.1" level="project" />
-    <orderEntry type="library" exported="" name="design-23.0.1" level="project" />
-    <orderEntry type="library" exported="" name="appcompat-v7-23.0.1" level="project" />
     <orderEntry type="library" exported="" name="retrofit-1.6.1" level="project" />
+    <orderEntry type="library" exported="" name="rxandroid-1.0.1" level="project" />
+    <orderEntry type="library" exported="" name="design-23.0.1" level="project" />
+    <orderEntry type="library" exported="" name="umeng-update-v2.6.0.1" level="project" />
+    <orderEntry type="library" exported="" name="recyclerview-v7-23.0.1" level="project" />
     <orderEntry type="library" exported="" name="rxjava-math-1.0.0" level="project" />
     <orderEntry type="library" exported="" name="okhttp-2.0.0" level="project" />
-    <orderEntry type="library" exported="" name="umeng-update-v2.6.0.1" level="project" />
-    <orderEntry type="library" exported="" name="analytics-5.6.1" level="project" />
-    <orderEntry type="library" exported="" name="jsoup-1.8.2" level="project" />
-    <orderEntry type="library" exported="" name="recyclerview-v7-23.0.1" level="project" />
+    <orderEntry type="library" exported="" name="rxjava-1.0.14" level="project" />
+    <orderEntry type="library" exported="" name="rxbinding-0.2.0" level="project" />
+    <orderEntry type="library" exported="" name="analytics-5.6.4" level="project" />
+    <orderEntry type="library" exported="" name="okio-1.0.0" level="project" />
+    <orderEntry type="library" exported="" name="support-v4-23.0.1" level="project" />
+    <orderEntry type="library" exported="" name="library-1.2.2" level="project" />
+    <orderEntry type="library" exported="" name="appcompat-v7-23.0.1" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-23.0.1" level="project" />
+    <orderEntry type="library" exported="" name="okhttp-urlconnection-2.0.0" level="project" />
   </component>
 </module>

@@ -3,9 +3,10 @@ package info.meizi_retrofit.utils;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Build;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
+
+import info.meizi_retrofit.widget.MySwipeRefreshLayout;
 
 /**
  * Created by Mr_Wrong on 15/10/13.
@@ -65,7 +66,7 @@ public class Utils {
         return color;
     }
 
-    public static void statrtRefresh(final SwipeRefreshLayout mRefresher, final boolean isrefresh) {
+    public static void statrtRefresh(final MySwipeRefreshLayout mRefresher, final boolean isrefresh) {
         mRefresher.post(new Runnable() {
             @Override
             public void run() {

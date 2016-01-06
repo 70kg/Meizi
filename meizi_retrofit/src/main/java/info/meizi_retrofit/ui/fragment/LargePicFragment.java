@@ -31,10 +31,12 @@ import rx.subscriptions.CompositeSubscription;
  * Created by Mr_Wrong on 15/10/6.
  */
 public class LargePicFragment extends Fragment {
+    private static final String URL = "url";
+    private static final String GROUPID = "groupid";
+    private static final String POSITION = "position";
     @Bind(R.id.image)
     TouchImageView image;
     private String url;
-    private boolean initialShown;
     private LargePicActivity activity;
     private String groupid;
     private int position;
@@ -42,18 +44,17 @@ public class LargePicFragment extends Fragment {
 
     @OnClick(R.id.image)
     void toggleToolbar() {
-        activity.toggleToolbar();
+        activity.supportFinishAfterTransition();
     }
 
     public LargePicFragment() {
     }
 
-    public static Fragment newFragment(String url, boolean initialShown, String groupid, int position) {
+    public static Fragment newFragment(String url, String groupid, int position) {
         Bundle bundle = new Bundle();
-        bundle.putString("url", url);
-        bundle.putBoolean("initial_shown", initialShown);
-        bundle.putString("groupid", groupid);
-        bundle.putInt("position", position);
+        bundle.putString(URL, url);
+        bundle.putString(GROUPID, groupid);
+        bundle.putInt(POSITION, position);
         LargePicFragment fragment = new LargePicFragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -69,10 +70,9 @@ public class LargePicFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        url = getArguments().getString("url");
-        groupid = getArguments().getString("groupid");
-        position = getArguments().getInt("position");
-        initialShown = getArguments().getBoolean("initial_shown", false);
+        url = getArguments().getString(URL);
+        groupid = getArguments().getString(GROUPID);
+        position = getArguments().getInt(POSITION);
     }
 
     @Nullable

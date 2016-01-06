@@ -24,7 +24,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import info.meizi_retrofit.R;
 import info.meizi_retrofit.base.BaseActivity;
-import info.meizi_retrofit.ui.fragment.CollectedFragment;
 import info.meizi_retrofit.ui.fragment.HomeFragment;
 import info.meizi_retrofit.utils.Utils;
 import me.drakeet.materialdialog.MaterialDialog;
@@ -93,8 +92,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 startActivity(new Intent(MainActivity.this, AboutActivity.class));
                 break;
             case R.id.menu_collect1:
-                mToolbar.setTitle("收藏");
-                replaceFragment(CollectedFragment.newFragment());
+                startActivity(new Intent(this,CollectedActivity.class));
                 break;
         }
         mDrawerLayout.closeDrawers();

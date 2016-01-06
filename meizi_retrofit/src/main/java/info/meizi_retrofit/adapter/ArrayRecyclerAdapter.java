@@ -20,7 +20,7 @@ public abstract class ArrayRecyclerAdapter<E, VH extends RecyclerView.ViewHolder
 
     private final Object lock = new Object();
 
-    private final List<E> list;
+    private final ArrayList<E> list;
 
     @SuppressWarnings("unused")
     public ArrayRecyclerAdapter() {
@@ -61,6 +61,10 @@ public abstract class ArrayRecyclerAdapter<E, VH extends RecyclerView.ViewHolder
                 return false;
             }
         }
+    }
+
+    public ArrayList<E> getList() {
+        return list;
     }
 
     @Override

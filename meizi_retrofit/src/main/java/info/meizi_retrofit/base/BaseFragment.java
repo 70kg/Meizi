@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 import info.meizi_retrofit.R;
 import info.meizi_retrofit.net.GroupApi;
 import info.meizi_retrofit.utils.StringConverter;
+import info.meizi_retrofit.widget.MySwipeRefreshLayout;
 import io.realm.Realm;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
@@ -33,7 +34,7 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
     protected boolean isVisible;
     protected Realm realm;
     @Bind(R.id.refresher)
-    protected SwipeRefreshLayout mRefresher;
+    protected MySwipeRefreshLayout mRefresher;
 
     private boolean hasload;
     protected StaggeredGridLayoutManager layoutManager;
@@ -62,7 +63,7 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.basefragment, container, false);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.id_recyclerview);
-        mRefresher = (SwipeRefreshLayout) rootView.findViewById(R.id.refresher);
+        mRefresher = (MySwipeRefreshLayout) rootView.findViewById(R.id.refresher);
         mRefresher.setColorSchemeResources(R.color.app_primary_color);
         mRefresher.setOnRefreshListener(this);
         ButterKnife.bind(this, rootView);

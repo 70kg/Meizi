@@ -26,11 +26,14 @@
         </activity>
         <activity
             android:name=".ui.GroupActivity"
-            android:theme="@style/ViewerTheme"></activity>
+            android:theme="@style/ViewerTheme"/>
+        <activity
+            android:name=".ui.CollectedActivity"
+            android:theme="@style/ViewerTheme"/>
         <activity
             android:name=".ui.LargePicActivity"
-            android:theme="@style/ViewerTheme"></activity>
-        <activity android:name=".ui.AboutActivity"></activity>
+            android:theme="@style/ViewerTheme"/>
+        <activity android:name=".ui.AboutActivity"/>
 
         <service
             android:name="com.umeng.update.net.DownloadingService"
@@ -43,7 +46,7 @@
 
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="56584736e0f55aa1b60052ea"></meta-data>
+            android:value="56584736e0f55aa1b60052ea"/>
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="${CHANNEL_VALUE}"/>

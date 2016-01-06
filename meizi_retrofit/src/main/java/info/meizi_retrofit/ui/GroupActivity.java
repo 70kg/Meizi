@@ -2,7 +2,9 @@ package info.meizi_retrofit.ui;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.SharedElementCallback;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -20,10 +22,10 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -38,6 +40,7 @@ import info.meizi_retrofit.net.ContentParser;
 import info.meizi_retrofit.utils.LogUtils;
 import info.meizi_retrofit.utils.StringConverter;
 import info.meizi_retrofit.utils.Utils;
+import info.meizi_retrofit.widget.MySwipeRefreshLayout;
 import io.realm.Realm;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
@@ -55,25 +58,24 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
     public static final String INDEX = "index";
     public static final String GROUPID = "groupid";
     public static final String COLOR = "color";
-    public static final String COLLECTED = "iscollected";
+    public static final String URLS = "urls";
     @Bind(R.id.group_recyclerview)
     RecyclerView mRecyclerview;
     @Bind(R.id.group_refresher)
-    SwipeRefreshLayout mRefresher;
+    MySwipeRefreshLayout mRefresher;
     @Bind(R.id.group_toolbar)
     Toolbar mToolbar;
     private String groupid;
     public int color;
     private GroupAdapter mAdapter;
     private ContentApi mApi;
-    private List<Content> lists = new CopyOnWriteArrayList<>();//多线程并发写
     private StaggeredGridLayoutManager layoutManager;
     private final OkHttpClient client = new OkHttpClient();
     private Realm realm;
     private Bundle reenterState;
     private boolean iscollected;
-
-    private Group mGroup;
+    private WrapGroup mWrapGroup;
+    int mI = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,16 +98,6 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
         groupid = getIntent().getStringExtra(GROUPID);
         color = getIntent().getIntExtra(COLOR, getResources().getColor(R.color.app_primary_color));
 
-        List<WrapGroup> list = WrapGroup.all(realm);
-        LogUtils.e("进入时的收藏个数" + list.size() + "_" + isContain(groupid, list));
-        if (isContain(groupid, list)) {
-            iscollected = true;
-        } else {
-            iscollected = false;
-        }
-        mGroup = realm.where(Group.class).equalTo("groupid", Integer.parseInt(groupid)).findFirst();
-//        iscollected = mGroup.getIscollected();
-
 
         Utils.setSystemBar(this, mToolbar, color);
 
@@ -121,19 +113,19 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
         mRecyclerview.setLayoutManager(layoutManager);
         mRecyclerview.setAdapter(mAdapter);
         sendToLoad(false);
-
-
-        setExitSharedElementCallback(new SharedElementCallback() {
-            @Override
-            public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-                if (reenterState != null) {
-                    int i = reenterState.getInt(INDEX, 0);
-                    sharedElements.clear();
-                    sharedElements.put(mAdapter.get(i).getUrl(), layoutManager.findViewByPosition(i));
-                    reenterState = null;
+        if (Build.VERSION.SDK_INT >= 22) {
+            setExitSharedElementCallback(new SharedElementCallback() {
+                @Override
+                public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                    if (reenterState != null) {
+                        int i = reenterState.getInt(INDEX, 0);
+                        sharedElements.clear();
+                        sharedElements.put(mAdapter.get(i).getUrl(), layoutManager.findViewByPosition(i));
+                        reenterState = null;
+                    }
                 }
-            }
-        });
+            });
+        }
 
     }
 
@@ -214,26 +206,23 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
                 .subscribe(new Subscriber<Content>() {
                     @Override
                     public void onCompleted() {
-                        mAdapter.replaceWith(Content.all(realm, groupid));
+                        //  mAdapter.replaceWith(Content.all(realm, groupid));
                         mRefresher.setRefreshing(false);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        LogUtils.d(e);
+                        Snackbar.make(mRecyclerview, "出现错误啦", Snackbar.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onNext(Content content) {
-                        lists.add(content);
+                        mAdapter.add(content);
                     }
                 }));
 
     }
 
-    //从网络获取的图片也应该先存入数据库，方便排序
-    //不过这样获取要等待整个的list都获取完成才能显示  耗时太久  如果单个返回 排序也是个问题
-    //会造成图片的移动排序  效果也不好  暂时先整个list吧
     private void saveDB(Content content) {
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(content);
@@ -241,7 +230,6 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
         LogUtils.d("存入数据库");
     }
 
-    int mI = 0;
 
     private Content handleContent(Content content) throws IOException {
         Response response = client.newCall(new Request.Builder().url(content.getUrl()).build()).execute();
@@ -281,9 +269,15 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
     }
 
     private void startLargePicActivity(View view, int position) {
+        ArrayList<String> urls = new ArrayList<>();
+        for (Content content : mAdapter.getList()) {
+            urls.add(content.getUrl());
+        }
+
         Intent intent = new Intent(this, LargePicActivity.class);
         intent.putExtra(INDEX, position);
         intent.putExtra(GROUPID, groupid);
+        intent.putExtra(URLS, urls);
         ActivityOptionsCompat options = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(this, view, mAdapter.get(position).getUrl());
         startActivity(intent, options.toBundle());
@@ -297,8 +291,17 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        mTest = new WrapGroup();
-        mTest.setGroup(mGroup);
+        //判断有没有收藏过
+        List<WrapGroup> list = WrapGroup.all(realm);
+        LogUtils.e("进入时的收藏个数" + list.size() + "_" + isContain(groupid, list));
+        if (isContain(groupid, list)) {
+            iscollected = true;
+        } else {
+            iscollected = false;
+        }
+        Group mGroup = realm.where(Group.class).equalTo("groupid", Integer.parseInt(groupid)).findFirst();
+        mWrapGroup = new WrapGroup();
+        mWrapGroup.setGroup(mGroup);
         getMenuInflater().inflate(R.menu.group_menu, menu);
         if (iscollected) {
             menu.findItem(R.id.menu_collect).setIcon(R.drawable.collected);
@@ -308,17 +311,16 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
         return true;
     }
 
-    WrapGroup mTest;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_collect:
                 realm.beginTransaction();
-                mTest.setGroupid(groupid);
-                mTest.setDate(new Date().getTime());
-                mTest.setIscollected(!iscollected);
-                realm.copyToRealmOrUpdate(mTest);
+                mWrapGroup.setGroupid(groupid);
+                mWrapGroup.setDate(new Date().getTime());
+                mWrapGroup.setIscollected(!iscollected);
+                realm.copyToRealmOrUpdate(mWrapGroup);
                 realm.commitTransaction();
 
 
@@ -331,7 +333,7 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
                     item.setIcon(R.drawable.collect);
                     Toast.makeText(GroupActivity.this, "取消收藏成功", Toast.LENGTH_SHORT).show();
                 }
-                iscollected = mTest.iscollected();
+                iscollected = mWrapGroup.iscollected();
 
                 break;
         }

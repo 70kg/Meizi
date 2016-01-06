@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityOptionsCompat;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 
 import java.util.List;
@@ -19,6 +19,7 @@ import info.meizi_retrofit.ui.GroupActivity;
 import info.meizi_retrofit.utils.Utils;
 import info.meizi_retrofit.widget.RadioImageView;
 import io.realm.Realm;
+import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -53,10 +54,6 @@ public class HomeFragment extends BaseFragment {
     private void StartLoad(int page) {
         Utils.statrtRefresh(mRefresher, true);
 
-//        if (Group.all(realm, type) != null) {//这样刷新的时候还是会覆盖
-//            mAdapter.replaceWith(Group.all(realm, type));
-//            mRefresher.setRefreshing(false);
-//        } else {
         mSubscriptions.add(mGroupApi.getGroup(type, page).map(new Func1<String, List<Group>>() {
             @Override
             public List<Group> call(String s) {
@@ -68,13 +65,22 @@ public class HomeFragment extends BaseFragment {
                 .doOnNext(new Action1<List<Group>>() {
                     @Override
                     public void call(List<Group> groups) {
-                        //这里会去覆盖收藏的标志
                         saveDb(groups, realm);
                     }
                 })
-                .subscribe(new Action1<List<Group>>() {
+                .subscribe(new Observer<List<Group>>() {
                     @Override
-                    public void call(List<Group> groups) {
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Snackbar.make(mRecyclerView, "出现错误啦", Snackbar.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNext(List<Group> groups) {
                         if (!hasload) {
                             mAdapter.replaceWith(groups);
                         } else {
@@ -85,7 +91,6 @@ public class HomeFragment extends BaseFragment {
                     }
                 }));
     }
-//    }
 
     private void saveDb(List<Group> groups, Realm realm) {
         realm.beginTransaction();
@@ -117,13 +122,12 @@ public class HomeFragment extends BaseFragment {
             bitmap = bd.getBitmap();
         }
         Intent intent1 = new Intent(getActivity(), GroupActivity.class);
-        intent1.putExtra("group", mAdapter.get(position));
-        intent1.putExtra(GroupActivity.COLOR, Utils.getPaletteColor(bitmap));
+        if (bitmap != null && !bitmap.isRecycled()) {
+            intent1.putExtra(GroupActivity.COLOR, Utils.getPaletteColor(bitmap));
+        }
         intent1.putExtra(GroupActivity.INDEX, position);
         intent1.putExtra(GroupActivity.GROUPID, Utils.url2groupid(mAdapter.get(position).getUrl()));
-        ActivityOptionsCompat options = ActivityOptionsCompat
-                .makeSceneTransitionAnimation(getActivity(), view, mAdapter.get(position).getUrl());
-        getActivity().startActivity(intent1, options.toBundle());
+        getActivity().startActivity(intent1);
     }
 
     @Override

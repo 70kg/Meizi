@@ -60,6 +60,18 @@
     -dontwarn javax.**
     -dontwarn io.realm.**
 
+-keep class butterknife.** { *; }
+-dontwarn butterknife.internal.**
+-keep class **$$ViewBinder { *; }
+
+-keepclasseswithmembernames class * {
+    @butterknife.* <fields>;
+}
+
+-keepclasseswithmembernames class * {
+    @butterknife.* <methods>;
+}
+
 
     #忽略警告
     -ignorewarning
@@ -165,24 +177,38 @@
         public static <fields>;
     }
 
-    #避免混淆泛型 如果混淆报错建议关掉
-    #–keepattributes Signature
 
-    #移除log 测试了下没有用还是建议自己定义一个开关控制是否输出日志
-    #-assumenosideeffects class android.util.Log {
-    #    public static boolean isLoggable(java.lang.String, int);
-    #    public static int v(...);
-    #    public static int i(...);
-    #    public static int w(...);
-    #    public static int d(...);
-    #    public static int e(...);
-    #}
-
-    #如果用用到Gson解析包的，直接添加下面这几行就能成功混淆，不然会报错。
-    #gson
-    #-libraryjars libs/gson-2.2.2.jar
     -keepattributes Signature
     # Gson specific classes
     -keep class sun.misc.Unsafe { *; }
     # Application classes that will be serialized/deserialized over Gson
     -keep class com.google.gson.examples.android.model.** { *; }
+
+
+    # OkHttp
+    -keepattributes Signature
+    -keepattributes *Annotation*
+    -keep class com.squareup.okhttp.** { *; }
+    -keep interface com.squareup.okhttp.** { *; }
+    -dontwarn com.squareup.okhttp.**
+
+    -dontwarn okio.**
+    -dontwarn retrofit.**
+    -dontwarn rx.**
+
+    -keepclasseswithmembers class * {
+        @retrofit.http.* <methods>;
+    }
+
+    # If in your rest service interface you use methods with Callback argument.
+    -keepattributes Exceptions
+
+
+# For using GSON @Expose annotation
+-keepattributes *Annotation*
+
+-keepattributes EnclosingMethod
+
+# Gson specific classes
+-keep class sun.misc.Unsafe { *; }
+-keep class com.google.gson.stream.** { *; }

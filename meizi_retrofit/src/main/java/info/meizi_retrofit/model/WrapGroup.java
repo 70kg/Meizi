@@ -15,6 +15,9 @@ import io.realm.annotations.PrimaryKey;
 public class WrapGroup extends RealmObject implements Serializable {
     @PrimaryKey
     private String groupid;
+    private Group group;
+    private long date;
+    private boolean iscollected;
 
     public Group getGroup() {
         return group;
@@ -24,8 +27,6 @@ public class WrapGroup extends RealmObject implements Serializable {
         this.group = group;
     }
 
-    private Group group;
-
     public long getDate() {
         return date;
     }
@@ -33,8 +34,6 @@ public class WrapGroup extends RealmObject implements Serializable {
     public void setDate(long date) {
         this.date = date;
     }
-
-    private long date;
 
 
     public String getGroupid() {
@@ -54,7 +53,6 @@ public class WrapGroup extends RealmObject implements Serializable {
         this.iscollected = iscollected;
     }
 
-    private boolean iscollected;
 
     public static List<WrapGroup> all(Realm realm) {
         return realm.where(WrapGroup.class)

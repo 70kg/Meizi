@@ -7,13 +7,13 @@
     android:fitsSystemWindows="true">
 
     <info.meizi_retrofit.widget.MySwipeRefreshLayout
-        android:id="@+id/group_refresher"
+        android:id="@+id/abs_refresher"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/group_recyclerview"
+            android:id="@+id/abs_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </info.meizi_retrofit.widget.MySwipeRefreshLayout>
@@ -24,7 +24,7 @@
         android:elevation="4dp">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/group_toolbar"
+            android:id="@+id/inc_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
