@@ -16,6 +16,7 @@ import info.meizi_retrofit.base.BaseFragment;
 import info.meizi_retrofit.model.Group;
 import info.meizi_retrofit.net.ContentParser;
 import info.meizi_retrofit.ui.GroupActivity;
+import info.meizi_retrofit.utils.LogUtils;
 import info.meizi_retrofit.utils.Utils;
 import info.meizi_retrofit.widget.RadioImageView;
 import io.realm.Realm;
@@ -125,7 +126,10 @@ public class HomeFragment extends BaseFragment {
         if (bitmap != null && !bitmap.isRecycled()) {
             intent1.putExtra(GroupActivity.COLOR, Utils.getPaletteColor(bitmap));
         }
-        intent1.putExtra(GroupActivity.INDEX, position);
+
+        LogUtils.e(mAdapter.get(position).getImageurl());
+        //现在只需要传递处理完的URL进去
+        intent1.putExtra("url", mAdapter.get(position).getImageurl());
         intent1.putExtra(GroupActivity.GROUPID, Utils.url2groupid(mAdapter.get(position).getUrl()));
         getActivity().startActivity(intent1);
     }

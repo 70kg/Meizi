@@ -18,11 +18,13 @@ public abstract class ListActivity extends ToolBarActivity implements SwipeRefre
     protected RecyclerView mRecyclerView;
     @Bind(R.id.abs_refresher)
     protected MySwipeRefreshLayout mRefresher;
+    protected StaggeredGridLayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(mLayoutManager);
         mRefresher.setColorSchemeResources(R.color.app_primary_color);
         mRefresher.setOnRefreshListener(this);
     }

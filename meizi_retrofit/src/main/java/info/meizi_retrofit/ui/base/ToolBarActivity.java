@@ -1,6 +1,7 @@
 package info.meizi_retrofit.ui.base;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
@@ -29,7 +30,12 @@ public abstract class ToolBarActivity extends BaseActivity {
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                if (Build.VERSION.SDK_INT >= 22) {
+                    supportFinishAfterTransition();
+                } else {
+                    finish();
+                }
+
             }
         });
     }

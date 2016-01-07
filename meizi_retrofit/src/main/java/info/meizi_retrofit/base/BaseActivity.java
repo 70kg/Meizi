@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.umeng.analytics.MobclickAgent;
 
+import info.meizi_retrofit.model.Content;
+import info.meizi_retrofit.utils.LogUtils;
 import info.meizi_retrofit.utils.RxUtils;
 import io.realm.Realm;
 import rx.subscriptions.CompositeSubscription;
@@ -27,7 +29,6 @@ public class BaseActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
-
         mSubscriptions = RxUtils.getNewCompositeSubIfUnsubscribed(mSubscriptions);
     }
 
@@ -35,7 +36,19 @@ public class BaseActivity extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
-
         RxUtils.unsubscribeIfNotNull(mSubscriptions);
+    }
+
+    protected void saveDB(Content content) {
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(content);
+        realm.commitTransaction();
+        LogUtils.d("存入数据库");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        realm.close();
     }
 }

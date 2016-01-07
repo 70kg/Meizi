@@ -52,7 +52,8 @@ public class CollectedActivity extends ListActivity {
         if (bitmap != null && !bitmap.isRecycled()) {
             intent1.putExtra(GroupActivity.COLOR, Utils.getPaletteColor(bitmap));
         }
-        intent1.putExtra(GroupActivity.INDEX, position);
+
+        intent1.putExtra("url", mAdapter.get(position).getGroup().getImageurl());
         intent1.putExtra(GroupActivity.GROUPID, Utils.url2groupid(mAdapter.get(position).getGroup().getUrl()));
         startActivity(intent1);
     }

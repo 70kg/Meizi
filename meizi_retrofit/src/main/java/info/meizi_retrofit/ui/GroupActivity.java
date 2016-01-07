@@ -1,5 +1,6 @@
 package info.meizi_retrofit.ui;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Build;
@@ -8,15 +9,13 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.SharedElementCallback;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
+import com.socks.library.KLog;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -27,21 +26,18 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import info.meizi_retrofit.R;
 import info.meizi_retrofit.adapter.GroupAdapter;
-import info.meizi_retrofit.base.BaseActivity;
 import info.meizi_retrofit.model.Content;
 import info.meizi_retrofit.model.Group;
 import info.meizi_retrofit.model.WrapGroup;
 import info.meizi_retrofit.net.ContentApi;
 import info.meizi_retrofit.net.ContentParser;
+import info.meizi_retrofit.ui.base.ListActivity;
 import info.meizi_retrofit.utils.LogUtils;
 import info.meizi_retrofit.utils.StringConverter;
+import info.meizi_retrofit.utils.UrlUtils;
 import info.meizi_retrofit.utils.Utils;
-import info.meizi_retrofit.widget.MySwipeRefreshLayout;
-import io.realm.Realm;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 import rx.Observable;
@@ -49,55 +45,35 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by Mr_Wrong on 15/10/31.
  */
-public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class GroupActivity extends ListActivity implements SwipeRefreshLayout.OnRefreshListener {
     public static final String INDEX = "index";
     public static final String GROUPID = "groupid";
     public static final String COLOR = "color";
     public static final String URLS = "urls";
-    @Bind(R.id.group_recyclerview)
-    RecyclerView mRecyclerview;
-    @Bind(R.id.group_refresher)
-    MySwipeRefreshLayout mRefresher;
-    @Bind(R.id.group_toolbar)
-    Toolbar mToolbar;
     private String groupid;
     public int color;
     private GroupAdapter mAdapter;
     private ContentApi mApi;
-    private StaggeredGridLayoutManager layoutManager;
     private final OkHttpClient client = new OkHttpClient();
-    private Realm realm;
     private Bundle reenterState;
     private boolean iscollected;
     private WrapGroup mWrapGroup;
     int mI = 0;
+    String mUrl;
+    boolean canRefresh = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.group_layout);
-        ButterKnife.bind(this);
-
-        mRefresher.setOnRefreshListener(this);
-        realm = Realm.getDefaultInstance();
-        setSupportActionBar(mToolbar);
-        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                supportFinishAfterTransition();
-            }
-        });
 
         mApi = createApi();
         groupid = getIntent().getStringExtra(GROUPID);
         color = getIntent().getIntExtra(COLOR, getResources().getColor(R.color.app_primary_color));
-
+        mUrl = getIntent().getStringExtra("url");
 
         Utils.setSystemBar(this, mToolbar, color);
 
@@ -109,10 +85,9 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
                 startLargePicActivity(v, position);
             }
         };
-        layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        mRecyclerview.setLayoutManager(layoutManager);
-        mRecyclerview.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(mAdapter);
         sendToLoad(false);
+
         if (Build.VERSION.SDK_INT >= 22) {
             setExitSharedElementCallback(new SharedElementCallback() {
                 @Override
@@ -120,7 +95,7 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
                     if (reenterState != null) {
                         int i = reenterState.getInt(INDEX, 0);
                         sharedElements.clear();
-                        sharedElements.put(mAdapter.get(i).getUrl(), layoutManager.findViewByPosition(i));
+                        sharedElements.put(mAdapter.get(i).getUrl(), mLayoutManager.findViewByPosition(i));
                         reenterState = null;
                     }
                 }
@@ -141,16 +116,12 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
         return b;
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        realm.close();
-    }
 
     private void sendToLoad(boolean isrefresh) {
+        LogUtils.e(groupid + "----" + isrefresh);
         Utils.statrtRefresh(mRefresher, true);
         if (isrefresh) {
-            loadData();
+            newLoadData();
         } else if (!Content.all(realm, groupid).isEmpty()) {//数据库有 直接加载
             List<Content> list = Content.all(realm, groupid);
             mAdapter.replaceWith(list);
@@ -158,45 +129,30 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
             LogUtils.d("获取本地资源");
         } else {
             LogUtils.d("加载网络资源");
-            loadData();
+            newLoadData();
         }
     }
 
-    private void loadData() {
-        //先去获取count  然后根据count去查询全部的content
+
+    private void newLoadData() {
+        mAdapter.clear();
         mSubscriptions.add(mApi.getContentCount(groupid)
-                .flatMap(new Func1<String, Observable<Integer>>() {
+                .flatMap(new Func1<String, Observable<Integer>>() {//获取到数量
                     @Override
                     public Observable<Integer> call(String s) {
                         return Observable.just(ContentParser.getCount(s));
                     }
-                })
-                .flatMap(new Func1<Integer, Observable<Integer>>() {
+                }).flatMap(new Func1<Integer, Observable<Integer>>() {
                     @Override
-                    public Observable<Integer> call(Integer integer) {
+                    public Observable<Integer> call(Integer integer) {//23张
                         return Observable.range(1, integer);
                     }
-                })
-                .flatMap(new Func1<Integer, Observable<String>>() {
+                }).map(new Func1<Integer, Content>() {
                     @Override
-                    public Observable<String> call(Integer integer) {
-                        return mApi.getContent(groupid, integer);
+                    public Content call(Integer integer) {
+                        return newHandleContent(integer);
                     }
-                })
-                .map(new Func1<String, Content>() {
-                    @Override
-                    public Content call(String s) {
-                        Content content = null;//这里没有使用接口，是因为一定要setEndpoint 所以作罢。。
-                        try {
-                            content = handleContent(ContentParser.ParserContent(s));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        return content;
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                }).observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(new Action1<Content>() {
                     @Override
                     public void call(Content content) {
@@ -206,13 +162,14 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
                 .subscribe(new Subscriber<Content>() {
                     @Override
                     public void onCompleted() {
-                        //  mAdapter.replaceWith(Content.all(realm, groupid));
+                        canRefresh = false;
                         mRefresher.setRefreshing(false);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Snackbar.make(mRecyclerview, "出现错误啦", Snackbar.LENGTH_SHORT).show();
+                        KLog.e(e);
+                        Snackbar.make(mRecyclerView, "出现错误啦", Snackbar.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -220,16 +177,19 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
                         mAdapter.add(content);
                     }
                 }));
-
     }
 
-    private void saveDB(Content content) {
-        realm.beginTransaction();
-        realm.copyToRealmOrUpdate(content);
-        realm.commitTransaction();
-        LogUtils.d("存入数据库");
+    private Content newHandleContent(int index) {
+        String url = UrlUtils.handleUrl(mUrl, index);
+        Content content = new Content();
+        content.setUrl(url);
+        try {
+            handleContent(content);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return content;
     }
-
 
     private Content handleContent(Content content) throws IOException {
         Response response = client.newCall(new Request.Builder().url(content.getUrl()).build()).execute();
@@ -243,17 +203,18 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
         return content;
     }
 
+    @TargetApi(22)
     @Override
     public void onActivityReenter(int resultCode, Intent data) {
         super.onActivityReenter(resultCode, data);
         supportStartPostponedEnterTransition();
         reenterState = new Bundle(data.getExtras());
-        mRecyclerview.scrollToPosition(reenterState.getInt(INDEX, 0));
-        mRecyclerview.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+        mRecyclerView.scrollToPosition(reenterState.getInt(INDEX, 0));
+        mRecyclerView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
-                mRecyclerview.getViewTreeObserver().removeOnPreDrawListener(this);
-                mRecyclerview.requestLayout();
+                mRecyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
+                mRecyclerView.requestLayout();
                 return true;
             }
         });
@@ -278,14 +239,25 @@ public class GroupActivity extends BaseActivity implements SwipeRefreshLayout.On
         intent.putExtra(INDEX, position);
         intent.putExtra(GROUPID, groupid);
         intent.putExtra(URLS, urls);
-        ActivityOptionsCompat options = ActivityOptionsCompat
-                .makeSceneTransitionAnimation(this, view, mAdapter.get(position).getUrl());
-        startActivity(intent, options.toBundle());
+
+        if (Build.VERSION.SDK_INT >= 22) {
+            ActivityOptionsCompat options = ActivityOptionsCompat
+                    .makeSceneTransitionAnimation(this, view, mAdapter.get(position).getUrl());
+            startActivity(intent, options.toBundle());
+        } else {
+            startActivity(intent);
+        }
+
     }
 
     @Override
     public void onRefresh() {
-        sendToLoad(true);
+        if (canRefresh) {
+            sendToLoad(true);
+        } else {
+            mRefresher.setRefreshing(false);
+        }
+
     }
 
 

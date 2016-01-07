@@ -1,5 +1,6 @@
 package info.meizi_retrofit.ui;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -80,6 +81,7 @@ public class LargePicActivity extends BaseActivity {
 
     }
 
+    @TargetApi(22)
     @Override
     public void supportFinishAfterTransition() {
         Intent data = new Intent();
