@@ -7,6 +7,7 @@ import java.text.DecimalFormat;
  */
 public class UrlUtils {
     public static String handleUrl(String url, int index) {
+//        String.format("%s%s%s",url.substring(0, 33),new DecimalFormat("00").format(index),".jpg");
         return url.substring(0, 33) + new DecimalFormat("00").format(index) + ".jpg";
     }
 }

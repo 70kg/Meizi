@@ -13,6 +13,7 @@ import info.meizi_retrofit.R;
 import info.meizi_retrofit.adapter.CollectedAdapter;
 import info.meizi_retrofit.model.WrapGroup;
 import info.meizi_retrofit.ui.base.ListActivity;
+import info.meizi_retrofit.ui.group.GroupActivity;
 import info.meizi_retrofit.utils.LogUtils;
 import info.meizi_retrofit.utils.Utils;
 import info.meizi_retrofit.widget.RadioImageView;
@@ -22,11 +23,9 @@ import info.meizi_retrofit.widget.RadioImageView;
  */
 public class CollectedActivity extends ListActivity {
     private CollectedAdapter mAdapter;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Utils.setSystemBar(this, mToolbar, getResources().getColor(R.color.app_primary_color));
         List<WrapGroup> groups = WrapGroup.all(realm);
         LogUtils.e("收藏的个数：" + groups.size());
         mAdapter = new CollectedAdapter(this) {
@@ -52,7 +51,6 @@ public class CollectedActivity extends ListActivity {
         if (bitmap != null && !bitmap.isRecycled()) {
             intent1.putExtra(GroupActivity.COLOR, Utils.getPaletteColor(bitmap));
         }
-
         intent1.putExtra("url", mAdapter.get(position).getGroup().getImageurl());
         intent1.putExtra(GroupActivity.GROUPID, Utils.url2groupid(mAdapter.get(position).getGroup().getUrl()));
         startActivity(intent1);

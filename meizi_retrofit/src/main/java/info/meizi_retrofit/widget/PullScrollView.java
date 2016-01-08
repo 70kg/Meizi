@@ -13,60 +13,98 @@ import android.widget.ScrollView;
 
 import info.meizi_retrofit.R;
 
+
 /**
- * Created by Mr_Wrong on 15/12/1.
+ * 自定义ScrollView
+ *
+ * @author markmjw
+ * @date 2013-09-13
  */
 public class PullScrollView extends ScrollView {
     private static final String LOG_TAG = "PullScrollView";
-    /** 阻尼系数,越小阻力就越大. */
+    /**
+     * 阻尼系数,越小阻力就越大.
+     */
     private static final float SCROLL_RATIO = 0.5f;
 
-    /** 滑动至翻转的距离. */
+    /**
+     * 滑动至翻转的距离.
+     */
     private static final int TURN_DISTANCE = 100;
 
-    /** 头部view. */
+    /**
+     * 头部view.
+     */
     private View mHeader;
 
-    /** 头部view高度. */
+    /**
+     * 头部view高度.
+     */
     private int mHeaderHeight;
 
-    /** 头部view显示高度. */
+    /**
+     * 头部view显示高度.
+     */
     private int mHeaderVisibleHeight;
 
-    /** ScrollView的content view. */
+    /**
+     * ScrollView的content view.
+     */
     private View mContentView;
 
-    /** ScrollView的content view矩形. */
+    /**
+     * ScrollView的content view矩形.
+     */
     private Rect mContentRect = new Rect();
 
-    /** 首次点击的Y坐标. */
+    /**
+     * 首次点击的Y坐标.
+     */
     private PointF mStartPoint = new PointF();
 
-    /** 是否开始移动. */
+    /**
+     * 是否开始移动.
+     */
     private boolean isMoving = false;
 
-    /** 是否移动到顶部位置. */
+    /**
+     * 是否移动到顶部位置.
+     */
     private boolean isTop = false;
 
-    /** 头部图片初始顶部和底部. */
+    /**
+     * 头部图片初始顶部和底部.
+     */
     private int mInitTop, mInitBottom;
 
-    /** 头部图片拖动时顶部和底部. */
+    /**
+     * 头部图片拖动时顶部和底部.
+     */
     private int mCurrentTop, mCurrentBottom;
 
-    /** 状态变化时的监听器. */
+    /**
+     * 状态变化时的监听器.
+     */
     private OnTurnListener mOnTurnListener;
 
     private enum State {
-        /**顶部*/
+        /**
+         * 顶部
+         */
         UP,
-        /**底部*/
+        /**
+         * 底部
+         */
         DOWN,
-        /**正常*/
+        /**
+         * 正常
+         */
         NORMAL
     }
 
-    /** 状态. */
+    /**
+     * 状态.
+     */
     private State mState = State.NORMAL;
 
     public PullScrollView(Context context) {
@@ -136,7 +174,7 @@ public class PullScrollView extends ScrollView {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return onTouchEvent(ev) || super.onInterceptTouchEvent(ev);
+        return onTouchEvent(ev) && super.onInterceptTouchEvent(ev);
     }
 
     @Override
@@ -273,7 +311,7 @@ public class PullScrollView extends ScrollView {
         mContentRect.setEmpty();
 
         // 回调监听器
-        if (mCurrentTop > mInitTop + TURN_DISTANCE && mOnTurnListener != null){
+        if (mCurrentTop > mInitTop + TURN_DISTANCE && mOnTurnListener != null) {
             mOnTurnListener.onTurn();
         }
     }

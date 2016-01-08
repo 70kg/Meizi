@@ -1,4 +1,4 @@
-package info.meizi_retrofit.ui.fragment;
+package info.meizi_retrofit.ui.main;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,7 +15,7 @@ import info.meizi_retrofit.adapter.HomeAdapter;
 import info.meizi_retrofit.base.BaseFragment;
 import info.meizi_retrofit.model.Group;
 import info.meizi_retrofit.net.ContentParser;
-import info.meizi_retrofit.ui.GroupActivity;
+import info.meizi_retrofit.ui.group.GroupActivity;
 import info.meizi_retrofit.utils.LogUtils;
 import info.meizi_retrofit.utils.Utils;
 import info.meizi_retrofit.widget.RadioImageView;

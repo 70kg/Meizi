@@ -1,7 +1,6 @@
 package info.meizi_retrofit;
 
 import java.text.DecimalFormat;
-import java.text.Format;
 
 /**
  * Created by Mr_Wrong on 15/12/6.
@@ -9,11 +8,8 @@ import java.text.Format;
 public class Alone {
     public static void main(String[] args) {
         String url = "http://pic.mmfile.net/2016/01/06r20.jpg";
-        int i = 91;
-        Format f2 = new DecimalFormat("00");
-        System.out.println(url.substring(0, 33) + f2.format(i) + ".jpg");
-//        System.out.println("http://pic.mmfile.net/2016/01/06r".length());
-
+        int i = 1;
+        System.out.println(String.format("%s%s%s", url.substring(0, 33), new DecimalFormat("00").format(i), ".jpg"));
 
     }
 

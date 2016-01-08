@@ -1,4 +1,4 @@
-package info.meizi_retrofit.ui;
+package info.meizi_retrofit.ui.largepic;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
@@ -19,7 +19,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import info.meizi_retrofit.R;
 import info.meizi_retrofit.base.BaseActivity;
-import info.meizi_retrofit.ui.fragment.LargePicFragment;
+import info.meizi_retrofit.ui.group.GroupActivity;
 
 /**
  * Created by Mr_Wrong on 15/10/6.

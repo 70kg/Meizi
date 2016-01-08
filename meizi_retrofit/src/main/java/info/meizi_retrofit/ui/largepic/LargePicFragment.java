@@ -1,4 +1,4 @@
-package info.meizi_retrofit.ui.fragment;
+package info.meizi_retrofit.ui.largepic;
 
 import android.content.Context;
 import android.net.Uri;
@@ -19,7 +19,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import info.meizi_retrofit.R;
-import info.meizi_retrofit.ui.LargePicActivity;
 import info.meizi_retrofit.utils.RxMeizhi;
 import info.meizi_retrofit.widget.TouchImageView;
 import me.drakeet.materialdialog.MaterialDialog;

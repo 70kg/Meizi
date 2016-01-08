@@ -10,13 +10,15 @@ import android.view.View;
 import butterknife.ButterKnife;
 import info.meizi_retrofit.R;
 import info.meizi_retrofit.base.BaseActivity;
+import info.meizi_retrofit.utils.Utils;
 
 /**
  * Created by Mr_Wrong on 16/1/6.
  */
 public abstract class ToolBarActivity extends BaseActivity {
+    public static final String COLOR = "color";
     protected Toolbar mToolbar;
-
+    protected int mColor;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +40,8 @@ public abstract class ToolBarActivity extends BaseActivity {
 
             }
         });
+        mColor = getIntent().getIntExtra(COLOR, getResources().getColor(R.color.app_primary_color));
+        Utils.setSystemBar(this, mToolbar, mColor);
     }
 
     protected String setTitle() {

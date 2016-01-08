@@ -1,4 +1,4 @@
-package info.meizi_retrofit.ui;
+package info.meizi_retrofit.ui.main;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -24,7 +24,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import info.meizi_retrofit.R;
 import info.meizi_retrofit.base.BaseActivity;
-import info.meizi_retrofit.ui.fragment.HomeFragment;
+import info.meizi_retrofit.ui.about.AboutActivity;
+import info.meizi_retrofit.ui.CollectedActivity;
+import info.meizi_retrofit.ui.group.GroupActivity;
 import info.meizi_retrofit.utils.Utils;
 import me.drakeet.materialdialog.MaterialDialog;
 

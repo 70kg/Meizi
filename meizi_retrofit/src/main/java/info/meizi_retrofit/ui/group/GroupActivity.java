@@ -1,4 +1,4 @@
-package info.meizi_retrofit.ui;
+package info.meizi_retrofit.ui.group;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.SharedElementCallback;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +33,7 @@ import info.meizi_retrofit.model.WrapGroup;
 import info.meizi_retrofit.net.ContentApi;
 import info.meizi_retrofit.net.ContentParser;
 import info.meizi_retrofit.ui.base.ListActivity;
+import info.meizi_retrofit.ui.largepic.LargePicActivity;
 import info.meizi_retrofit.utils.LogUtils;
 import info.meizi_retrofit.utils.StringConverter;
 import info.meizi_retrofit.utils.UrlUtils;
@@ -45,17 +45,16 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Mr_Wrong on 15/10/31.
  */
-public class GroupActivity extends ListActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class GroupActivity extends ListActivity {
     public static final String INDEX = "index";
     public static final String GROUPID = "groupid";
-    public static final String COLOR = "color";
     public static final String URLS = "urls";
     private String groupid;
-    public int color;
     private GroupAdapter mAdapter;
     private ContentApi mApi;
     private final OkHttpClient client = new OkHttpClient();
@@ -63,7 +62,7 @@ public class GroupActivity extends ListActivity implements SwipeRefreshLayout.On
     private boolean iscollected;
     private WrapGroup mWrapGroup;
     int mI = 0;
-    String mUrl;
+    private String mUrl;
     boolean canRefresh = true;
 
     @Override
@@ -72,12 +71,7 @@ public class GroupActivity extends ListActivity implements SwipeRefreshLayout.On
 
         mApi = createApi();
         groupid = getIntent().getStringExtra(GROUPID);
-        color = getIntent().getIntExtra(COLOR, getResources().getColor(R.color.app_primary_color));
         mUrl = getIntent().getStringExtra("url");
-
-        Utils.setSystemBar(this, mToolbar, color);
-
-        mRefresher.setColorSchemeColors(color);
 
         mAdapter = new GroupAdapter(this) {
             @Override
@@ -104,7 +98,13 @@ public class GroupActivity extends ListActivity implements SwipeRefreshLayout.On
 
     }
 
-
+    /**
+     * 是否收藏了
+     *
+     * @param id
+     * @param list
+     * @return
+     */
     private boolean isContain(String id, List<WrapGroup> list) {
         boolean b = false;
         for (WrapGroup test : list) {
@@ -118,7 +118,7 @@ public class GroupActivity extends ListActivity implements SwipeRefreshLayout.On
 
 
     private void sendToLoad(boolean isrefresh) {
-        LogUtils.e(groupid + "----" + isrefresh);
+        KLog.e(groupid + "----" + isrefresh);
         Utils.statrtRefresh(mRefresher, true);
         if (isrefresh) {
             newLoadData();
@@ -126,16 +126,19 @@ public class GroupActivity extends ListActivity implements SwipeRefreshLayout.On
             List<Content> list = Content.all(realm, groupid);
             mAdapter.replaceWith(list);
             Utils.statrtRefresh(mRefresher, false);
-            LogUtils.d("获取本地资源");
+            KLog.d("获取本地资源");
         } else {
-            LogUtils.d("加载网络资源");
+            KLog.d("加载网络资源");
             newLoadData();
         }
     }
 
+    int mIndex;
+    int mCount;
 
     private void newLoadData() {
         mAdapter.clear();
+        mIndex = 1;
         mSubscriptions.add(mApi.getContentCount(groupid)
                 .flatMap(new Func1<String, Observable<Integer>>() {//获取到数量
                     @Override
@@ -145,6 +148,7 @@ public class GroupActivity extends ListActivity implements SwipeRefreshLayout.On
                 }).flatMap(new Func1<Integer, Observable<Integer>>() {
                     @Override
                     public Observable<Integer> call(Integer integer) {//23张
+                        mCount = integer;
                         return Observable.range(1, integer);
                     }
                 }).map(new Func1<Integer, Content>() {
@@ -152,7 +156,9 @@ public class GroupActivity extends ListActivity implements SwipeRefreshLayout.On
                     public Content call(Integer integer) {
                         return newHandleContent(integer);
                     }
-                }).observeOn(AndroidSchedulers.mainThread())
+                })
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(new Action1<Content>() {
                     @Override
                     public void call(Content content) {
@@ -174,6 +180,7 @@ public class GroupActivity extends ListActivity implements SwipeRefreshLayout.On
 
                     @Override
                     public void onNext(Content content) {
+                        KLog.e(mIndex++);
                         mAdapter.add(content);
                     }
                 }));
@@ -186,7 +193,7 @@ public class GroupActivity extends ListActivity implements SwipeRefreshLayout.On
         try {
             handleContent(content);
         } catch (IOException e) {
-            e.printStackTrace();
+            KLog.e(e);
         }
         return content;
     }
