@@ -1,4 +1,4 @@
-package info.meizi_retrofit.adapter;
+package info.meizi_retrofit.adapter.base;
 
 import android.annotation.TargetApi;
 import android.os.Build;

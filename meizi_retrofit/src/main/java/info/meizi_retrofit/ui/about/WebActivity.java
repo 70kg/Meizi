@@ -58,7 +58,7 @@ public class WebActivity extends ToolBarActivity {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
-                mToolbar.setTitle(title);
+                setTitle(title);
             }
         });
         mWebView.setWebViewClient(new WebViewClient() {
@@ -71,10 +71,6 @@ public class WebActivity extends ToolBarActivity {
         mWebView.loadUrl(url);
     }
 
-    @Override
-    protected String setTitle() {
-        return getIntent().getStringExtra(TITLE);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

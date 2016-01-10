@@ -39,13 +39,7 @@ public class AboutActivity extends ToolBarActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         scrollView.setHeader(backgroundImg);
-
-//        BitmapDecoder decoder
-    }
-
-    @Override
-    protected String setTitle() {
-        return "关于";
+        setTitle("关于");
     }
 
     @Override

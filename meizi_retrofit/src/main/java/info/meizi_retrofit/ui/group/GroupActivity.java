@@ -63,6 +63,7 @@ public class GroupActivity extends ListActivity {
     private WrapGroup mWrapGroup;
     int mI = 0;
     private String mUrl;
+    private String mTitle;
     boolean canRefresh = true;
 
     @Override
@@ -72,7 +73,10 @@ public class GroupActivity extends ListActivity {
         mApi = createApi();
         groupid = getIntent().getStringExtra(GROUPID);
         mUrl = getIntent().getStringExtra("url");
-
+        mTitle = getIntent().getStringExtra("title");
+        if (mTitle != null) {
+            setTitle(mTitle);
+        }
         mAdapter = new GroupAdapter(this) {
             @Override
             protected void onItemClick(View v, int position) {
@@ -97,6 +101,7 @@ public class GroupActivity extends ListActivity {
         }
 
     }
+
 
     /**
      * 是否收藏了
@@ -180,7 +185,6 @@ public class GroupActivity extends ListActivity {
 
                     @Override
                     public void onNext(Content content) {
-                        KLog.e(mIndex++);
                         mAdapter.add(content);
                     }
                 }));

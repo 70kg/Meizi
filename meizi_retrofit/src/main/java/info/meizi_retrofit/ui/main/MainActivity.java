@@ -24,9 +24,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import info.meizi_retrofit.R;
 import info.meizi_retrofit.base.BaseActivity;
-import info.meizi_retrofit.ui.about.AboutActivity;
 import info.meizi_retrofit.ui.CollectedActivity;
+import info.meizi_retrofit.ui.about.AboutActivity;
 import info.meizi_retrofit.ui.group.GroupActivity;
+import info.meizi_retrofit.ui.hot.HotActivity;
 import info.meizi_retrofit.utils.Utils;
 import me.drakeet.materialdialog.MaterialDialog;
 
@@ -36,8 +37,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     Toolbar mToolbar;
     @Bind(R.id.id_nv_menu)
     NavigationView mMenu;
-    @Bind(R.id.navigation_drawer_bottom)
-    NavigationView mBottomMenu;
+    //    @Bind(R.id.navigation_drawer_bottom)
+//    NavigationView mBottomMenu;
     @Bind(R.id.layout_drawerlayouy)
     DrawerLayout mDrawerLayout;
 
@@ -64,7 +65,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         replaceFragment(HomeFragment.newFragment(""));
         mMenu.setNavigationItemSelectedListener(this);
-        mBottomMenu.setNavigationItemSelectedListener(this);
+//        mBottomMenu.setNavigationItemSelectedListener(this);
     }
 
     @Override
@@ -94,7 +95,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 startActivity(new Intent(MainActivity.this, AboutActivity.class));
                 break;
             case R.id.menu_collect1:
-                startActivity(new Intent(this,CollectedActivity.class));
+                startActivity(new Intent(this, CollectedActivity.class));
+                break;
+            case R.id.menu_tag:
+                startActivity(new Intent(this, HotActivity.class));
                 break;
         }
         mDrawerLayout.closeDrawers();

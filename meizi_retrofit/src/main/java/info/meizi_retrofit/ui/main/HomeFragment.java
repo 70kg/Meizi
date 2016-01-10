@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
+import com.socks.library.KLog;
+
 import java.util.List;
 
 import info.meizi_retrofit.R;
@@ -16,7 +18,6 @@ import info.meizi_retrofit.base.BaseFragment;
 import info.meizi_retrofit.model.Group;
 import info.meizi_retrofit.net.ContentParser;
 import info.meizi_retrofit.ui.group.GroupActivity;
-import info.meizi_retrofit.utils.LogUtils;
 import info.meizi_retrofit.utils.Utils;
 import info.meizi_retrofit.widget.RadioImageView;
 import io.realm.Realm;
@@ -54,7 +55,7 @@ public class HomeFragment extends BaseFragment {
 
     private void StartLoad(int page) {
         Utils.statrtRefresh(mRefresher, true);
-
+        KLog.e("http://www.mzitu.com/" + type + "/page/" + page);
         mSubscriptions.add(mGroupApi.getGroup(type, page).map(new Func1<String, List<Group>>() {
             @Override
             public List<Group> call(String s) {
@@ -78,6 +79,8 @@ public class HomeFragment extends BaseFragment {
                     @Override
                     public void onError(Throwable e) {
                         Snackbar.make(mRecyclerView, "出现错误啦", Snackbar.LENGTH_SHORT).show();
+                        mRefresher.setRefreshing(false);
+                        KLog.e(e);
                     }
 
                     @Override
@@ -126,8 +129,7 @@ public class HomeFragment extends BaseFragment {
         if (bitmap != null && !bitmap.isRecycled()) {
             intent1.putExtra(GroupActivity.COLOR, Utils.getPaletteColor(bitmap));
         }
-
-        LogUtils.e(mAdapter.get(position).getImageurl());
+        intent1.putExtra("title", mAdapter.get(position).getTitle());
         //现在只需要传递处理完的URL进去
         intent1.putExtra("url", mAdapter.get(position).getImageurl());
         intent1.putExtra(GroupActivity.GROUPID, Utils.url2groupid(mAdapter.get(position).getUrl()));

@@ -35,6 +35,11 @@
             android:theme="@style/ViewerTheme"/>
         <activity android:name=".ui.about.AboutActivity"/>
         <activity android:name=".ui.about.WebActivity"/>
+        <activity android:name=".ui.tag.TagActivity"/>
+        <activity android:name=".ui.hot.tag.TagGroupActivity"/>
+        <activity android:name=".ui.hotgirl.HotGirlActivity"/>
+        <activity android:name=".ui.hot.girl.HotGirlGroupActivity"/>
+        <activity android:name=".ui.hot.HotActivity"/>
 
         <service
             android:name="com.umeng.update.net.DownloadingService"

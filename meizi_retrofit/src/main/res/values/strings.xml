@@ -9,4 +9,96 @@
 
     <string name="about">这是个看妹子的应用，每天都会有更新呦\n数据来源http://www.mzitu.com\n\n完全开源，项目地址https://github.com/70kg/Meizi，如果你觉得还不错，可以分享一下。同时欢迎提意见，如果能对项目贡献代码就再好不过了。\n\n完全无广告，尽量保持优雅和简洁，你们的支持是我最大的动力。当然，如果有兴趣也可以赞助一下我QAQ\n\n支付宝账户：18817956513</string>
     <string name="libs_list">butterknife\nokhttp\npicasso\nrealm\njsoup\nRxJava\nRetrofit\n</string>
+
+
+    <array name="tag">
+        <item>秀人网</item>
+        <item>性感</item>
+        <item>诱惑</item>
+        <item>制服</item>
+        <item>情趣睡衣</item>
+        <item>清纯</item>
+        <item>校花</item>
+        <item>ROSI</item>
+        <item>比基尼</item>
+        <item>美腿</item>
+        <item>走光</item>
+        <item>美臀</item>
+        <item>推女神</item>
+        <item>湿身</item>
+        <item>黑丝</item>
+        <item>推女郎</item>
+        <item>Ugirls</item>
+        <item>魅妍社</item>
+        <item>波萝社</item>
+        <item>爱蜜社</item>
+        <item>有沟必火</item>
+        <item>嗲囡囡</item>
+    </array>
+    <array name="tagUrls">
+        <item>tag/xiuren</item>
+        <item>tag/xinggan</item>
+        <item>tag/youhuo</item>
+        <item>tag/zhifu</item>
+        <item>tag/shuiyi</item>
+        <item>tag/qingchun</item>
+        <item>tag/xiaohua</item>
+        <item>tag/rosi</item>
+        <item>tag/bikini</item>
+        <item>tag/leg</item>
+        <item>tag/zouguang</item>
+        <item>tag/meitun</item>
+        <item>tag/tgod</item>
+        <item>tag/shishen</item>
+        <item>tag/heisi</item>
+        <item>tag/tuigirl</item>
+        <item>tag/ugirls</item>
+        <item>tag/mistar</item>
+        <item>tag/bololi</item>
+        <item>tag/imiss</item>
+        <item>tag/yougou</item>
+        <item>tag/dianannan</item>
+    </array>
+    <array name="girls">
+        <item>松果儿</item>
+        <item>夏美酱</item>
+        <item>纯小希</item>
+        <item>Milk楚楚</item>
+        <item>徐cake</item>
+        <item>诗朵雅</item>
+        <item>王语纯</item>
+        <item>米妮大萌萌</item>
+        <item>张栩菲</item>
+        <item>杨依</item>
+        <item>玛鲁娜</item>
+        <item>于姬una</item>
+        <item>刘娅希</item>
+        <item>刘飞儿</item>
+        <item>夏茉GIGI</item>
+        <item>顾欣怡</item>
+        <item>黄可</item>
+        <item>佟蔓</item>
+        <item>陆瓷</item>
+    </array>
+    <array name="girlUrls">
+        <item>tag/songguoer</item>
+        <item>tag/xiameijiang</item>
+        <item>tag/chunxiaoxi</item>
+        <item>tag/milk-chuchu</item>
+        <item>tag/xu-cake</item>
+        <item>tag/shiduoya</item>
+        <item>tag/wangyuchun"</item>
+        <item>tag/minida</item>
+        <item>tag/zhangxufei</item>
+        <item>tag/yangyi</item>
+        <item>tag/manuela</item>
+        <item>tag/yuji-una</item>
+        <item>tag/liuyaxi</item>
+        <item>liufeier</item>
+        <item>xiamo-gigi</item>
+        <item>guxinyi</item>
+        <item>tag/huangke</item>
+        <item>tag/tongman</item>
+        <item>tag/luchi</item>
+    </array>
 </resources>

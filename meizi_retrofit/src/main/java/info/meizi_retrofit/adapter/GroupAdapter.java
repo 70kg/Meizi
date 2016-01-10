@@ -17,6 +17,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import info.meizi_retrofit.R;
+import info.meizi_retrofit.adapter.base.ArrayRecyclerAdapter;
 import info.meizi_retrofit.model.Content;
 import info.meizi_retrofit.widget.RadioImageView;
 

@@ -23,6 +23,7 @@ import info.meizi_retrofit.widget.RadioImageView;
  */
 public class CollectedActivity extends ListActivity {
     private CollectedAdapter mAdapter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +37,7 @@ public class CollectedActivity extends ListActivity {
         };
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.replaceWith(groups);
+        setTitle("我的收藏");
     }
 
     private void startGroupActivity(View view, int position) {
@@ -51,6 +53,7 @@ public class CollectedActivity extends ListActivity {
         if (bitmap != null && !bitmap.isRecycled()) {
             intent1.putExtra(GroupActivity.COLOR, Utils.getPaletteColor(bitmap));
         }
+        intent1.putExtra("title", mAdapter.get(position).getGroup().getTitle());
         intent1.putExtra("url", mAdapter.get(position).getGroup().getImageurl());
         intent1.putExtra(GroupActivity.GROUPID, Utils.url2groupid(mAdapter.get(position).getGroup().getUrl()));
         startActivity(intent1);
@@ -63,8 +66,4 @@ public class CollectedActivity extends ListActivity {
         mRefresher.setRefreshing(false);
     }
 
-    @Override
-    protected String setTitle() {
-        return "我的收藏";
-    }
 }

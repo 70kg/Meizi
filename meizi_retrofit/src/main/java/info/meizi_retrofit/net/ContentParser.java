@@ -40,20 +40,26 @@ public class ContentParser {
 
         Element aelement;
         Element imgelement;
-        for (int i = 14; i < 86; i+=3) {
-            imgelement = links.get(i).select("img").first();
-            aelement = links.get(i).select("a").first();
-            Group bean = new Group();
-            bean.setOrder(i);
+        for (int i = 14; i < 86; i += 3) {
+            if (i < links.size() && links.get(i) != null && links.get(i).select("img").first() != null) {
+                imgelement = links.get(i).select("img").first();
+                aelement = links.get(i).select("a").first();
+                Group bean = new Group();
+                bean.setOrder(i);
+                bean.setTitle(imgelement.attr("alt").toString());
+                bean.setImageurl(imgelement.attr("data-original"));
 
-            bean.setTitle(imgelement.attr("alt").toString());
-            bean.setType(type);
-            bean.setHeight(354);//element.attr("height")
-            bean.setWidth(236);
-            bean.setImageurl(imgelement.attr("data-original"));
-            bean.setUrl(aelement.attr("href"));
-            bean.setGroupid(url2groupid(bean.getUrl()));//首页的这个是从大到小排序的 可以当做排序依据
-            list.add(bean);
+                bean.setType(type);
+                bean.setHeight(354);//element.attr("height")
+                bean.setWidth(236);
+                if (aelement != null) {
+                    bean.setUrl(aelement.attr("href"));
+                }
+                bean.setGroupid(url2groupid(bean.getUrl()));//首页的这个是从大到小排序的 可以当做排序依据
+                list.add(bean);
+            } else {
+                break;
+            }
         }
         return list;
     }

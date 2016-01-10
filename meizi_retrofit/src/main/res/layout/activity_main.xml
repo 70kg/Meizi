@@ -19,14 +19,12 @@
             android:background="?attr/colorPrimary"
             android:elevation="4dp"
             app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/PopupMenu"
-            />
+            app:popupTheme="@style/PopupMenu"/>
 
         <FrameLayout
             android:id="@+id/content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent"/>
     </LinearLayout>
 
     <android.support.design.widget.NavigationView
@@ -34,8 +32,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="left"
-        android:fitsSystemWindows="true"
-        >
+        android:fitsSystemWindows="true">
+
 
         <android.support.design.widget.NavigationView
             android:id="@+id/id_nv_menu"
@@ -43,25 +41,14 @@
             android:layout_height="match_parent"
             android:layout_gravity="top"
             app:headerLayout="@layout/header_drawer"
-            app:menu="@menu/menu_drawer"
-            />
+            app:menu="@menu/menu_drawer"/>
 
-        <android.support.design.widget.NavigationView
-            android:id="@+id/navigation_drawer_bottom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            app:menu="@menu/menu_bottom"/>
+        <!--<android.support.design.widget.NavigationView-->
+        <!--android:id="@+id/navigation_drawer_bottom"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="bottom"-->
+        <!--app:menu="@menu/menu_bottom"/>-->
 
     </android.support.design.widget.NavigationView>
-
-    <!--<android.support.design.widget.NavigationView-->
-    <!--android:id="@+id/id_nv_menu"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:layout_gravity="left"-->
-    <!--android:fitsSystemWindows="true"-->
-
-    <!--app:headerLayout="@layout/header_drawer"-->
-    <!--app:menu="@menu/menu_drawer"/>-->
 </android.support.v4.widget.DrawerLayout>

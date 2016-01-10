@@ -8,9 +8,4 @@
             android:title="关于"></item>
     </group>
 
-
-    <!--<item-->
-    <!--android:id="@+id/menu_setting"-->
-    <!--android:icon="@drawable/setting"-->
-    <!--android:title="设置"></item>-->
 </menu>

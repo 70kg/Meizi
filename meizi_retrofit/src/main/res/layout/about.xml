@@ -11,10 +11,15 @@
         android:id="@+id/inc_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/app_primary_color"
-        android:elevation="4dp"
-        android:fitsSystemWindows="true"
-        android:titleTextColor="@color/white"/>
+        android:background="?attr/colorPrimary"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:titleTextColor="@color/cardview_light_background">
+
+        <TextSwitcher
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </android.support.v7.widget.Toolbar>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -77,12 +82,12 @@
                         android:textColor="@color/md_grey_600"/>
 
                     <RelativeLayout
-                        android:onClick="_70kg"
                         android:id="@+id/layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/text_tem"
-                        android:background="@drawable/bg_card_nopic">
+                        android:background="@drawable/bg_card_nopic"
+                        android:onClick="_70kg">
 
                         <ImageView
                             android:id="@+id/ig_avatar"
@@ -105,12 +110,12 @@
                     </RelativeLayout>
 
                     <RelativeLayout
-                        android:onClick="_weibo"
                         android:id="@+id/layout_weibo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/layout"
-                        android:background="@drawable/bg_card_nopic">
+                        android:background="@drawable/bg_card_nopic"
+                        android:onClick="_weibo">
 
                         <ImageView
                             android:id="@+id/weibo"
