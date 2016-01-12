@@ -57,7 +57,7 @@ public class HotGirlFragment extends Fragment {
             @Override
             protected void onItemClick(View v, int position) {
                 Intent intent = new Intent(getActivity(), HotGirlGroupActivity.class);
-                intent.putExtra(HotGirlGroupActivity.GIRL, girlUrls.get(position));
+                intent.putExtra(HotGirlGroupActivity.TAG, girlUrls.get(position));
                 intent.putExtra(HotGirlGroupActivity.TITLE, girls.get(position));
                 startActivity(intent);
             }

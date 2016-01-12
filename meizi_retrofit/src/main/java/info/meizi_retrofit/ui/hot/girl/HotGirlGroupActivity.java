@@ -13,14 +13,14 @@ import info.meizi_retrofit.ui.main.HomeFragment;
  * Created by Mr_Wrong on 16/1/9.
  */
 public class HotGirlGroupActivity extends ToolBarActivity {
-    public static final String GIRL = "girl";
+    public static final String TAG = "girl";
     public static final String TITLE = "title";
     private String girl;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        girl = getIntent().getStringExtra(GIRL);
+        girl = getIntent().getStringExtra(TAG);
         replaceFragment(HomeFragment.newFragment(girl));
         setTitle(getIntent().getStringExtra(TITLE));
     }

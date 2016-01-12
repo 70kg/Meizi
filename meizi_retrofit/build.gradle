@@ -114,4 +114,5 @@ dependencies {
     compile files('libs/butterknife-7.0.1.jar')
     compile files('libs/umeng-update-v2.6.0.1.jar')
     compile 'com.github.zhaokaiqiang.klog:library:1.3.0'
+    compile 'me.gujun.android.taggroup:library:1.4@aar'
 }

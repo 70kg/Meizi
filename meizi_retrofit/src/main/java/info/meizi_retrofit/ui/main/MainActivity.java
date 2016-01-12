@@ -50,7 +50,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         UmengUpdateAgent.setDeltaUpdate(false);
         UmengUpdateAgent.update(this);
 
-
         mToolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(mToolbar);
         Utils.setSystemBar(this, mToolbar, getResources().getColor(R.color.app_primary_color));

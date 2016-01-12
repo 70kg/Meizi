@@ -17,6 +17,10 @@
     <style name="ViewerTheme" parent="AppTheme.Base">
     </style>
 
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
     <style name="WebTitle"
            parent="@android:style/TextAppearance">
         <item name="android:textSize">18dp</item>
