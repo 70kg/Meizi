@@ -21,9 +21,9 @@ public class Group extends RealmObject implements Serializable {
     private String title;
     private String type;
     private int order;
-    private long date;
+    private long date;//no use
     private int color;
-    private boolean iscollected;
+    private boolean iscollected;//no use
     private int groupid;
 
 

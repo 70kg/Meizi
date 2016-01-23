@@ -100,9 +100,6 @@
     -keep class  com.lippi.recorder.utils.AudioRecorder{*;}
 
 
-    #如果引用了v4或者v7包
-    -dontwarn android.support.**
-
     ####混淆保护自己项目的部分代码以及引用的第三方jar包library-end####
 
     -keep public class * extends android.view.View {
@@ -159,14 +156,9 @@
 
     # OkHttp
     -keepattributes Signature
-    -keepattributes *Annotation*
     -keep class com.squareup.okhttp.** { *; }
     -keep interface com.squareup.okhttp.** { *; }
     -dontwarn com.squareup.okhttp.**
-
-    -dontwarn okio.**
-    -dontwarn retrofit.**
-    -dontwarn rx.**
 
     -keepclasseswithmembers class * {
         @retrofit.http.* <methods>;
@@ -177,7 +169,6 @@
 
 
     # For using GSON @Expose annotation
-    -keepattributes *Annotation*
     -keepattributes EnclosingMethod
      # Gson specific classes
     -keep class sun.misc.Unsafe { *; }
@@ -206,11 +197,7 @@
     -keep class com.umeng.** {*; }
 
     # Retrofit 1.X
-    -keep class com.squareup.okhttp.** { *; }
     -keep class retrofit.** { *; }
-    -keep interface com.squareup.okhttp.** { *; }
-
-    -dontwarn com.squareup.okhttp.**
     -dontwarn okio.**
     -dontwarn retrofit.**
     -dontwarn rx.**
@@ -244,3 +231,48 @@
     -keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
         rx.internal.util.atomic.LinkedQueueNode consumerNode;
     }
+
+
+    -dontwarn com.jcraft.jzlib.**
+    -keep class com.jcraft.jzlib.**  { *;}
+
+    -dontwarn sun.misc.**
+    -keep class sun.misc.** { *;}
+
+    -dontwarn com.alibaba.fastjson.**
+    -keep class com.alibaba.fastjson.** { *;}
+
+    -dontwarn sun.security.**
+    -keep class sun.security.** { *; }
+
+    -dontwarn com.google.**
+    -keep class com.google.** { *;}
+
+    -dontwarn com.avos.**
+    -keep class com.avos.** { *;}
+
+    -keep public class android.net.http.SslError
+    -keep public class android.webkit.WebViewClient
+
+    -dontwarn android.webkit.WebView
+    -dontwarn android.net.http.SslError
+    -dontwarn android.webkit.WebViewClient
+
+    -dontwarn android.support.**
+
+    -dontwarn org.apache.**
+    -keep class org.apache.** { *;}
+
+    -dontwarn org.jivesoftware.smack.**
+    -keep class org.jivesoftware.smack.** { *;}
+
+    -dontwarn com.loopj.**
+    -keep class com.loopj.** { *;}
+
+
+    -dontwarn org.xbill.**
+    -keep class org.xbill.** { *;}
+
+    -dontwarn com.socks.library.**
+    -keep class com.socks.library.** { *; }
+

@@ -91,26 +91,10 @@ android {
         }
     }
     packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
-}
-
-andResGuard {
-    mappingFile = null
-    use7zip = false
-    keepRoot = false
-    // add <yourpackagename>.R.drawable.icon into whitelist.
-    // because the launcher will get the icon with his name
-    whiteList = [
-            "andresguard.tencent.com.andresguard_example.R.drawable.icon"
-    ]
-    compressFilePattern = [
-            "*.png",
-            "*.jpg",
-            "*.jpeg",
-            "*.gif",
-            "resources.arsc"
-    ]
 }
 
 dependencies {
@@ -135,4 +119,7 @@ dependencies {
     compile files('libs/umeng-update-v2.6.0.1.jar')
     compile 'com.github.zhaokaiqiang.klog:library:1.3.0'
     compile 'me.gujun.android.taggroup:library:1.4@aar'
+
+    compile 'cn.leancloud.android:avoscloud-sdk:v3.0.+'
+    compile 'cn.leancloud.android:avoscloud-sns:v3.0.+'
 }

@@ -7,14 +7,24 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.SaveCallback;
+import com.socks.library.KLog;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import info.meizi_retrofit.R;
 import info.meizi_retrofit.adapter.CollectedAdapter;
+import info.meizi_retrofit.model.Group;
 import info.meizi_retrofit.model.WrapGroup;
 import info.meizi_retrofit.ui.base.ListActivity;
 import info.meizi_retrofit.ui.group.GroupActivity;
-import info.meizi_retrofit.utils.LogUtils;
 import info.meizi_retrofit.utils.Utils;
 import info.meizi_retrofit.widget.RadioImageView;
 
@@ -31,7 +41,7 @@ public class CollectedActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setTitle("我的收藏");
         groups = WrapGroup.all(realm);
-        LogUtils.e("收藏的个数：" + groups.size());
+        KLog.e("收藏的个数：" + groups.size());
         mAdapter = new CollectedAdapter(this) {
             @Override
             protected void onItemClick(View v, int position) {
@@ -39,10 +49,66 @@ public class CollectedActivity extends ListActivity {
             }
         };
         mRecyclerView.setAdapter(mAdapter);
-        mAdapter.replaceWith(groups);
+
+        if (groups.size() > 0) {//本地有数据才去上传
+            mAdapter.replaceWith(groups);
+            saveToCloud();
+        } else {
+            getFromCloud();
+        }
+
+    }
+
+    private void saveToCloud() {
+        try {
+            JSONArray array = new JSONArray();
+            for (WrapGroup group : groups) {
+                JSONObject object = new JSONObject();
+                object.put("groupid", group.getGroupid());
+                object.put("title", group.getGroup().getTitle());
+                object.put("imageurl", group.getGroup().getImageurl());
+                object.put("url", group.getGroup().getUrl());
+                array.put(object);
+            }
+            AVUser user = AVUser.getCurrentUser();
+            user.put("groups", array);
+            user.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(AVException e) {
+                    KLog.e(e);
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+            KLog.e(e);
+        }
+    }
 
 
+    private void getFromCloud() {
+        try {
+            groups = new ArrayList<>();
+            AVUser user = AVUser.getCurrentUser();
+            JSONArray array = user.getJSONArray("groups");
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject object = array.getJSONObject(i);
 
+                WrapGroup wrapGroup = new WrapGroup();
+                Group group = new Group();
+                group.setWidth(236);
+                group.setHeight(354);
+                group.setImageurl(object.getString("imageurl"));
+                group.setTitle(object.getString("title"));
+                group.setUrl(object.getString("url"));
+                wrapGroup.setGroup(group);
+                wrapGroup.setGroupid(object.getString("groupid"));
+                groups.add(wrapGroup);
+            }
+            mAdapter.replaceWith(groups);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            KLog.e(e);
+        }
 
     }
 
@@ -58,9 +124,10 @@ public class CollectedActivity extends ListActivity {
         if (bitmap != null && !bitmap.isRecycled()) {
             intent1.putExtra(GroupActivity.COLOR, Utils.getPaletteColor(bitmap));
         }
+
         intent1.putExtra("title", mAdapter.get(position).getGroup().getTitle());
         intent1.putExtra("url", mAdapter.get(position).getGroup().getImageurl());
-        intent1.putExtra(GroupActivity.GROUPID, Utils.url2groupid(mAdapter.get(position).getGroup().getUrl()));
+        intent1.putExtra(GroupActivity.GROUPID, mAdapter.get(position).getGroupid());
         startActivity(intent1);
     }
 

@@ -12,6 +12,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.LogInCallback;
+import com.avos.sns.SNS;
+import com.avos.sns.SNSBase;
+import com.avos.sns.SNSCallback;
+import com.avos.sns.SNSException;
+import com.avos.sns.SNSType;
 import com.socks.library.KLog;
 import com.umeng.update.UmengUpdateAgent;
 
@@ -21,7 +29,6 @@ import info.meizi_retrofit.R;
 import info.meizi_retrofit.base.BaseActivity;
 import info.meizi_retrofit.ui.CollectedActivity;
 import info.meizi_retrofit.ui.about.AboutActivity;
-import info.meizi_retrofit.ui.hot.HotActivity;
 import info.meizi_retrofit.utils.Utils;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -55,10 +62,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         replaceFragment(HomeFragment.newFragment(""));
         mMenu.setNavigationItemSelectedListener(this);
 
-
-        KLog.e(android.os.Build.SERIAL);
-
-
     }
 
     @Override
@@ -88,10 +91,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 startActivity(new Intent(MainActivity.this, AboutActivity.class));
                 break;
             case R.id.menu_collect1:
+//                testLogin();
                 startActivity(new Intent(this, CollectedActivity.class));
                 break;
             case R.id.menu_tag:
-                startActivity(new Intent(this, HotActivity.class));
+                testLoginWithWeb();
+//                startActivity(new Intent(this, HotActivity.class));
                 break;
         }
         mDrawerLayout.closeDrawers();
@@ -104,4 +109,71 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         transaction.commit();
     }
 
+    SNSType type;
+
+    //sso登录
+    private void testLogin() {
+        try {
+            type = SNSType.AVOSCloudSNSSinaWeibo;
+            SNS.setupPlatform(this, SNSType.AVOSCloudSNSSinaWeibo, "3216821683",
+                    "3216821683",
+                    "https://api.weibo.com/oauth2/default.html");
+
+            SNS.loginWithCallback(MainActivity.this, SNSType.AVOSCloudSNSSinaWeibo,
+                    new SNSCallback() {
+
+                        @Override
+                        public void done(SNSBase base, SNSException error) {
+
+                            KLog.e(base.authorizedData());
+                            if (error == null) {
+                                SNS.loginWithAuthData(base.userInfo(), new LogInCallback<AVUser>() {
+                                    @Override
+                                    public void done(AVUser user, AVException error) {
+                                        KLog.e(error);
+                                    }
+                                });
+                            }
+                        }
+                    });
+        } catch (AVException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    //web登录
+    private void testLoginWithWeb() {
+        try {
+            type = SNSType.AVOSCloudSNSSinaWeibo;
+            SNS.setupPlatform(SNSType.AVOSCloudSNSSinaWeibo,
+                    "https://leancloud.cn/1.1/sns/goto/eys0ndm7dp1tre7v");
+            SNS.loginWithCallback(MainActivity.this, SNSType.AVOSCloudSNSSinaWeibo,
+                    new SNSCallback() {
+                        @Override
+                        public void done(SNSBase base, SNSException error) {
+
+                            KLog.e(base.authorizedData());
+                            KLog.e(error);
+
+                            if (error == null) {
+                                SNS.loginWithAuthData(base.userInfo(), new LogInCallback<AVUser>() {
+                                    @Override
+                                    public void done(AVUser user, AVException error) {
+
+                                    }
+                                });
+                            }
+                        }
+                    });
+        } catch (AVException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        SNS.onActivityResult(requestCode, resultCode, data, type);
+    }
 }

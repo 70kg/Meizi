@@ -3,6 +3,8 @@ package info.meizi_retrofit;
 import android.app.Application;
 import android.content.Context;
 
+import com.avos.avoscloud.AVOSCloud;
+
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
@@ -15,7 +17,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
-
+        AVOSCloud.initialize(this, "sTcSMqHmJTh84xK1kho06ry5-gzGzoHsz", "SKJ69RQ0AUaaNcs2rxtxSOQV");
         RealmConfiguration myConfig = new RealmConfiguration.Builder(getContext())
                 .name("myRealm")
                 .schemaVersion(2)
