@@ -20,14 +20,17 @@ import info.meizi_retrofit.widget.RadioImageView;
 
 /**
  * Created by Mr_Wrong on 16/1/6.
+ * 加载策略:先去加载数据库的 --> 展示 --> 然后去请求网络 --> 存到数据库 --> 从数据库获取和展示的进行比对 -->  更新界面
  */
 public class CollectedActivity extends ListActivity {
     private CollectedAdapter mAdapter;
+    List<WrapGroup> groups;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        List<WrapGroup> groups = WrapGroup.all(realm);
+        setTitle("我的收藏");
+        groups = WrapGroup.all(realm);
         LogUtils.e("收藏的个数：" + groups.size());
         mAdapter = new CollectedAdapter(this) {
             @Override
@@ -37,11 +40,13 @@ public class CollectedActivity extends ListActivity {
         };
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.replaceWith(groups);
-        setTitle("我的收藏");
+
+
+
+
     }
 
     private void startGroupActivity(View view, int position) {
-
         RadioImageView imageView = (RadioImageView) view.findViewById(R.id.iv_main_item);
         Bitmap bitmap = null;
         BitmapDrawable bd = (BitmapDrawable) imageView.getDrawable();

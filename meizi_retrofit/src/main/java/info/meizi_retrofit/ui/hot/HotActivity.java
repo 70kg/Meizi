@@ -1,23 +1,23 @@
 package info.meizi_retrofit.ui.hot;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 import java.util.Arrays;
 
 import butterknife.Bind;
 import info.meizi_retrofit.R;
 import info.meizi_retrofit.ui.base.ToolBarActivity;
-import info.meizi_retrofit.ui.hot.girl.HotGirlGroupActivity;
-import info.meizi_retrofit.ui.hot.tag.TagGroupActivity;
 import me.gujun.android.taggroup.TagGroup;
 
 /**
@@ -44,50 +44,57 @@ public class HotActivity extends ToolBarActivity {
         girlUrls = getResources().getStringArray(R.array.girlUrls);
         tagGroup.setTags(tags);
         girlGroup.setTags(girls);
+
         tagGroup.setOnTagClickListener(new TagGroup.OnTagClickListener() {
             @Override
             public void onTagClick(String tag) {
-
-                Arrays.asList(tags).indexOf(tag);
-
-                Intent intent = new Intent(HotActivity.this, TagGroupActivity.class);
-                intent.putExtra(TagGroupActivity.TAG, tagUrls[Arrays.asList(tags).indexOf(tag)]);
-                intent.putExtra(TagGroupActivity.TITLE, tag);
-                startActivity(intent);
+                startHotGroupActivity(tagUrls[Arrays.asList(tags).indexOf(tag)], tag);
             }
         });
         girlGroup.setOnTagClickListener(new TagGroup.OnTagClickListener() {
             @Override
             public void onTagClick(String tag) {
-                Intent intent = new Intent(HotActivity.this, HotGirlGroupActivity.class);
-                intent.putExtra(HotGirlGroupActivity.TAG, girlUrls[Arrays.asList(girls).indexOf(tag)]);
-                intent.putExtra(HotGirlGroupActivity.TITLE, tag);
-                startActivity(intent);
+                startHotGroupActivity(girlUrls[Arrays.asList(girls).indexOf(tag)], tag);
             }
         });
 
+        handleHint();
+
+    }
+
+    private void handleHint() {
+        SharedPreferences share = getSharedPreferences("meizi", Context.MODE_PRIVATE);
+        boolean hasShow = share.getBoolean("hasShow", false);
+        if (!hasShow) {//第一次打开
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogStyle);
+            builder.setTitle("FBI Warning");
+            builder.setMessage(getResources().getString(R.string.hot_hint));
+            builder.setNegativeButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            }).show();
+            SharedPreferences sharedPreferences = getSharedPreferences("meizi", Context.MODE_PRIVATE); //私有数据
+            SharedPreferences.Editor editor = sharedPreferences.edit();//获取编辑器
+            editor.putBoolean("hasShow", true);
+            editor.commit();//提交修改
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.searchmenu, menu);
-        MenuItem menuItem = menu.findItem(R.id.action_search);//在菜单中找到对应控件的item
+        MenuItem menuItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
 
         searchView.setIconifiedByDefault(false);
         searchView.setSubmitButtonEnabled(true);
-        searchView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(HotActivity.this, "点击了", Toast.LENGTH_SHORT).show();
-
-            }
-        });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Toast.makeText(HotActivity.this, query, Toast.LENGTH_SHORT).show();
+                startHotGroupActivity("search/" + query, query);
                 return true;
             }
 
@@ -97,6 +104,13 @@ public class HotActivity extends ToolBarActivity {
             }
         });
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private void startHotGroupActivity(String tag, String title) {
+        Intent intent = new Intent(HotActivity.this, HotGroupActivity.class);
+        intent.putExtra(HotGroupActivity.TAG, tag);
+        intent.putExtra(HotGroupActivity.TITLE, title);
+        startActivity(intent);
     }
 
     @Override

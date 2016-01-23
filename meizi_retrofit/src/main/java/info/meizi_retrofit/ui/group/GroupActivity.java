@@ -125,14 +125,14 @@ public class GroupActivity extends ListActivity {
     private void sendToLoad(boolean isrefresh) {
         KLog.e(groupid + "----" + isrefresh);
         Utils.statrtRefresh(mRefresher, true);
-        if (isrefresh) {
+        if (isrefresh) {//刷新 从新加载
             newLoadData();
         } else if (!Content.all(realm, groupid).isEmpty()) {//数据库有 直接加载
             List<Content> list = Content.all(realm, groupid);
             mAdapter.replaceWith(list);
             Utils.statrtRefresh(mRefresher, false);
             KLog.d("获取本地资源");
-        } else {
+        } else {//第一次加载
             KLog.d("加载网络资源");
             newLoadData();
         }

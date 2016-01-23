@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -19,6 +18,7 @@ import butterknife.ButterKnife;
 import info.meizi_retrofit.R;
 import info.meizi_retrofit.adapter.base.ArrayRecyclerAdapter;
 import info.meizi_retrofit.model.Group;
+import info.meizi_retrofit.utils.PicassoHelper;
 import info.meizi_retrofit.widget.RadioImageView;
 
 /**
@@ -33,6 +33,7 @@ public abstract class HomeAdapter extends ArrayRecyclerAdapter<Group, HomeAdapte
         this.context = context;
         this.inflater = LayoutInflater.from(context);
         setHasStableIds(true);
+
     }
 
     @Override
@@ -44,7 +45,7 @@ public abstract class HomeAdapter extends ArrayRecyclerAdapter<Group, HomeAdapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         Group bean = get(position);
         holder.imageView.setOriginalSize(bean.getWidth(), bean.getHeight());
-        Picasso.with(context).load(bean.getImageurl()).tag("1").//config(Bitmap.Config.RGB_565).
+        PicassoHelper.getInstance(context).load(bean.getImageurl()).tag("1").//config(Bitmap.Config.RGB_565).
                 transform(new CopyOnWriteArrayList<Transformation>()).
                 into(holder.imageView);
         holder.title.setText(bean.getTitle());

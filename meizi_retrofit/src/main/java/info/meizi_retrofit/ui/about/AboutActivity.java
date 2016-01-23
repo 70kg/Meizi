@@ -45,5 +45,9 @@ public class AboutActivity extends ToolBarActivity {
     @Override
     protected int layoutId() {
         return R.layout.about;
+
+
+
+
     }
 }

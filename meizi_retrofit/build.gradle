@@ -1,8 +1,10 @@
 apply plugin: 'com.android.application'
+apply plugin: 'AndResGuard'
 android {
     lintOptions {
         checkReleaseBuilds false
         abortOnError false
+        disable 'InvalidPackage'
     }
 
     compileSdkVersion 23
@@ -14,6 +16,7 @@ android {
         targetSdkVersion 23
         versionCode 8
         versionName "1.1.0"
+        resConfigs "zh"//只要中文的第二三方包等
         manifestPlaceholders = [CHANNEL_VALUE: "xiaomi"]
     }
     productFlavors {
@@ -68,10 +71,11 @@ android {
     buildTypes {
         debug {
             buildConfigField "boolean", "LOG_DEBUG", "true"
-            minifyEnabled false
+            minifyEnabled true
             zipAlignEnabled true
             shrinkResources true
             signingConfig signingConfigs.debug
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'//混淆文件
         }
         release {
             // 不显示Log
@@ -87,9 +91,26 @@ android {
         }
     }
     packagingOptions {
-
         exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
+}
+
+andResGuard {
+    mappingFile = null
+    use7zip = false
+    keepRoot = false
+    // add <yourpackagename>.R.drawable.icon into whitelist.
+    // because the launcher will get the icon with his name
+    whiteList = [
+            "andresguard.tencent.com.andresguard_example.R.drawable.icon"
+    ]
+    compressFilePattern = [
+            "*.png",
+            "*.jpg",
+            "*.jpeg",
+            "*.gif",
+            "resources.arsc"
+    ]
 }
 
 dependencies {
@@ -110,7 +131,6 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.0.0'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
     compile 'org.jsoup:jsoup:1.8.2'
-    compile 'me.drakeet.materialdialog:library:1.2.2'
     compile files('libs/butterknife-7.0.1.jar')
     compile files('libs/umeng-update-v2.6.0.1.jar')
     compile 'com.github.zhaokaiqiang.klog:library:1.3.0'

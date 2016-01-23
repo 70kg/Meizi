@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -19,6 +18,7 @@ import butterknife.ButterKnife;
 import info.meizi_retrofit.R;
 import info.meizi_retrofit.adapter.base.ArrayRecyclerAdapter;
 import info.meizi_retrofit.model.Content;
+import info.meizi_retrofit.utils.PicassoHelper;
 import info.meizi_retrofit.widget.RadioImageView;
 
 /**
@@ -43,7 +43,8 @@ public abstract class GroupAdapter extends ArrayRecyclerAdapter<Content, GroupAd
     public void onBindViewHolder(ViewHolder holder, int position) {
         Content image = get(position);
         holder.imageView.setOriginalSize(image.getImagewidth(), image.getImageheight());
-        Picasso.with(context).load(image.getUrl()).tag("1").config(Bitmap.Config.RGB_565).
+
+        PicassoHelper.getInstance(context).load(image.getUrl()).tag("1").config(Bitmap.Config.RGB_565).
                 transform(new CopyOnWriteArrayList<Transformation>()).
                 into(holder.imageView);
         holder.imageView.setTag(image.getUrl());

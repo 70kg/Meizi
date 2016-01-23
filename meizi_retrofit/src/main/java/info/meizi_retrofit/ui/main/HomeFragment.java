@@ -36,6 +36,8 @@ public class HomeFragment extends BaseFragment {
     private int page = 2;
     private boolean hasload = false;
 
+    String currentImageUrl;
+
     public HomeFragment() {
     }
 
@@ -51,9 +53,14 @@ public class HomeFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         type = getArguments().getString("type");
+        currentImageUrl = Group.getFirstImageUrl(realm, type);
+
     }
 
-    private void StartLoad(int page) {
+    private void StartLoad(int page, boolean isrefresh) {
+        if (page == 1 && !isrefresh)//只有第一次进去才加载
+            mAdapter.addAll(Group.all(realm, type));
+
         Utils.statrtRefresh(mRefresher, true);
         KLog.e("http://www.mzitu.com/" + type + "/page/" + page);
         mSubscriptions.add(mGroupApi.getGroup(type, page).map(new Func1<String, List<Group>>() {
@@ -70,31 +77,76 @@ public class HomeFragment extends BaseFragment {
                         saveDb(groups, realm);
                     }
                 })
-                .subscribe(new Observer<List<Group>>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Snackbar.make(mRecyclerView, "出现错误啦", Snackbar.LENGTH_SHORT).show();
-                        mRefresher.setRefreshing(false);
-                        KLog.e(e);
-                    }
-
-                    @Override
-                    public void onNext(List<Group> groups) {
-                        if (!hasload) {
-                            mAdapter.replaceWith(groups);
-                        } else {
-                            mAdapter.addAll(groups);
-                        }
-                        hasload = false;
-                        mRefresher.setRefreshing(false);
-                    }
-                }));
+//                .flatMap(new Func1<List<Group>, Observable<Group>>() {
+//                    @Override
+//                    public Observable<Group> call(List<Group> groups) {
+//                        return Observable.from(groups);
+//                    }
+//                })
+//                .subscribe(new groupObserver()));
+                .subscribe(new listObserver()));
     }
+
+
+    class groupObserver implements Observer<Group> {
+
+        @Override
+        public void onCompleted() {
+            //mIndex = 0;
+            hasload = false;
+            Utils.statrtRefresh(mRefresher, false);
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            KLog.e(e);
+            Utils.statrtRefresh(mRefresher, false);
+        }
+
+        @Override
+        public void onNext(Group group) {//这里的加载更多有问题
+            //数据库不空  并且和数据库第一个不相等 就是新增的
+            if (!currentImageUrl.isEmpty() && !currentImageUrl.equals(group.getImageurl())) {
+                mAdapter.add(mIndex++, group);
+            } else if (currentImageUrl.isEmpty()) {//数据库没东西 或者加载更多
+                mAdapter.add(group);
+            }
+
+        }
+    }
+
+    int mIndex;//新添加的index
+
+    class listObserver implements Observer<List<Group>> {
+
+        @Override
+        public void onCompleted() {
+
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            if (e.getMessage().equals("404 Not Found")) {
+                Snackbar.make(mRecyclerView, "没有更多啦", Snackbar.LENGTH_SHORT).show();
+            } else {
+                Snackbar.make(mRecyclerView, "出现错误啦", Snackbar.LENGTH_SHORT).show();
+            }
+            mRefresher.setRefreshing(false);
+            KLog.e(e);
+        }
+
+        @Override
+        public void onNext(List<Group> groups) {
+            if (!hasload) {
+                mAdapter.replaceWith(groups);
+            } else {
+                mAdapter.addAll(groups);
+            }
+            hasload = false;
+            mRefresher.setRefreshing(false);
+        }
+    }
+
 
     private void saveDb(List<Group> groups, Realm realm) {
         realm.beginTransaction();
@@ -112,7 +164,7 @@ public class HomeFragment extends BaseFragment {
                 startGroupActivity(v, position);
             }
         };
-        StartLoad(1);
+        StartLoad(1, false);
 
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -141,7 +193,10 @@ public class HomeFragment extends BaseFragment {
         if (hasload) {
             return;
         }
-        StartLoad(page);
+        page = mAdapter.getItemCount() / 24;
+        page = page < 2 ? 2 : page;
+        KLog.e(page);
+        StartLoad(page, false);
         page++;
         hasload = true;
     }
@@ -152,7 +207,8 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     public void onRefresh() {
-        StartLoad(1);
+//        StartLoad(1, true);
+        mRefresher.setRefreshing(false);
     }
 
     @Override

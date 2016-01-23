@@ -60,17 +60,18 @@
     -dontwarn javax.**
     -dontwarn io.realm.**
 
--keep class butterknife.** { *; }
--dontwarn butterknife.internal.**
--keep class **$$ViewBinder { *; }
+    #butterknife
+   -keep class butterknife.** { *; }
+   -dontwarn butterknife.internal.**
+   -keep class **$$ViewBinder { *; }
 
--keepclasseswithmembernames class * {
-    @butterknife.* <fields>;
-}
+   -keepclasseswithmembernames class * {
+       @butterknife.* <fields>;
+   }
 
--keepclasseswithmembernames class * {
-    @butterknife.* <methods>;
-}
+   -keepclasseswithmembernames class * {
+       @butterknife.* <methods>;
+   }
 
 
     #忽略警告
@@ -87,23 +88,8 @@
     #混淆前后的映射
     -printmapping mapping.txt
 
-    ########记录生成的日志数据，gradle build时 在本项目根目录输出-end######
-
-
-    #####混淆保护自己项目的部分代码以及引用的第三方jar包library#######
-
-    #-libraryjars libs/umeng-analytics-v5.2.4.jar
-
-    #三星应用市场需要添加:sdk-v1.0.0.jar,look-v1.0.1.jar
-    #-libraryjars libs/sdk-v1.0.0.jar
-    #-libraryjars libs/look-v1.0.1.jar
-
     #如果不想混淆 keep 掉
     -keep class com.lippi.recorder.iirfilterdesigner.** {*; }
-    #友盟
-    -keep class com.umeng.**{*;}
-    #项目特殊处理代码
-
     #忽略警告
     -dontwarn com.lippi.recorder.utils**
     #保留一个完整的包
@@ -162,12 +148,6 @@
         java.lang.Object readResolve();
     }
 
-    #保持枚举 enum 类不被混淆 如果混淆报错，建议直接使用上面的 -keepclassmembers class * implements java.io.Serializable即可
-    #-keepclassmembers enum * {
-    #  public static **[] values();
-    #  public static ** valueOf(java.lang.String);
-    #}
-
     -keepclassmembers class * {
         public void *ButtonClicked(android.view.View);
     }
@@ -176,14 +156,6 @@
     -keepclassmembers class **.R$* {
         public static <fields>;
     }
-
-
-    -keepattributes Signature
-    # Gson specific classes
-    -keep class sun.misc.Unsafe { *; }
-    # Application classes that will be serialized/deserialized over Gson
-    -keep class com.google.gson.examples.android.model.** { *; }
-
 
     # OkHttp
     -keepattributes Signature
@@ -204,11 +176,71 @@
     -keepattributes Exceptions
 
 
-# For using GSON @Expose annotation
--keepattributes *Annotation*
+    # For using GSON @Expose annotation
+    -keepattributes *Annotation*
+    -keepattributes EnclosingMethod
+     # Gson specific classes
+    -keep class sun.misc.Unsafe { *; }
+    -keep class com.google.gson.stream.** { *; }
 
--keepattributes EnclosingMethod
+    #友盟
+    -keepclassmembers class * {
+       public <init>(org.json.JSONObject);
+    }
 
-# Gson specific classes
--keep class sun.misc.Unsafe { *; }
--keep class com.google.gson.stream.** { *; }
+    -keep class com.umeng.**
+
+    -keep public class com.idea.fifaalarmclock.app.R$*{
+        public static final int *;
+    }
+
+    -keep public class com.umeng.fb.ui.ThreadView {
+    }
+
+    -dontwarn com.umeng.**
+
+    -dontwarn org.apache.commons.**
+
+    -keep public class * extends com.umeng.**
+
+    -keep class com.umeng.** {*; }
+
+    # Retrofit 1.X
+    -keep class com.squareup.okhttp.** { *; }
+    -keep class retrofit.** { *; }
+    -keep interface com.squareup.okhttp.** { *; }
+
+    -dontwarn com.squareup.okhttp.**
+    -dontwarn okio.**
+    -dontwarn retrofit.**
+    -dontwarn rx.**
+
+    -keepclasseswithmembers class * {
+        @retrofit.http.* <methods>;
+    }
+
+    # RxJava 0.21
+
+    -keep class rx.schedulers.Schedulers {
+        public static <methods>;
+    }
+    -keep class rx.schedulers.ImmediateScheduler {
+        public <methods>;
+    }
+    -keep class rx.schedulers.TestScheduler {
+        public <methods>;
+    }
+    -keep class rx.schedulers.Schedulers {
+        public static ** test();
+    }
+
+    -keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
+        long producerIndex;
+        long consumerIndex;
+    }
+    -keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
+        rx.internal.util.atomic.LinkedQueueNode producerNode;
+    }
+    -keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
+        rx.internal.util.atomic.LinkedQueueNode consumerNode;
+    }

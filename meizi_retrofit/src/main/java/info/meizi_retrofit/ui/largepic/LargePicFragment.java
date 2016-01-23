@@ -1,17 +1,17 @@
 package info.meizi_retrofit.ui.largepic;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
@@ -19,9 +19,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import info.meizi_retrofit.R;
+import info.meizi_retrofit.utils.PicassoHelper;
 import info.meizi_retrofit.utils.RxMeizhi;
 import info.meizi_retrofit.widget.TouchImageView;
-import me.drakeet.materialdialog.MaterialDialog;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
@@ -83,12 +83,12 @@ public class LargePicFragment extends Fragment {
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-                final MaterialDialog dialog = new MaterialDialog(getContext());
-                dialog.setMessage("保存图片");
-                dialog.setPositiveButton("保存", new View.OnClickListener() {
+                builder.setMessage("保存图片");
+                builder.setPositiveButton("保存", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         mSubscriptions.add(
                                 RxMeizhi.saveImageAndGetPathObservable(getContext(), url, groupid + "_" + position)
@@ -103,13 +103,13 @@ public class LargePicFragment extends Fragment {
                                         }));
                     }
                 });
-                dialog.setNegativeButton("取消", new View.OnClickListener() {
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
                 });
-                dialog.show();
+                builder.show();
 
                 return false;
             }
@@ -120,7 +120,7 @@ public class LargePicFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Picasso.with(activity)
+        PicassoHelper.getInstance(activity)
                 .load(url)
                 .into(image);
     }

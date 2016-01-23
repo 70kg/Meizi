@@ -1,27 +1,30 @@
-package info.meizi_retrofit.ui.hot.girl;
+package info.meizi_retrofit.ui.hot;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 
+import com.socks.library.KLog;
+
 import info.meizi_retrofit.R;
 import info.meizi_retrofit.ui.base.ToolBarActivity;
 import info.meizi_retrofit.ui.main.HomeFragment;
 
 /**
- * Created by Mr_Wrong on 16/1/9.
+ * Created by Mr_Wrong on 16/1/8.
  */
-public class HotGirlGroupActivity extends ToolBarActivity {
-    public static final String TAG = "girl";
+public class HotGroupActivity extends ToolBarActivity {
+    public static final String TAG = "tag";
     public static final String TITLE = "title";
-    private String girl;
+    private String tag;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        girl = getIntent().getStringExtra(TAG);
-        replaceFragment(HomeFragment.newFragment(girl));
+        tag = getIntent().getStringExtra(TAG);
+        KLog.e(tag);
+        replaceFragment(HomeFragment.newFragment(tag));
         setTitle(getIntent().getStringExtra(TITLE));
     }
 

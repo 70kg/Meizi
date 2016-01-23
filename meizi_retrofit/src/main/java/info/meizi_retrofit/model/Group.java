@@ -27,20 +27,6 @@ public class Group extends RealmObject implements Serializable {
     private int groupid;
 
 
-    private static volatile Group instance = null;
-
-    public static Group getInstance() {
-        if (instance == null) {
-            synchronized (Group.class) {
-                if (instance == null) {
-                    instance = new Group();
-                }
-            }
-        }
-        return instance;
-    }
-
-
     public int getColor() {
         return color;
     }
@@ -82,10 +68,17 @@ public class Group extends RealmObject implements Serializable {
                 .findAllSorted("groupid", Sort.DESCENDING);
     }
 
-    public static List<Group> allCollected(Realm realm) {
-        return realm.where(Group.class)
-                .equalTo("iscollected", true)
-                .findAllSorted("date", Sort.DESCENDING);
+    public static String getFirstImageUrl(Realm realm, String type) {
+        if (realm.where(Group.class)
+                .equalTo("type", type).findAllSorted("groupid", Sort.DESCENDING).size() > 0) {
+            return realm.where(Group.class)
+                    .equalTo("type", type)
+                    .findAllSorted("groupid", Sort.DESCENDING)
+                    .first().getImageurl();
+        } else {
+            return "";
+        }
+
     }
 
     public int getOrder() {

@@ -31,4 +31,10 @@
         <item name="android:singleLine">true</item>
     </style>
 
+    <style name="DialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/md_red_A400</item>
+        <item name="android:textColorPrimary">@color/md_blue_grey_900</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
 </resources>
