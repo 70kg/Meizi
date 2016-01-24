@@ -276,3 +276,8 @@
     -dontwarn com.socks.library.**
     -keep class com.socks.library.** { *; }
 
+    -keepclassmembers class ** {
+        @com.squareup.otto.Subscribe public *;
+        @com.squareup.otto.Produce public *;
+    }
+

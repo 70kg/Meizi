@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include layout="@layout/inc_toolbar"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:gravity="center"
+        android:text="无需注册"
+        android:textSize="20sp"/>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/user_name_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="40dp">
+
+        <EditText
+            android:id="@+id/etv_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="手机号"
+            android:inputType="phone"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/user_password_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp">
+
+        <EditText
+            android:id="@+id/etv_password"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="密码"
+            android:inputType="textPassword"/>
+    </android.support.design.widget.TextInputLayout>
+
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/circle_button"
+        android:gravity="center"
+        android:text="登录"
+        android:textColor="@color/white"/>
+
+</LinearLayout>

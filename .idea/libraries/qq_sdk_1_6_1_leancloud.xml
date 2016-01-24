@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="qq-sdk-1.6.1-leancloud">
-    <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/cn.leancloud.android/qq-sdk/1.6.1-leancloud/896145203364b9e1d055cb81ac127bab139ad91d/qq-sdk-1.6.1-leancloud.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

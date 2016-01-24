@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 
 import com.avos.avoscloud.AVException;
@@ -41,7 +42,6 @@ public class CollectedActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setTitle("我的收藏");
         groups = WrapGroup.all(realm);
-        KLog.e("收藏的个数：" + groups.size());
         mAdapter = new CollectedAdapter(this) {
             @Override
             protected void onItemClick(View v, int position) {
@@ -50,11 +50,18 @@ public class CollectedActivity extends ListActivity {
         };
         mRecyclerView.setAdapter(mAdapter);
 
+
         if (groups.size() > 0) {//本地有数据才去上传
             mAdapter.replaceWith(groups);
-            saveToCloud();
-        } else {
+            if (mHasUser) {//已经登录
+                saveToCloud();
+            } else {
+                showSnackBar("可以登录进行云端同步啦");
+            }
+        } else if (mHasUser) {//本地没有  并且已经登录
             getFromCloud();
+        } else {
+            showSnackBar("可以登录进行云端同步啦");
         }
 
     }
@@ -75,7 +82,9 @@ public class CollectedActivity extends ListActivity {
             user.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(AVException e) {
-                    KLog.e(e);
+                    if (e == null) {
+                        showSnackBar("云端同步完成");
+                    }
                 }
             });
         } catch (JSONException e) {
@@ -90,21 +99,24 @@ public class CollectedActivity extends ListActivity {
             groups = new ArrayList<>();
             AVUser user = AVUser.getCurrentUser();
             JSONArray array = user.getJSONArray("groups");
-            for (int i = 0; i < array.length(); i++) {
-                JSONObject object = array.getJSONObject(i);
-
-                WrapGroup wrapGroup = new WrapGroup();
-                Group group = new Group();
-                group.setWidth(236);
-                group.setHeight(354);
-                group.setImageurl(object.getString("imageurl"));
-                group.setTitle(object.getString("title"));
-                group.setUrl(object.getString("url"));
-                wrapGroup.setGroup(group);
-                wrapGroup.setGroupid(object.getString("groupid"));
-                groups.add(wrapGroup);
+            if (array != null) {
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject object = array.getJSONObject(i);
+                    WrapGroup wrapGroup = new WrapGroup();
+                    Group group = new Group();
+                    group.setWidth(236);
+                    group.setHeight(354);
+                    group.setImageurl(object.getString("imageurl"));
+                    group.setTitle(object.getString("title"));
+                    group.setUrl(object.getString("url"));
+                    wrapGroup.setGroup(group);
+                    wrapGroup.setGroupid(object.getString("groupid"));
+                    groups.add(wrapGroup);
+                }
+                saveDb(groups);
+                mAdapter.replaceWith(groups);
+                showSnackBar("云端同步成功");
             }
-            mAdapter.replaceWith(groups);
         } catch (JSONException e) {
             e.printStackTrace();
             KLog.e(e);
@@ -138,4 +150,7 @@ public class CollectedActivity extends ListActivity {
         mRefresher.setRefreshing(false);
     }
 
+    private void showSnackBar(CharSequence charSequence) {
+        Snackbar.make(mRecyclerView, charSequence, Snackbar.LENGTH_SHORT).show();
+    }
 }

@@ -167,7 +167,7 @@ public class GroupActivity extends ListActivity {
                 .doOnNext(new Action1<Content>() {
                     @Override
                     public void call(Content content) {
-                        saveDB(content);
+                        saveDb(content);
                     }
                 })
                 .subscribe(new Subscriber<Content>() {
@@ -299,15 +299,10 @@ public class GroupActivity extends ListActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_collect:
-                realm.beginTransaction();
                 mWrapGroup.setGroupid(groupid);
                 mWrapGroup.setDate(new Date().getTime());
                 mWrapGroup.setIscollected(!iscollected);
-                realm.copyToRealmOrUpdate(mWrapGroup);
-                realm.commitTransaction();
-
-
-                LogUtils.e("点击收藏后的个数:" + WrapGroup.all(realm).size());
+                saveDb(mWrapGroup);
 
                 if (!iscollected) {
                     item.setIcon(R.drawable.collected);

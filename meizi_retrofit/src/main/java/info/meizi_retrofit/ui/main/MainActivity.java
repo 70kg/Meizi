@@ -11,16 +11,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
-import com.avos.avoscloud.LogInCallback;
-import com.avos.sns.SNS;
-import com.avos.sns.SNSBase;
-import com.avos.sns.SNSCallback;
-import com.avos.sns.SNSException;
-import com.avos.sns.SNSType;
-import com.socks.library.KLog;
 import com.umeng.update.UmengUpdateAgent;
 
 import butterknife.Bind;
@@ -28,17 +23,20 @@ import butterknife.ButterKnife;
 import info.meizi_retrofit.R;
 import info.meizi_retrofit.base.BaseActivity;
 import info.meizi_retrofit.ui.CollectedActivity;
+import info.meizi_retrofit.ui.LoginActivity;
 import info.meizi_retrofit.ui.about.AboutActivity;
+import info.meizi_retrofit.ui.hot.HotActivity;
 import info.meizi_retrofit.utils.Utils;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
-
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
     @Bind(R.id.id_nv_menu)
     NavigationView mMenu;
     @Bind(R.id.layout_drawerlayouy)
     DrawerLayout mDrawerLayout;
+    TextView mName;
+    ImageView mHead;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +45,38 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         ButterKnife.bind(this);
         UmengUpdateAgent.setDeltaUpdate(false);
         UmengUpdateAgent.update(this);
+        initToolBar();
+        replaceFragment(HomeFragment.newFragment(""));
+        initDrawer();
+        initUser();
+    }
 
+    private void initUser() {
+        if (AVUser.getCurrentUser() != null) {//已经登录
+            //设置姓名,头像
+            mName.setText(AVUser.getCurrentUser().getMobilePhoneNumber());
+        } else {
+            mName.setText("点击头像登录");
+        }
+    }
+
+
+    private void initDrawer() {
+        mDrawerLayout.setDrawerListener(new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close));
+        mMenu.setNavigationItemSelectedListener(this);
+        View haedLayout = mMenu.getHeaderView(0);
+        mName = (TextView) haedLayout.findViewById(R.id.tv_name);
+        mHead = (ImageView) haedLayout.findViewById(R.id.iv_head);
+        if (!mHasUser)//没有登录的时候才去登录
+            mHead.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivityForResult(new Intent(MainActivity.this, LoginActivity.class), 66);
+                }
+            });
+    }
+
+    private void initToolBar() {
         mToolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(mToolbar);
         Utils.setSystemBar(this, mToolbar, getResources().getColor(R.color.app_primary_color));
@@ -56,12 +85,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             supportActionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
             supportActionBar.setDisplayHomeAsUpEnabled(true);
         }
-
-        mDrawerLayout.setDrawerListener(new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close));
-
-        replaceFragment(HomeFragment.newFragment(""));
-        mMenu.setNavigationItemSelectedListener(this);
-
     }
 
     @Override
@@ -91,12 +114,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 startActivity(new Intent(MainActivity.this, AboutActivity.class));
                 break;
             case R.id.menu_collect1:
-//                testLogin();
                 startActivity(new Intent(this, CollectedActivity.class));
                 break;
             case R.id.menu_tag:
-                testLoginWithWeb();
-//                startActivity(new Intent(this, HotActivity.class));
+                startActivity(new Intent(this, HotActivity.class));
                 break;
         }
         mDrawerLayout.closeDrawers();
@@ -109,71 +130,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         transaction.commit();
     }
 
-    SNSType type;
-
-    //sso登录
-    private void testLogin() {
-        try {
-            type = SNSType.AVOSCloudSNSSinaWeibo;
-            SNS.setupPlatform(this, SNSType.AVOSCloudSNSSinaWeibo, "3216821683",
-                    "3216821683",
-                    "https://api.weibo.com/oauth2/default.html");
-
-            SNS.loginWithCallback(MainActivity.this, SNSType.AVOSCloudSNSSinaWeibo,
-                    new SNSCallback() {
-
-                        @Override
-                        public void done(SNSBase base, SNSException error) {
-
-                            KLog.e(base.authorizedData());
-                            if (error == null) {
-                                SNS.loginWithAuthData(base.userInfo(), new LogInCallback<AVUser>() {
-                                    @Override
-                                    public void done(AVUser user, AVException error) {
-                                        KLog.e(error);
-                                    }
-                                });
-                            }
-                        }
-                    });
-        } catch (AVException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    //web登录
-    private void testLoginWithWeb() {
-        try {
-            type = SNSType.AVOSCloudSNSSinaWeibo;
-            SNS.setupPlatform(SNSType.AVOSCloudSNSSinaWeibo,
-                    "https://leancloud.cn/1.1/sns/goto/eys0ndm7dp1tre7v");
-            SNS.loginWithCallback(MainActivity.this, SNSType.AVOSCloudSNSSinaWeibo,
-                    new SNSCallback() {
-                        @Override
-                        public void done(SNSBase base, SNSException error) {
-
-                            KLog.e(base.authorizedData());
-                            KLog.e(error);
-
-                            if (error == null) {
-                                SNS.loginWithAuthData(base.userInfo(), new LogInCallback<AVUser>() {
-                                    @Override
-                                    public void done(AVUser user, AVException error) {
-
-                                    }
-                                });
-                            }
-                        }
-                    });
-        } catch (AVException e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        SNS.onActivityResult(requestCode, resultCode, data, type);
+        if (resultCode == 666) {
+            initUser();
+        }
     }
 }
