@@ -26,6 +26,7 @@ import info.meizi_retrofit.ui.CollectedActivity;
 import info.meizi_retrofit.ui.LoginActivity;
 import info.meizi_retrofit.ui.about.AboutActivity;
 import info.meizi_retrofit.ui.hot.HotActivity;
+import info.meizi_retrofit.ui.selfie.SelfieFragment;
 import info.meizi_retrofit.utils.Utils;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -109,6 +110,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             case R.id.menu_qingchun:
                 mToolbar.setTitle("清纯妹子");
                 replaceFragment(HomeFragment.newFragment("mm"));
+            case R.id.menu_selfie:
+                mToolbar.setTitle("妹子自拍");
+                replaceFragment(SelfieFragment.newFragment());
                 break;
             case R.id.menu_about:
                 startActivity(new Intent(MainActivity.this, AboutActivity.class));

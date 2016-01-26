@@ -17,10 +17,14 @@ import info.meizi_retrofit.adapter.HomeAdapter;
 import info.meizi_retrofit.base.BaseFragment;
 import info.meizi_retrofit.model.Group;
 import info.meizi_retrofit.net.ContentParser;
+import info.meizi_retrofit.net.GroupApi;
 import info.meizi_retrofit.ui.group.GroupActivity;
+import info.meizi_retrofit.utils.StringConverter;
 import info.meizi_retrofit.utils.Utils;
 import info.meizi_retrofit.widget.RadioImageView;
 import io.realm.Realm;
+import retrofit.RestAdapter;
+import retrofit.client.OkClient;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -35,7 +39,7 @@ public class HomeFragment extends BaseFragment {
     private String type;
     private int page = 2;
     private boolean hasload = false;
-
+    protected GroupApi mGroupApi;
     String currentImageUrl;
 
     public HomeFragment() {
@@ -53,22 +57,22 @@ public class HomeFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         type = getArguments().getString("type");
+        mGroupApi = createGroupApi();
         currentImageUrl = Group.getFirstImageUrl(realm, type);
-
     }
 
     private void StartLoad(int page, boolean isrefresh) {
         if (page == 1 && !isrefresh)//只有第一次进去才加载
             mAdapter.addAll(Group.all(realm, type));
-
         Utils.statrtRefresh(mRefresher, true);
         KLog.e("http://www.mzitu.com/" + type + "/page/" + page);
-        mSubscriptions.add(mGroupApi.getGroup(type, page).map(new Func1<String, List<Group>>() {
-            @Override
-            public List<Group> call(String s) {
-                return ContentParser.ParserGroups(s, type);
-            }
-        })
+        mSubscriptions.add(mGroupApi.getGroup(type, page)
+                .map(new Func1<String, List<Group>>() {
+                    @Override
+                    public List<Group> call(String s) {
+                        return ContentParser.ParserGroups(s, type);
+                    }
+                })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(new Action1<List<Group>>() {
@@ -77,45 +81,8 @@ public class HomeFragment extends BaseFragment {
                         saveDb(groups, realm);
                     }
                 })
-//                .flatMap(new Func1<List<Group>, Observable<Group>>() {
-//                    @Override
-//                    public Observable<Group> call(List<Group> groups) {
-//                        return Observable.from(groups);
-//                    }
-//                })
-//                .subscribe(new groupObserver()));
                 .subscribe(new listObserver()));
     }
-
-
-    class groupObserver implements Observer<Group> {
-
-        @Override
-        public void onCompleted() {
-            //mIndex = 0;
-            hasload = false;
-            Utils.statrtRefresh(mRefresher, false);
-        }
-
-        @Override
-        public void onError(Throwable e) {
-            KLog.e(e);
-            Utils.statrtRefresh(mRefresher, false);
-        }
-
-        @Override
-        public void onNext(Group group) {//这里的加载更多有问题
-            //数据库不空  并且和数据库第一个不相等 就是新增的
-            if (!currentImageUrl.isEmpty() && !currentImageUrl.equals(group.getImageurl())) {
-                mAdapter.add(mIndex++, group);
-            } else if (currentImageUrl.isEmpty()) {//数据库没东西 或者加载更多
-                mAdapter.add(group);
-            }
-
-        }
-    }
-
-    int mIndex;//新添加的index
 
     class listObserver implements Observer<List<Group>> {
 
@@ -209,6 +176,15 @@ public class HomeFragment extends BaseFragment {
     public void onRefresh() {
 //        StartLoad(1, true);
         mRefresher.setRefreshing(false);
+    }
+
+    protected GroupApi createGroupApi() {
+        RestAdapter adapter = new RestAdapter.Builder()
+                .setEndpoint("http://www.mzitu.com/")
+                .setConverter(new StringConverter())
+                .setClient(new OkClient())
+                .build();
+        return adapter.create(GroupApi.class);
     }
 
     @Override

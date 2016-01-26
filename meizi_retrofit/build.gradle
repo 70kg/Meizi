@@ -72,7 +72,7 @@ android {
         debug {
             buildConfigField "boolean", "LOG_DEBUG", "true"
             debuggable true
-            minifyEnabled true
+            minifyEnabled false
             zipAlignEnabled true
             shrinkResources true
             signingConfig signingConfigs.debug

@@ -31,6 +31,11 @@
             android:checkable="true"
             android:icon="@drawable/cricle"
             android:title="清纯妹子"/>
+        <item
+            android:id="@+id/menu_selfie"
+            android:checkable="true"
+            android:icon="@drawable/cricle"
+            android:title="妹子自拍"/>
     </group>
     <group android:id="@+id/my_id">
         <item

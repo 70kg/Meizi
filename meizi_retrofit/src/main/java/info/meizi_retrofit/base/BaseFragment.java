@@ -15,12 +15,8 @@ import com.squareup.picasso.Picasso;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import info.meizi_retrofit.R;
-import info.meizi_retrofit.net.GroupApi;
-import info.meizi_retrofit.utils.StringConverter;
 import info.meizi_retrofit.widget.MySwipeRefreshLayout;
 import io.realm.Realm;
-import retrofit.RestAdapter;
-import retrofit.client.OkClient;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -40,23 +36,13 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
     protected StaggeredGridLayoutManager layoutManager;
     protected CompositeSubscription mSubscriptions = new CompositeSubscription();//这个是持有订阅  用于生命周期
 
-    protected GroupApi mGroupApi;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mGroupApi = createGroupApi();
         realm = Realm.getDefaultInstance();
     }
 
-    protected GroupApi createGroupApi() {
-        RestAdapter adapter = new RestAdapter.Builder()
-                .setEndpoint("http://www.mzitu.com/")
-                .setConverter(new StringConverter())
-                .setClient(new OkClient())
-                .build();
-        return adapter.create(GroupApi.class);
-    }
+
 
     @Nullable
     @Override
