@@ -110,6 +110,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             case R.id.menu_qingchun:
                 mToolbar.setTitle("清纯妹子");
                 replaceFragment(HomeFragment.newFragment("mm"));
+                break;
             case R.id.menu_selfie:
                 mToolbar.setTitle("妹子自拍");
                 replaceFragment(SelfieFragment.newFragment());

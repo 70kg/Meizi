@@ -65,6 +65,8 @@ public class GroupActivity extends ListActivity {
     private String mUrl;
     private String mTitle;
     boolean canRefresh = true;
+    int mIndex;
+    int mCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,8 +140,6 @@ public class GroupActivity extends ListActivity {
         }
     }
 
-    int mIndex;
-    int mCount;
 
     private void newLoadData() {
         mAdapter.clear();

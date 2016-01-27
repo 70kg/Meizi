@@ -19,14 +19,15 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import info.meizi_retrofit.R;
 import info.meizi_retrofit.base.BaseActivity;
-import info.meizi_retrofit.ui.group.GroupActivity;
 
 /**
  * Created by Mr_Wrong on 15/10/6.
  * 查看大图的
  */
 public class LargePicActivity extends BaseActivity {
-
+    public static final String INDEX = "index";
+    public static final String GROUPID = "groupid";
+    public static final String URLS = "urls";
     @Bind(R.id.large_toolbar)
     Toolbar mToolbar;
     @Bind(R.id.pager)
@@ -56,18 +57,20 @@ public class LargePicActivity extends BaseActivity {
             }
         });
 
-        index = getIntent().getIntExtra(GroupActivity.INDEX, 0);
-        groupid = getIntent().getStringExtra(GroupActivity.GROUPID);
+        index = getIntent().getIntExtra(INDEX, 0);
+        groupid = getIntent().getStringExtra(GROUPID);
 
 //        realm = Realm.getDefaultInstance();
 //        images = Content.all(realm, groupid);
-        urls = (ArrayList<String>) getIntent().getSerializableExtra(GroupActivity.URLS);
+        urls = (ArrayList<String>) getIntent().getSerializableExtra(URLS);
 
         adapter = new PagerAdapter();
 
         mPager.setAdapter(adapter);
         mPager.setCurrentItem(index);
         if (Build.VERSION.SDK_INT >= 22) {
+
+
             setEnterSharedElementCallback(new SharedElementCallback() {
                 @Override
                 public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
@@ -77,6 +80,7 @@ public class LargePicActivity extends BaseActivity {
                     sharedElements.put(url, fragment.getSharedElement());
                 }
             });
+
         }
 
     }
