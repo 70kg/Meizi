@@ -1,5 +1,7 @@
 这是个新开的坑，数据来源http://www.mzitu.com/
 
+ps:如果要运行项目需要使用LeanCloud帐号问题，去Issues里面提
+
 使用的开源库：
 * butterknife
 * okhttp
