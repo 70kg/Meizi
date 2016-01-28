@@ -13,11 +13,12 @@ import io.realm.RealmConfiguration;
  */
 public class App extends Application {
     private static Context mContext;
+
     @Override
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
-        AVOSCloud.initialize(this, "sTcSMqHmJTh84xK1kho06ry5-gzGzoHsz", "SKJ69RQ0AUaaNcs2rxtxSOQV");
+        AVOSCloud.initialize(this, BuildConfig.APPLICATIONID, BuildConfig.CLIENTKEY);
         RealmConfiguration myConfig = new RealmConfiguration.Builder(getContext())
                 .name("myRealm")
                 .schemaVersion(2)

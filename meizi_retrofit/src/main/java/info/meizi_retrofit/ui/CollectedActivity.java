@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.view.View;
 
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.SaveCallback;
 import com.socks.library.KLog;
@@ -18,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import info.meizi_retrofit.R;
@@ -31,11 +33,15 @@ import info.meizi_retrofit.widget.RadioImageView;
 
 /**
  * Created by Mr_Wrong on 16/1/6.
- * 加载策略:先去加载数据库的 --> 展示 --> 然后去请求网络 --> 存到数据库 --> 从数据库获取和展示的进行比对 -->  更新界面
+ * 1 查本地数据库  有数据  显示
+ *               没有
+ * 2 看有没有登录 -->有 去查云端数据 -->有数据-->拉下来 和本地合并
+ *                                 没有-->直接同步云端
+ *                没有登录-->提示
  */
 public class CollectedActivity extends ListActivity {
     private CollectedAdapter mAdapter;
-    List<WrapGroup> groups;
+    private List<WrapGroup> groups;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,20 +56,60 @@ public class CollectedActivity extends ListActivity {
         };
         mRecyclerView.setAdapter(mAdapter);
 
-
         if (groups.size() > 0) {//本地有数据才去上传
             mAdapter.replaceWith(groups);
             if (mHasUser) {//已经登录
+                //还要去判断用户云端有没有收藏  如果有  拉下来 和本地数据库合并
+//                AVUser.getCurrentUser().fetchIfNeededInBackground("groups", new GetCallback<AVObject>() {
+//                    @Override
+//                    public void done(AVObject avObject, AVException e) {
+//                        if (e == null) {
+//                            saveToLocal(avObject);
+//                        } else {
+//                            KLog.e(e);
+//                        }
+//                    }
+//                });
                 saveToCloud();
-            } else {
+            } else {//没登录  可以提示一下
                 showSnackBar("可以登录进行云端同步啦");
             }
-        } else if (mHasUser) {//本地没有  并且已经登录
+        } else if (mHasUser) {//本地没有  并且已经登录 那就直接去拉云端的数据
             getFromCloud();
         } else {
             showSnackBar("可以登录进行云端同步啦");
         }
+    }
 
+    /**
+     * 把云端的数据保存在本地 好像并没有什么用了
+     *  如果用户已经登录  那么更新也会是登录状态  不会出现本地把云端覆盖的情况
+     * @param avObject
+     */
+    private void saveToLocal(AVObject avObject) {
+        try {
+            JSONArray array = avObject.getJSONArray("groups");
+            if (array != null && array.length() > 0) {//云端有数据
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject object = array.getJSONObject(i);
+                    WrapGroup group = new WrapGroup();
+                    group.setGroupid(object.getString("groupid"));
+                    Group group1 = new Group();
+                    group1.setTitle(object.getString("title"));
+                    group1.setUrl(object.getString("url"));
+                    group1.setImageurl(object.getString("imageurl"));
+                    group.setGroup(group1);
+                    group.setDate(new Date().getTime());
+                    group.setIscollected(true);
+                    saveDb(group);
+                }
+            } else {//云端没有数据 那就直接去保存到云端好了
+                saveToCloud();
+            }
+
+        } catch (JSONException e1) {
+            e1.printStackTrace();
+        }
     }
 
     private void saveToCloud() {
@@ -92,7 +138,6 @@ public class CollectedActivity extends ListActivity {
             KLog.e(e);
         }
     }
-
 
     private void getFromCloud() {
         try {

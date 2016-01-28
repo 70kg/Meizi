@@ -71,6 +71,13 @@ android {
     buildTypes {
         debug {
             buildConfigField "boolean", "LOG_DEBUG", "true"
+
+            File propFile = file('sign.properties');
+            def Properties props = new Properties()
+            props.load(new FileInputStream(propFile))
+            buildConfigField "String", "APPLICATIONID", props['APPLICATIONID']
+            buildConfigField "String", "CLIENTKEY", props['CLIENTKEY']
+
             debuggable true
             minifyEnabled false
             zipAlignEnabled true
@@ -81,7 +88,6 @@ android {
         release {
             // 不显示Log
             buildConfigField "boolean", "LOG_DEBUG", "false"
-
             debuggable false
             minifyEnabled true//混淆 还有点问题
             zipAlignEnabled true//优化
