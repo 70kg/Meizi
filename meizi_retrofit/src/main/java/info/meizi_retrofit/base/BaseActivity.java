@@ -5,11 +5,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.avos.avoscloud.AVUser;
+import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
 
 import info.meizi_retrofit.model.SaveDb;
 import info.meizi_retrofit.utils.BusProvider;
-import info.meizi_retrofit.utils.LogUtils;
 import info.meizi_retrofit.utils.RxUtils;
 import io.realm.Realm;
 import io.realm.RealmObject;
@@ -57,7 +57,6 @@ public class BaseActivity<T extends RealmObject> extends AppCompatActivity imple
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(t);
         realm.commitTransaction();
-        LogUtils.d("存入数据库");
     }
 
     @Override
@@ -65,6 +64,5 @@ public class BaseActivity<T extends RealmObject> extends AppCompatActivity imple
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(objects);
         realm.commitTransaction();
-        LogUtils.d("存入数据库");
     }
 }

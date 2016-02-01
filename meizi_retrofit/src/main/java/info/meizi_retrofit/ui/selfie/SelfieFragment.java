@@ -6,10 +6,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVQuery;
+import com.avos.avoscloud.GetCallback;
 import com.socks.library.KLog;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -20,6 +22,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import info.meizi_retrofit.adapter.SelfieAdapter;
 import info.meizi_retrofit.base.BaseFragment;
@@ -43,7 +46,7 @@ public class SelfieFragment extends BaseFragment {
     private SelfieApi mApi;
     private SelfieAdapter mAdapter;
     private int page = 191;
-    private boolean hasload = false;
+    private boolean hasload = true;
     private ArrayList<String> urls = new ArrayList<>();
 
     public SelfieFragment() {
@@ -51,14 +54,6 @@ public class SelfieFragment extends BaseFragment {
 
     public static SelfieFragment newFragment() {
         return new SelfieFragment();
-    }
-
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
@@ -147,14 +142,24 @@ public class SelfieFragment extends BaseFragment {
             }
         };
         mRecyclerView.setAdapter(mAdapter);
-        StartLoad("comment-page-" + page);
-
+        AVQuery<AVObject> query = AVQuery.getQuery("SelfiePage");
+        query.getFirstInBackground(new GetCallback<AVObject>() {
+            @Override
+            public void done(AVObject avObject, AVException e) {
+                if (e == null) {
+                    page = avObject.getNumber("page").intValue();
+                    StartLoad("comment-page-" + page);
+                } else {
+                    KLog.e(e);
+                }
+            }
+        });
     }
 
     private void startLargPicActivity(View view, int position) {
         Intent intent = new Intent(getContext(), LargePicActivity.class);
         intent.putExtra(LargePicActivity.INDEX, position);
-        intent.putExtra(LargePicActivity.GROUPID, "142516");
+        intent.putExtra(LargePicActivity.GROUPID, new Date().getTime() + "");
         intent.putExtra(LargePicActivity.URLS, urls);
 
         if (Build.VERSION.SDK_INT >= 22) {

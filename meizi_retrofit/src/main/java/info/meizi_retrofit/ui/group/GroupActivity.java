@@ -103,6 +103,14 @@ public class GroupActivity extends ListActivity {
                 }
             });
         }
+
+        Group mGroup = realm.where(Group.class).equalTo("groupid", Integer.parseInt(groupid)).findFirst();
+
+        KLog.e(mGroup.getTitle());
+
+        mWrapGroup = new WrapGroup();
+        mWrapGroup.setGroup(mGroup);
+
     }
 
 
@@ -284,9 +292,8 @@ public class GroupActivity extends ListActivity {
         } else {
             iscollected = false;
         }
-        Group mGroup = realm.where(Group.class).equalTo("groupid", Integer.parseInt(groupid)).findFirst();
-        mWrapGroup = new WrapGroup();
-        mWrapGroup.setGroup(mGroup);
+
+
         getMenuInflater().inflate(R.menu.group_menu, menu);
         if (iscollected) {
             menu.findItem(R.id.menu_collect).setIcon(R.drawable.collected);

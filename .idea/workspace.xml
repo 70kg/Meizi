@@ -21,21 +21,25 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8faef605-793e-4c0d-ab13-b3e2b1658f5a" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/meizi_retrofit/libs/armeabi/libweibosdkcore.so" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/meizi_retrofit/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/meizi_retrofit/src/main/AndroidManifest.xml" />
+    <list default="true" id="8faef605-793e-4c0d-ab13-b3e2b1658f5a" name="Default" comment="optimize shared elements">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/Alone.java" afterPath="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/Alone.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/base/BaseActivity.java" afterPath="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/base/BaseActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/CollectedActivity.java" afterPath="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/CollectedActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/group/GroupActivity.java" afterPath="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/group/GroupActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/adapter/GroupAdapter.java" afterPath="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/adapter/GroupAdapter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/main/HomeFragment.java" afterPath="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/main/HomeFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/largepic/LargePicActivity.java" afterPath="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/largepic/LargePicActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/largepic/LargePicFragment.java" afterPath="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/largepic/LargePicFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/utils/RxMeizhi.java" afterPath="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/utils/RxMeizhi.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/selfie/SelfieFragment.java" afterPath="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/selfie/SelfieFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/meizi_retrofit/build.gradle" afterPath="$PROJECT_DIR$/meizi_retrofit/build.gradle" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/meizi_retrofit/meizi_retrofit.iml" afterPath="$PROJECT_DIR$/meizi_retrofit/meizi_retrofit.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/meizi_retrofit/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/meizi_retrofit/src/main/res/values/strings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="00d1b3c1-563c-478b-98d7-eb6d8eed0337" name="New changelist" comment="" />
     <ignored path="Meizi.iws" />
     <ignored path=".idea/workspace.xml" />
+    <ignored path="meizi_retrofit/sign.properties" />
+    <ignored path="Meizi.iml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -43,7 +47,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="true" />
   <component name="CompilerWorkspaceConfiguration">
     <option name="PARALLEL_COMPILATION" value="true" />
   </component>
@@ -82,53 +86,38 @@
       <file leaf-file-name="GroupActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/group/GroupActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="232" column="11" selection-start-line="232" selection-start-column="11" selection-end-line="232" selection-end-column="11" />
+            <state vertical-scroll-proportion="-7.0">
+              <caret line="220" column="36" selection-start-line="220" selection-start-column="36" selection-end-line="220" selection-end-column="36" />
               <folding>
                 <element signature="docComment;class#GroupActivity#0" expanded="false" />
                 <element signature="class#2600:2781" expanded="false" />
+                <element signature="docComment;method#isContain#0;class#GroupActivity#0" expanded="false" />
                 <element signature="method#isContain#0;class#GroupActivity#0" expanded="false" />
                 <element signature="method#sendToLoad#0;class#GroupActivity#0" expanded="false" />
                 <element signature="method#newLoadData#0;class#GroupActivity#0" expanded="false" />
-                <element signature="class#5884:6520" expanded="false" />
-                <element signature="method#onCompleted#0;class#5884:6520" expanded="false" />
-                <element signature="method#onError#0;class#5884:6520" expanded="false" />
-                <element signature="method#handleContent#0;class#GroupActivity#0" expanded="false" />
-                <element signature="e#7457#7471#0" expanded="false" />
+                <element signature="class#6105:6741" expanded="false" />
+                <element signature="method#onCompleted#0;class#6105:6741" expanded="false" />
+                <element signature="method#onError#0;class#6105:6741" expanded="false" />
+                <element signature="e#7678#7692#0" expanded="false" />
+                <element signature="method#onActivityReenter#0;class#GroupActivity#0" expanded="false" />
                 <element signature="method#createApi#0;class#GroupActivity#0" expanded="false" />
+                <element signature="method#startLargePicActivity#0;class#GroupActivity#0" expanded="false" />
                 <element signature="method#onRefresh#0;class#GroupActivity#0" expanded="false" />
-                <element signature="method#onCreateOptionsMenu#0;class#GroupActivity#0" expanded="false" />
-                <element signature="method#onOptionsItemSelected#0;class#GroupActivity#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LargePicActivity.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/largepic/LargePicActivity.java">
+      <file leaf-file-name="CollectedActivity.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/CollectedActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.51917404">
-              <caret line="74" column="68" selection-start-line="74" selection-start-column="68" selection-end-line="74" selection-end-column="68" />
+            <state vertical-scroll-proportion="0.67588323">
+              <caret line="72" column="38" selection-start-line="72" selection-start-column="38" selection-end-line="72" selection-end-column="38" />
               <folding>
-                <element signature="class#PagerAdapter#0;class#LargePicActivity#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="LargePicFragment.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/largepic/LargePicFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="116" column="11" selection-start-line="116" selection-start-column="11" selection-end-line="116" selection-end-column="11" />
-              <folding>
-                <element signature="imports" expanded="false" />
-                <element signature="e#2581#2582#0" expanded="false" />
-                <element signature="e#2652#2653#0" expanded="false" />
-                <element signature="e#4294#4295#0" expanded="false" />
-                <element signature="e#4358#4359#0" expanded="false" />
-                <element signature="e#5067#5068#0" expanded="false" />
-                <element signature="e#5094#5095#0" expanded="false" />
+                <element signature="e#1471#1472#0" expanded="true" />
+                <element signature="e#1534#1535#0" expanded="true" />
+                <element signature="e#2597#2832#0" expanded="true" />
+                <element signature="e#2831#2832#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -5286,7 +5275,7 @@
         <entry key="$USER_HOME$/Downloads/DropDownMenu-master" value="5745788096000" />
         <entry key="$USER_HOME$/Downloads/Euclid-master" value="5713912040000" />
         <entry key="$USER_HOME$/Downloads/WaterDropListView-master" value="4307357382000" />
-        <entry key="$PROJECT_DIR$" value="5808934743000" />
+        <entry key="$PROJECT_DIR$" value="5809282999000" />
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -5796,7 +5785,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/adapter/HotAdapter.java" />
         <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/hot/HotTagFragment.java" />
         <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/hot/HotGirlFragment.java" />
         <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/hot/tag/HotTagFragment.java" />
@@ -5807,14 +5795,12 @@
         <option value="$PROJECT_DIR$/meizi_retrofit/src/main/res/menu/group_menu.xml" />
         <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/adapter/HomeAdapter.java" />
         <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/utils/PicassoHelper.java" />
-        <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/Alone.java" />
         <option value="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" />
         <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/about/AboutActivity.java" />
         <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/utils/Installation.java" />
         <option value="$PROJECT_DIR$/meizi_retrofit/src/main/res/layout/hot.xml" />
         <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/hot/HotGroupActivity.java" />
         <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/hot/HotActivity.java" />
-        <option value="$PROJECT_DIR$/meizi_retrofit/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/meizi_retrofit/src/main/res/values/styles.xml" />
         <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/model/Group.java" />
@@ -5826,10 +5812,8 @@
         <option value="$PROJECT_DIR$/meizi_retrofit/src/main/res/layout/header_drawer.xml" />
         <option value="$PROJECT_DIR$/meizi_retrofit/proguard-rules.pro" />
         <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/utils/BusProvider.java" />
-        <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/base/BaseActivity.java" />
         <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/LoginActivity.java" />
         <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/base/BaseFragment.java" />
-        <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/main/HomeFragment.java" />
         <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/net/SelfieApi.java" />
         <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/main/MainActivity.java" />
         <option value="$PROJECT_DIR$/meizi_retrofit/src/main/res/menu/menu_drawer.xml" />
@@ -5837,16 +5821,21 @@
         <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/adapter/SelfieAdapter.java" />
         <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/net/SelfieParse.java" />
         <option value="$PROJECT_DIR$/meizi_retrofit/src/main/res/transition/change_image_transform.xml" />
-        <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/selfie/SelfieFragment.java" />
-        <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/CollectedActivity.java" />
         <option value="$PROJECT_DIR$/meizi_retrofit/sign.properties" />
         <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/App.java" />
-        <option value="$PROJECT_DIR$/meizi_retrofit/build.gradle" />
         <option value="$PROJECT_DIR$/meizi_retrofit/src/main/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/largepic/LargePicFragment.java" />
-        <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/largepic/LargePicActivity.java" />
         <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/adapter/GroupAdapter.java" />
+        <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/main/HomeFragment.java" />
+        <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/Alone.java" />
+        <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/largepic/LargePicFragment.java" />
+        <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/utils/RxMeizhi.java" />
+        <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/largepic/LargePicActivity.java" />
+        <option value="$PROJECT_DIR$/meizi_retrofit/src/main/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/selfie/SelfieFragment.java" />
+        <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/base/BaseActivity.java" />
         <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/group/GroupActivity.java" />
+        <option value="$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/CollectedActivity.java" />
+        <option value="$PROJECT_DIR$/meizi_retrofit/build.gradle" />
       </list>
     </option>
   </component>
@@ -5894,7 +5883,7 @@
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1">
+    <navigator currentView="AndroidView" proportions="" version="1">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -5942,7 +5931,113 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="meizi_retrofit" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.NonAndroidModuleNode" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Meizi" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="meizi_retrofit" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Meizi" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="meizi_retrofit" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="meizi_retrofit" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Meizi" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="meizi_retrofit" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="meizi_retrofit" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Meizi" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="meizi_retrofit" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="meizi_retrofit" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Meizi" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="meizi_retrofit" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="meizi_retrofit" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="group" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -5990,14 +6085,14 @@
     <property name="recentsLimit" value="5" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="85GBBM923LGB" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="Nexus_5_API_22_x86" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/meizi_retrofit/src/main/res/drawable" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Meizi.iml" />
     <property name="android.project.structure.last.selected" value="meizi_retrofit" />
     <property name="android.project.structure.proportion" value="0.15" />
     <property name="restartRequiresConfirmation" value="true" />
     <property name="device.picker.selection" value="Nexus_5_API_22_x86" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/meizi_retrofit/src/main/res/layout" />
     <property name="ExportApk.ApkPath" value="$USER_HOME$/Desktop" />
-    <property name="ExportApk.Flavors" value="meizu" />
+    <property name="ExportApk.Flavors" value="wandoujia" />
     <property name="ExportApk.BuildType" value="release" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="96" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
@@ -6042,6 +6137,116 @@
       <recent name="info.meizi_retrofit.widget" />
       <recent name="info.meizi_retrofit.model" />
     </key>
+  </component>
+  <component name="RestoreUpdateTree" date="Moments ago" ActionInfo="_Update">
+    <UpdatedFiles>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Updated from server" />
+        <option name="myStatusName" value="Changed on server" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="CHANGED_ON_SERVER" />
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Updated" />
+          <option name="myStatusName" value="Changed" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="UPDATED" />
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/README.md</PATH>
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Created" />
+          <option name="myStatusName" value="Created" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="CREATED" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Deleted" />
+          <option name="myStatusName" value="Deleted" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="true" />
+          <option name="myId" value="REMOVED_FROM_REPOSITORY" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Restored" />
+          <option name="myStatusName" value="Will be restored" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="RESTORED" />
+        </FILE-GROUP>
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Modified" />
+        <option name="myStatusName" value="Modified" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MODIFIED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Skipped" />
+        <option name="myStatusName" value="Skipped" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="SKIPPED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with conflicts" />
+        <option name="myStatusName" value="Will be merged with conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_CONFLICTS" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with tree conflicts" />
+        <option name="myStatusName" value="Merged with tree conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_TREE_CONFLICT" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with property conflicts" />
+        <option name="myStatusName" value="Will be merged with property conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_PROPERTY_CONFLICT" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged" />
+        <option name="myStatusName" value="Will be merged" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Not in repository" />
+        <option name="myStatusName" value="Not in repository" />
+        <option name="mySupportsDeletion" value="true" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="UNKNOWN" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Locally added" />
+        <option name="myStatusName" value="Locally added" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="LOCALLY_ADDED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Locally removed" />
+        <option name="myStatusName" value="Locally removed" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="LOCALLY_REMOVED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Switched" />
+        <option name="myStatusName" value="Switched" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="SWITCHED" />
+      </FILE-GROUP>
+    </UpdatedFiles>
   </component>
   <component name="RunManager" selected="Android Application.meizi_retrofit">
     <configuration default="false" name="Meizi:meizi_retrofit [assemblexiaomiRelease]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -6336,9 +6541,9 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Gradle.Meizi:meizi_retrofit [andresguard]" />
-        <item index="1" class="java.lang.String" itemvalue="Gradle.Meizi:meizi_retrofit [andresguard/generate]" />
-        <item index="2" class="java.lang.String" itemvalue="Application.Alone" />
+        <item index="0" class="java.lang.String" itemvalue="Application.Alone" />
+        <item index="1" class="java.lang.String" itemvalue="Gradle.Meizi:meizi_retrofit [andresguard]" />
+        <item index="2" class="java.lang.String" itemvalue="Gradle.Meizi:meizi_retrofit [andresguard/generate]" />
         <item index="3" class="java.lang.String" itemvalue="Gradle.Meizi:meizi_retrofit [assemblexiaomiRelease]" />
         <item index="4" class="java.lang.String" itemvalue="Gradle.Meizi:meizi_retrofit [assemble]" />
       </list>
@@ -6446,7 +6651,13 @@
       <option name="project" value="LOCAL" />
       <updated>1453995040684</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="optimize shared elements">
+      <created>1454295264842</created>
+      <option name="number" value="00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1454295264842</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TodoView">
@@ -6470,28 +6681,28 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.43767706" sideWeight="0.509693" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39943343" sideWeight="0.49353796" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.49291784" sideWeight="0.49353796" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32577905" sideWeight="0.49676898" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.43767706" sideWeight="0.49030694" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3045326" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32911393" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31303117" sideWeight="0.509693" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18497577" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18497577" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24878837" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24978903" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3299578" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39518413" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24959612" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.57932013" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" x="100" y="100" width="1080" height="600" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39943343" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.43767706" sideWeight="0.49030694" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5495751" sideWeight="0.49353796" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32719547" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
@@ -6503,14 +6714,14 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.43767706" sideWeight="0.509693" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39943343" sideWeight="0.49353796" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.49291784" sideWeight="0.49353796" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24959612" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24978903" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.57932013" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39518413" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3286119" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24362606" sideWeight="0.48707592" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -6568,38 +6779,11 @@
           <option name="timeStamp" value="19" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="33" />
+      <option name="time" value="34" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/res/layout/activity_main.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33436054">
-          <caret line="42" column="44" selection-start-line="42" selection-start-column="44" selection-end-line="42" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/res/layout/header_drawer.xml">
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="22" column="8" selection-start-line="22" selection-start-column="8" selection-end-line="22" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/meizi_retrofit/proguard-rules.pro">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.3141593">
-          <caret line="281" column="5" selection-start-line="281" selection-start-column="5" selection-end-line="281" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/utils/BusProvider.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.24778761">
@@ -6619,11 +6803,6 @@
         <state vertical-scroll-proportion="0.25917926">
           <caret line="5" column="23" selection-start-line="5" selection-start-column="23" selection-end-line="5" selection-end-column="23" />
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/res/mipmap/ic_launcher.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/LoginActivity.java">
@@ -6656,13 +6835,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334">
           <caret line="41" column="23" selection-start-line="41" selection-start-column="23" selection-end-line="41" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/net/ContentParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.38938054">
-          <caret line="25" column="68" selection-start-line="25" selection-start-column="6" selection-end-line="25" selection-end-column="68" />
         </state>
       </provider>
     </entry>
@@ -6732,20 +6904,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/base/BaseFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="107" column="31" selection-start-line="107" selection-start-column="31" selection-end-line="107" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/main/HomeFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="167" column="23" selection-start-line="167" selection-start-column="6" selection-end-line="167" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/res/transition/change_image_transform.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -6774,38 +6932,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/selfie/SelfieFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="150" column="0" selection-start-line="150" selection-start-column="0" selection-end-line="150" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/model/SaveDb.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="5" column="18" selection-start-line="5" selection-start-column="18" selection-end-line="5" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/base/BaseActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="55" column="16" selection-start-line="55" selection-start-column="16" selection-end-line="55" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/model/WrapGroup.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="33" column="20" selection-start-line="33" selection-start-column="20" selection-end-line="33" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/CollectedActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="49" column="38" selection-start-line="49" selection-start-column="38" selection-end-line="49" selection-end-column="38" />
         </state>
       </provider>
     </entry>
@@ -6834,13 +6964,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6814159">
           <caret line="29" column="21" selection-start-line="29" selection-start-column="21" selection-end-line="29" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/meizi_retrofit/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -6877,26 +7000,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/largepic/LargePicFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="116" column="11" selection-start-line="116" selection-start-column="11" selection-end-line="116" selection-end-column="11" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#2581#2582#0" expanded="false" />
-            <element signature="e#2652#2653#0" expanded="false" />
-            <element signature="e#4294#4295#0" expanded="false" />
-            <element signature="e#4358#4359#0" expanded="false" />
-            <element signature="e#5067#5068#0" expanded="false" />
-            <element signature="e#5094#5095#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/Downloads/adt-bundle-mac-x86_64-20140702/sdk/extras/android/m2repository/com/android/support/recyclerview-v7/23.1.1/recyclerview-v7-23.1.1-sources.jar!/android/support/v7/widget/RecyclerView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334">
           <caret line="6351" column="20" selection-start-line="6351" selection-start-column="20" selection-end-line="6351" selection-end-column="20" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -6943,35 +7051,155 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/group/GroupActivity.java">
+    <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/base/BaseFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="232" column="11" selection-start-line="232" selection-start-column="11" selection-end-line="232" selection-end-column="11" />
-          <folding>
-            <element signature="docComment;class#GroupActivity#0" expanded="false" />
-            <element signature="class#2600:2781" expanded="false" />
-            <element signature="method#isContain#0;class#GroupActivity#0" expanded="false" />
-            <element signature="method#sendToLoad#0;class#GroupActivity#0" expanded="false" />
-            <element signature="method#newLoadData#0;class#GroupActivity#0" expanded="false" />
-            <element signature="class#5884:6520" expanded="false" />
-            <element signature="method#onCompleted#0;class#5884:6520" expanded="false" />
-            <element signature="method#onError#0;class#5884:6520" expanded="false" />
-            <element signature="method#handleContent#0;class#GroupActivity#0" expanded="false" />
-            <element signature="e#7457#7471#0" expanded="false" />
-            <element signature="method#createApi#0;class#GroupActivity#0" expanded="false" />
-            <element signature="method#onRefresh#0;class#GroupActivity#0" expanded="false" />
-            <element signature="method#onCreateOptionsMenu#0;class#GroupActivity#0" expanded="false" />
-            <element signature="method#onOptionsItemSelected#0;class#GroupActivity#0" expanded="false" />
-          </folding>
+        <state vertical-scroll-proportion="0.8702065">
+          <caret line="105" column="28" selection-start-line="105" selection-start-column="28" selection-end-line="105" selection-end-column="28" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/largepic/LargePicActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.51917404">
-          <caret line="74" column="68" selection-start-line="74" selection-start-column="68" selection-end-line="74" selection-end-column="68" />
+        <state vertical-scroll-proportion="0.33333334">
+          <caret line="76" column="34" selection-start-line="76" selection-start-column="34" selection-end-line="76" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/largepic/LargePicFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.52845526">
+          <caret line="95" column="94" selection-start-line="95" selection-start-column="94" selection-end-line="95" selection-end-column="94" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/utils/RxMeizhi.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.4444444">
+          <caret line="51" column="27" selection-start-line="51" selection-start-column="27" selection-end-line="51" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/Alone.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/res/values/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33794162">
+          <caret line="13" column="27" selection-start-line="13" selection-start-column="27" selection-end-line="13" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/selfie/SelfieFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3579109">
+          <caret line="143" column="37" selection-start-line="143" selection-start-column="37" selection-end-line="143" selection-end-column="37" />
           <folding>
-            <element signature="class#PagerAdapter#0;class#LargePicActivity#0" expanded="false" />
+            <element signature="e#1621#1622#0" expanded="false" />
+            <element signature="e#1664#1665#0" expanded="false" />
+            <element signature="e#3600#3601#0" expanded="false" />
+            <element signature="e#3657#3658#0" expanded="false" />
+            <element signature="e#5040#5408#0" expanded="false" />
+            <element signature="e#5407#5408#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/base/BaseActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.62114537">
+          <caret line="66" column="5" selection-start-line="66" selection-start-column="5" selection-end-line="66" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/net/ContentParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.59292036">
+          <caret line="48" column="23" selection-start-line="48" selection-start-column="23" selection-end-line="48" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/main/HomeFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4347158">
+          <caret line="72" column="49" selection-start-line="72" selection-start-column="49" selection-end-line="72" selection-end-column="49" />
+          <folding>
+            <element signature="e#2606#2810#0" expanded="true" />
+            <element signature="e#2809#2810#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/meizi_retrofit/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4218289">
+          <caret line="26" column="5" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/model/WrapGroup.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6106195">
+          <caret line="56" column="34" selection-start-line="56" selection-start-column="34" selection-end-line="56" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/model/Group.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.74041295">
+          <caret line="143" column="24" selection-start-line="143" selection-start-column="16" selection-end-line="143" selection-end-column="24" />
+          <folding>
+            <element signature="e#2848#2849#0" expanded="true" />
+            <element signature="e#2876#2877#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/group/GroupActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-7.0">
+          <caret line="220" column="36" selection-start-line="220" selection-start-column="36" selection-end-line="220" selection-end-column="36" />
+          <folding>
+            <element signature="docComment;class#GroupActivity#0" expanded="false" />
+            <element signature="class#2600:2781" expanded="false" />
+            <element signature="docComment;method#isContain#0;class#GroupActivity#0" expanded="false" />
+            <element signature="method#isContain#0;class#GroupActivity#0" expanded="false" />
+            <element signature="method#sendToLoad#0;class#GroupActivity#0" expanded="false" />
+            <element signature="method#newLoadData#0;class#GroupActivity#0" expanded="false" />
+            <element signature="class#6105:6741" expanded="false" />
+            <element signature="method#onCompleted#0;class#6105:6741" expanded="false" />
+            <element signature="method#onError#0;class#6105:6741" expanded="false" />
+            <element signature="e#7678#7692#0" expanded="false" />
+            <element signature="method#onActivityReenter#0;class#GroupActivity#0" expanded="false" />
+            <element signature="method#createApi#0;class#GroupActivity#0" expanded="false" />
+            <element signature="method#startLargePicActivity#0;class#GroupActivity#0" expanded="false" />
+            <element signature="method#onRefresh#0;class#GroupActivity#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/meizi_retrofit/src/main/java/info/meizi_retrofit/ui/CollectedActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.67588323">
+          <caret line="72" column="38" selection-start-line="72" selection-start-column="38" selection-end-line="72" selection-end-column="38" />
+          <folding>
+            <element signature="e#1471#1472#0" expanded="true" />
+            <element signature="e#1534#1535#0" expanded="true" />
+            <element signature="e#2597#2832#0" expanded="true" />
+            <element signature="e#2831#2832#0" expanded="true" />
           </folding>
         </state>
       </provider>

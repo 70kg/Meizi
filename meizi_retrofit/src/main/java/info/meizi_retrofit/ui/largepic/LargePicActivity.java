@@ -11,8 +11,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.socks.library.KLog;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -76,7 +74,6 @@ public class LargePicActivity extends BaseActivity {
             setEnterSharedElementCallback(new SharedElementCallback() {
                 @Override
                 public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-                    KLog.e("进入的");
                     String url = urls.get(mPager.getCurrentItem());
                     LargePicFragment fragment = (LargePicFragment) adapter.instantiateItem(mPager, mPager.getCurrentItem());
                     sharedElements.clear();

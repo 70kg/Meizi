@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 
+import com.socks.library.KLog;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -53,8 +54,8 @@ public class RxMeizhi {
         if (!appDir.exists()) {
             appDir.mkdir();
         }
-        File file = new File(appDir,name+".jpg");
-        LogUtils.d(file.getName());
+        File file = new File(appDir, name + ".jpg");
+        KLog.e(file.getName());
         try {
             FileOutputStream out = new FileOutputStream(file);
             bm.compress(Bitmap.CompressFormat.JPEG, 100, out);

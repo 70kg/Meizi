@@ -88,7 +88,7 @@ public class HomeFragment extends BaseFragment {
 
         @Override
         public void onCompleted() {
-
+            mRefresher.setRefreshing(false);
         }
 
         @Override
@@ -98,7 +98,7 @@ public class HomeFragment extends BaseFragment {
             } else {
                 Snackbar.make(mRecyclerView, "出现错误啦", Snackbar.LENGTH_SHORT).show();
             }
-            mRefresher.setRefreshing(false);
+            Utils.statrtRefresh(mRefresher, false);
             KLog.e(e);
         }
 
@@ -174,7 +174,6 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     public void onRefresh() {
-//        StartLoad(1, true);
         mRefresher.setRefreshing(false);
     }
 
