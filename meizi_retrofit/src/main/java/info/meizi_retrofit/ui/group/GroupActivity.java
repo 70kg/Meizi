@@ -1,13 +1,13 @@
 package info.meizi_retrofit.ui.group;
 
 import android.annotation.TargetApi;
+import android.app.SharedElementCallback;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.SharedElementCallback;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -87,21 +87,22 @@ public class GroupActivity extends ListActivity {
         };
         mRecyclerView.setAdapter(mAdapter);
         sendToLoad(false);
-
         if (Build.VERSION.SDK_INT >= 22) {
+            //这个在退出的时候调用  把当前的共享元素传递到后面的activity
             setExitSharedElementCallback(new SharedElementCallback() {
                 @Override
                 public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                    KLog.e("退出的");
                     if (reenterState != null) {
                         int i = reenterState.getInt(INDEX, 0);
                         sharedElements.clear();
+//                        mRecyclerView.findViewWithTag(mAdapter.get(i).getUrl());
                         sharedElements.put(mAdapter.get(i).getUrl(), mLayoutManager.findViewByPosition(i));
                         reenterState = null;
                     }
                 }
             });
         }
-
     }
 
 
@@ -218,7 +219,7 @@ public class GroupActivity extends ListActivity {
     @Override
     public void onActivityReenter(int resultCode, Intent data) {
         super.onActivityReenter(resultCode, data);
-        supportStartPostponedEnterTransition();
+        supportPostponeEnterTransition();
         reenterState = new Bundle(data.getExtras());
         mRecyclerView.scrollToPosition(reenterState.getInt(INDEX, 0));
         mRecyclerView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -226,6 +227,7 @@ public class GroupActivity extends ListActivity {
             public boolean onPreDraw() {
                 mRecyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
                 mRecyclerView.requestLayout();
+                supportStartPostponedEnterTransition();
                 return true;
             }
         });

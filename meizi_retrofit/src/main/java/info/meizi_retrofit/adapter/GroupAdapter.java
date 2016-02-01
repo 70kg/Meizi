@@ -3,7 +3,6 @@ package info.meizi_retrofit.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.LayoutRes;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +47,6 @@ public abstract class GroupAdapter extends ArrayRecyclerAdapter<Content, GroupAd
                 transform(new CopyOnWriteArrayList<Transformation>()).
                 into(holder.imageView);
         holder.imageView.setTag(image.getUrl());
-        ViewCompat.setTransitionName(holder.imageView, image.getUrl());
     }
 
     @Override

@@ -14,8 +14,8 @@ android {
         applicationId "info.meizi_retrofit"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 9
-        versionName "1.5.0"
+        versionCode 10
+        versionName "1.5.1"
         resConfigs "zh"//只要中文的第二三方包等
         manifestPlaceholders = [CHANNEL_VALUE: "xiaomi"]
     }
@@ -44,12 +44,6 @@ android {
 
         }
         release {
-            keyAlias 'key'
-            keyPassword 'keyPassword'
-            storeFile file('storeFile')
-            storePassword 'storePassword'
-        }
-        release1 {
             File propFile = file('sign.properties');
             if (propFile.exists()) {
                 println("文件存在")
@@ -88,12 +82,20 @@ android {
         release {
             // 不显示Log
             buildConfigField "boolean", "LOG_DEBUG", "false"
+
+            File propFile = file('sign.properties');
+            def Properties props = new Properties()
+            props.load(new FileInputStream(propFile))
+            buildConfigField "String", "APPLICATIONID", props['APPLICATIONID']
+            buildConfigField "String", "CLIENTKEY", props['CLIENTKEY']
+
+
             debuggable false
-            minifyEnabled true//混淆 还有点问题
+            minifyEnabled true//混淆
             zipAlignEnabled true//优化
             shrinkResources true//去除无用资源
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'//混淆文件
-            signingConfig signingConfigs.release1//使用key这个闭包进行签名
+            signingConfig signingConfigs.release//使用这个闭包进行签名
 
         }
     }

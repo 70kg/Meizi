@@ -1,15 +1,17 @@
 package info.meizi_retrofit.ui.largepic;
 
 import android.annotation.TargetApi;
+import android.app.SharedElementCallback;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.SharedElementCallback;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+
+import com.socks.library.KLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +35,6 @@ public class LargePicActivity extends BaseActivity {
     @Bind(R.id.pager)
     ViewPager mPager;
     private int index;
-    //    private Realm realm;
-    //    private ArrayList<Content> images;
     protected ArrayList<String> urls;
     private PagerAdapter adapter;
     private String groupid;
@@ -43,6 +43,9 @@ public class LargePicActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.large_pic);
+
+        supportPostponeEnterTransition();//延缓执行 然后在fragment里面的控件加载完成后start
+
         ButterKnife.bind(this);
         initviews();
     }
@@ -60,8 +63,6 @@ public class LargePicActivity extends BaseActivity {
         index = getIntent().getIntExtra(INDEX, 0);
         groupid = getIntent().getStringExtra(GROUPID);
 
-//        realm = Realm.getDefaultInstance();
-//        images = Content.all(realm, groupid);
         urls = (ArrayList<String>) getIntent().getSerializableExtra(URLS);
 
         adapter = new PagerAdapter();
@@ -69,18 +70,19 @@ public class LargePicActivity extends BaseActivity {
         mPager.setAdapter(adapter);
         mPager.setCurrentItem(index);
         if (Build.VERSION.SDK_INT >= 22) {
-
-
+            //这个可以看做个管道  每次进入和退出的时候都会进行调用  进入的时候获取到前面传来的共享元素的信息
+            //退出的时候 把这些信息传递给前面的activity
+            //同时向sharedElements里面put view,跟对view添加transitionname作用一样
             setEnterSharedElementCallback(new SharedElementCallback() {
                 @Override
                 public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                    KLog.e("进入的");
                     String url = urls.get(mPager.getCurrentItem());
                     LargePicFragment fragment = (LargePicFragment) adapter.instantiateItem(mPager, mPager.getCurrentItem());
                     sharedElements.clear();
                     sharedElements.put(url, fragment.getSharedElement());
                 }
             });
-
         }
 
     }
@@ -93,7 +95,6 @@ public class LargePicActivity extends BaseActivity {
         setResult(RESULT_OK, data);
         super.supportFinishAfterTransition();
     }
-
 
     private class PagerAdapter extends FragmentStatePagerAdapter {
 

@@ -1,8 +1,10 @@
 package info.meizi_retrofit.ui.largepic;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
@@ -11,13 +13,11 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
 import java.io.File;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import info.meizi_retrofit.R;
 import info.meizi_retrofit.utils.PicassoHelper;
 import info.meizi_retrofit.utils.RxMeizhi;
@@ -33,18 +33,12 @@ public class LargePicFragment extends Fragment {
     private static final String URL = "url";
     private static final String GROUPID = "groupid";
     private static final String POSITION = "position";
-    @Bind(R.id.image)
-    TouchImageView image;
     private String url;
     private LargePicActivity activity;
     private String groupid;
     private int position;
+    private TouchImageView view;
     protected CompositeSubscription mSubscriptions = new CompositeSubscription();
-
-    @OnClick(R.id.image)
-    void toggleToolbar() {
-        activity.supportFinishAfterTransition();
-    }
 
     public LargePicFragment() {
     }
@@ -74,11 +68,19 @@ public class LargePicFragment extends Fragment {
         position = getArguments().getInt(POSITION);
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_viewer, container, false);
-        ButterKnife.bind(this, view);
+        view = (TouchImageView) inflater.inflate(R.layout.fragment_viewer, container, false);
+
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.supportFinishAfterTransition();
+            }
+        });
 
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -110,8 +112,15 @@ public class LargePicFragment extends Fragment {
                     }
                 });
                 builder.show();
-
-                return false;
+                return true;
+            }
+        });
+        view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                view.getViewTreeObserver().removeOnPreDrawListener(this);
+                getActivity().supportStartPostponedEnterTransition();
+                return true;
             }
         });
         return view;
@@ -122,17 +131,11 @@ public class LargePicFragment extends Fragment {
         super.onResume();
         PicassoHelper.getInstance(activity)
                 .load(url)
-                .into(image);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
+                .into(view);
     }
 
     public View getSharedElement() {
-        return image;
+        return view;
     }
 
     @Override
