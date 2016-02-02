@@ -5,21 +5,14 @@
         <item name="colorPrimaryDark">@color/app_primary_color_dark</item>
     </style>
 
+    <style name="AppTheme" parent="AppTheme.Base">
+    </style>
+
+
     <style name="PopupMenu" parent="ThemeOverlay.AppCompat.Light">
         <item name="android:colorBackground">@color/app_color_background</item>
         <item name="android:textColor">@color/app_primary_color_dark</item>
     </style>
-
-    <style name="AppTheme" parent="AppTheme.Base">
-
-    </style>
-
-    <style name="ViewerTheme" parent="AppTheme.Base">
-    </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <style name="WebTitle"
            parent="@android:style/TextAppearance">

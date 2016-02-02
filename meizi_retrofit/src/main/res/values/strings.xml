@@ -114,4 +114,6 @@
         如果还是不行\n
         放弃吧,骚年,看不到的.
     </string>
+    <string name="navigation_drawer_open">open</string>
+    <string name="navigation_drawer_close">close</string>
 </resources>

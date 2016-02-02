@@ -2,7 +2,6 @@
     android:id="@+id/layout_drawerlayouy"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -18,7 +17,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             android:elevation="4dp"
-            app:layout_scrollFlags="scroll|enterAlways"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/PopupMenu"/>
 
         <FrameLayout
@@ -28,27 +27,11 @@
     </LinearLayout>
 
     <android.support.design.widget.NavigationView
-        android:id="@+id/navigation_drawer_container"
-        android:layout_width="match_parent"
+        android:id="@+id/id_nv_menu"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="left"
-        android:fitsSystemWindows="true">
+        app:headerLayout="@layout/header_drawer"
+        app:menu="@menu/menu_drawer"/>
 
-
-        <android.support.design.widget.NavigationView
-            android:id="@+id/id_nv_menu"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="top"
-            app:headerLayout="@layout/header_drawer"
-            app:menu="@menu/menu_drawer"/>
-
-        <!--<android.support.design.widget.NavigationView-->
-        <!--android:id="@+id/navigation_drawer_bottom"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="bottom"-->
-        <!--app:menu="@menu/menu_bottom"/>-->
-
-    </android.support.design.widget.NavigationView>
 </android.support.v4.widget.DrawerLayout>

@@ -50,11 +50,4 @@
             android:title="我的收藏"/>
     </group>
 
-    <group android:id="@+id/my_id1">
-        <item
-            android:id="@+id/menu_about"
-            android:icon="@drawable/about"
-            android:title="关于"></item>
-    </group>
-
 </menu>

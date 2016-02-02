@@ -8,7 +8,6 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <!--<uses-permission android:name="android.permission.READ_PHONE_STATE"/>-->
 
     <application
         android:name=".App"
@@ -26,14 +25,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.group.GroupActivity"
-            android:theme="@style/ViewerTheme"/>
+            android:name=".ui.group.GroupActivity"/>
         <activity
-            android:name=".ui.CollectedActivity"
-            android:theme="@style/ViewerTheme"/>
+            android:name=".ui.CollectedActivity"/>
         <activity
-            android:name=".ui.largepic.LargePicActivity"
-            android:theme="@style/ViewerTheme"/>
+            android:name=".ui.largepic.LargePicActivity"/>
         <activity android:name=".ui.about.AboutActivity"/>
         <activity android:name=".ui.about.WebActivity"/>
         <activity android:name=".ui.hot.HotGroupActivity"/>

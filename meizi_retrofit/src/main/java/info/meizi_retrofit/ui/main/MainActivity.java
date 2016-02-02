@@ -1,15 +1,14 @@
 package info.meizi_retrofit.ui.main;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,7 +26,6 @@ import info.meizi_retrofit.ui.LoginActivity;
 import info.meizi_retrofit.ui.about.AboutActivity;
 import info.meizi_retrofit.ui.hot.HotActivity;
 import info.meizi_retrofit.ui.selfie.SelfieFragment;
-import info.meizi_retrofit.utils.Utils;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
     @Bind(R.id.toolbar)
@@ -63,7 +61,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 
     private void initDrawer() {
-        mDrawerLayout.setDrawerListener(new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close));
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.setDrawerListener(toggle);
+        toggle.syncState();
         mMenu.setNavigationItemSelectedListener(this);
         View haedLayout = mMenu.getHeaderView(0);
         mName = (TextView) haedLayout.findViewById(R.id.tv_name);
@@ -78,14 +79,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     private void initToolBar() {
-        mToolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(mToolbar);
-        Utils.setSystemBar(this, mToolbar, getResources().getColor(R.color.app_primary_color));
-        ActionBar supportActionBar = getSupportActionBar();
-        if (supportActionBar != null) {
-            supportActionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
-            supportActionBar.setDisplayHomeAsUpEnabled(true);
-        }
+//        Utils.setSystemBar(this, mToolbar, getResources().getColor(R.color.app_primary_color));
     }
 
     @Override
@@ -115,9 +110,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 mToolbar.setTitle("妹子自拍");
                 replaceFragment(SelfieFragment.newFragment());
                 break;
-            case R.id.menu_about:
-                startActivity(new Intent(MainActivity.this, AboutActivity.class));
-                break;
             case R.id.menu_collect1:
                 startActivity(new Intent(this, CollectedActivity.class));
                 break;
@@ -133,6 +125,21 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content, fragment);
         transaction.commit();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_about) {
+            startActivity(new Intent(MainActivity.this, AboutActivity.class));
+        }
+        return true;
     }
 
     @Override
