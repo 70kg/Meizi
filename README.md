@@ -2,6 +2,14 @@
 
 ps:如果要运行项目需要使用LeanCloud帐号问题，去Issues里面提
 
+[apk下载地址](http://coolapk.com/apk/info.meizi_retrofit)
+
+todo:
+
+下一步打算把数据都抓到LeanCloud上，增加更多可交互性的功能，比如评价，打分等
+
+---我是分割线---
+
 使用的开源库：
 * butterknife
 * okhttp
