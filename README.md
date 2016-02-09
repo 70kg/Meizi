@@ -14,14 +14,6 @@
 刚开始是使用了okhttp加intentService进行的异步网络请求，具体参考app这个model，后来又使用了rxJava和retrofit进行了网络层的重构，同时增加了LeanCloud的云端同步收藏等功能，还对界面进行了修改。详细参考meizi_retrofi这个model。
 
 
-[apk下载地址](http://coolapk.com/apk/info.meizi_retrofit)
-
-todo:
-
-下一步打算把数据都抓到LeanCloud上，增加更多可交互性的功能，比如评价，打分等
-
----我是分割线---
-
 使用的开源库：
 
 * butterknife
