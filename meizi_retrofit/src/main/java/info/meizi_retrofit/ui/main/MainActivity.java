@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.SharedElementCallback;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -15,7 +16,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.avos.avoscloud.AVUser;
+import com.socks.library.KLog;
 import com.umeng.update.UmengUpdateAgent;
+
+import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -108,7 +113,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 break;
             case R.id.menu_selfie:
                 mToolbar.setTitle("妹子自拍");
-                replaceFragment(SelfieFragment.newFragment());
+                SelfieFragment fragment = SelfieFragment.newFragment();
+                replaceFragment(fragment);
+                fragment.setExitSharedElementCallback(new SharedElementCallback() {
+                    @Override
+                    public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                        KLog.e("selfiefragemt callback");
+                    }
+                });
                 break;
             case R.id.menu_collect1:
                 startActivity(new Intent(this, CollectedActivity.class));
@@ -119,6 +131,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
         mDrawerLayout.closeDrawers();
         return true;
+    }
+
+
+    @Override
+    public void onActivityReenter(int resultCode, Intent data) {
+        super.onActivityReenter(resultCode, data);
+        Bundle bundle = new Bundle(data.getExtras());
+        KLog.e(bundle == null);
     }
 
     public void replaceFragment(Fragment fragment) {

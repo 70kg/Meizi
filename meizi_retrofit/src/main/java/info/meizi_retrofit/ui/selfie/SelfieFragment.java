@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.SharedElementCallback;
 import android.view.View;
 
 import com.avos.avoscloud.AVException;
@@ -23,6 +24,8 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import info.meizi_retrofit.adapter.SelfieAdapter;
 import info.meizi_retrofit.base.BaseFragment;
@@ -60,6 +63,16 @@ public class SelfieFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApi = createApi();
+
+        setExitSharedElementCallback(new SharedElementCallback() {
+            @Override
+            public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                names.clear();
+                sharedElements.clear();
+
+            }
+        });
+
     }
 
     private void StartLoad(String page) {
