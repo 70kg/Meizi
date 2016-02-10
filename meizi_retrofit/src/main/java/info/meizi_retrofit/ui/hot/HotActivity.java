@@ -75,8 +75,8 @@ public class HotActivity extends ToolBarActivity {
                     dialog.dismiss();
                 }
             }).show();
-            SharedPreferences sharedPreferences = getSharedPreferences("meizi", Context.MODE_PRIVATE); //私有数据
-            SharedPreferences.Editor editor = sharedPreferences.edit();//获取编辑器
+            SharedPreferences sharedPreferences = getSharedPreferences("meizi", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean("hasShow", true);
             editor.commit();//提交修改
         }

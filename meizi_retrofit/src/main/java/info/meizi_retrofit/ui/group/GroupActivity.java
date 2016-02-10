@@ -7,7 +7,10 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -68,9 +71,14 @@ public class GroupActivity extends ListActivity {
     int mIndex;
     int mCount;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//并没有卵用  还是从右边退出..搞不清楚
+            getWindow().setReturnTransition(new Slide(Gravity.TOP));
+        }
 
         mApi = createApi();
         groupid = getIntent().getStringExtra(GROUPID);
@@ -96,7 +104,6 @@ public class GroupActivity extends ListActivity {
                     if (reenterState != null) {
                         int i = reenterState.getInt(INDEX, 0);
                         sharedElements.clear();
-//                        mRecyclerView.findViewWithTag(mAdapter.get(i).getUrl());
                         sharedElements.put(mAdapter.get(i).getUrl(), mLayoutManager.findViewByPosition(i));
                         reenterState = null;
                     }
@@ -105,8 +112,6 @@ public class GroupActivity extends ListActivity {
         }
 
         Group mGroup = realm.where(Group.class).equalTo("groupid", Integer.parseInt(groupid)).findFirst();
-
-        KLog.e(mGroup.getTitle());
 
         mWrapGroup = new WrapGroup();
         mWrapGroup.setGroup(mGroup);
@@ -261,14 +266,14 @@ public class GroupActivity extends ListActivity {
         intent.putExtra(GROUPID, groupid);
         intent.putExtra(URLS, urls);
 
-        if (Build.VERSION.SDK_INT >= 22) {
-            ActivityOptionsCompat options = ActivityOptionsCompat
-                    .makeSceneTransitionAnimation(this, view, mAdapter.get(position).getUrl());
-            startActivity(intent, options.toBundle());
-        } else {
-            startActivity(intent);
-        }
+        ActivityOptionsCompat options = ActivityOptionsCompat
+                .makeSceneTransitionAnimation(this, view, mAdapter.get(position).getUrl());
+        ActivityCompat.startActivity(this, intent, options.toBundle());
+    }
 
+    @Override
+    public void onBackPressed() {
+        ActivityCompat.finishAfterTransition(this);
     }
 
     @Override
@@ -292,8 +297,6 @@ public class GroupActivity extends ListActivity {
         } else {
             iscollected = false;
         }
-
-
         getMenuInflater().inflate(R.menu.group_menu, menu);
         if (iscollected) {
             menu.findItem(R.id.menu_collect).setIcon(R.drawable.collected);

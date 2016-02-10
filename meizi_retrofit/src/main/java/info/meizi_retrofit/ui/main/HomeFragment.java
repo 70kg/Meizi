@@ -6,6 +6,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.view.View;
 
 import com.socks.library.KLog;
@@ -14,15 +16,14 @@ import java.util.List;
 
 import info.meizi_retrofit.R;
 import info.meizi_retrofit.adapter.HomeAdapter;
-import info.meizi_retrofit.base.BaseFragment;
 import info.meizi_retrofit.model.Group;
 import info.meizi_retrofit.net.ContentParser;
 import info.meizi_retrofit.net.GroupApi;
+import info.meizi_retrofit.ui.base.BaseFragment;
 import info.meizi_retrofit.ui.group.GroupActivity;
 import info.meizi_retrofit.utils.StringConverter;
 import info.meizi_retrofit.utils.Utils;
 import info.meizi_retrofit.widget.RadioImageView;
-import io.realm.Realm;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 import rx.Observer;
@@ -78,7 +79,7 @@ public class HomeFragment extends BaseFragment {
                 .doOnNext(new Action1<List<Group>>() {
                     @Override
                     public void call(List<Group> groups) {
-                        saveDb(groups, realm);
+                        saveDb(groups);
                     }
                 })
                 .subscribe(new listObserver()));
@@ -114,14 +115,6 @@ public class HomeFragment extends BaseFragment {
         }
     }
 
-
-    private void saveDb(List<Group> groups, Realm realm) {
-        realm.beginTransaction();
-        realm.copyToRealmOrUpdate(groups);
-        realm.commitTransaction();
-
-    }
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -152,7 +145,8 @@ public class HomeFragment extends BaseFragment {
         //现在只需要传递处理完的URL进去
         intent1.putExtra("url", mAdapter.get(position).getImageurl());
         intent1.putExtra(GroupActivity.GROUPID, Utils.url2groupid(mAdapter.get(position).getUrl()));
-        getActivity().startActivity(intent1);
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeThumbnailScaleUpAnimation(view, bitmap, 0, 0);
+        ActivityCompat.startActivity(getActivity(), intent1, options.toBundle());
     }
 
     @Override

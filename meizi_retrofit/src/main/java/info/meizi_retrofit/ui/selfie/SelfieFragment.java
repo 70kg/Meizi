@@ -6,8 +6,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.SharedElementCallback;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewTreeObserver;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
@@ -24,13 +25,11 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 import info.meizi_retrofit.adapter.SelfieAdapter;
-import info.meizi_retrofit.base.BaseFragment;
 import info.meizi_retrofit.model.Selfie;
 import info.meizi_retrofit.net.SelfieApi;
+import info.meizi_retrofit.ui.base.BaseFragment;
 import info.meizi_retrofit.ui.largepic.LargePicActivity;
 import info.meizi_retrofit.utils.StringConverter;
 import info.meizi_retrofit.utils.Utils;
@@ -47,8 +46,9 @@ import rx.schedulers.Schedulers;
  */
 public class SelfieFragment extends BaseFragment {
     private SelfieApi mApi;
-    private SelfieAdapter mAdapter;
-    private int page = 191;
+    public SelfieAdapter mAdapter;
+    public RecyclerView.LayoutManager mLayoutManager;
+    private int page;
     private boolean hasload = true;
     private ArrayList<String> urls = new ArrayList<>();
 
@@ -63,16 +63,6 @@ public class SelfieFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApi = createApi();
-
-        setExitSharedElementCallback(new SharedElementCallback() {
-            @Override
-            public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-                names.clear();
-                sharedElements.clear();
-
-            }
-        });
-
     }
 
     private void StartLoad(String page) {
@@ -123,10 +113,21 @@ public class SelfieFragment extends BaseFragment {
                         mAdapter.add(selfie);
                     }
                 }));
-
-
     }
 
+
+    public void scrollToPosition(int index) {
+        mRecyclerView.scrollToPosition(index);
+        mRecyclerView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                mRecyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
+                mRecyclerView.requestLayout();
+                getActivity().supportStartPostponedEnterTransition();
+                return true;
+            }
+        });
+    }
 
     private Selfie handleSelfie(String url) {
         Selfie selfie = new Selfie();
@@ -147,7 +148,7 @@ public class SelfieFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        mLayoutManager = mRecyclerView.getLayoutManager();
         mAdapter = new SelfieAdapter(getContext()) {
             @Override
             protected void onItemClick(View v, int position) {
@@ -176,7 +177,6 @@ public class SelfieFragment extends BaseFragment {
         intent.putExtra(LargePicActivity.URLS, urls);
 
         if (Build.VERSION.SDK_INT >= 22) {
-
             ActivityOptionsCompat options = ActivityOptionsCompat
                     .makeSceneTransitionAnimation(getActivity(), view, mAdapter.get(position).getUrl());
             getActivity().startActivity(intent, options.toBundle());

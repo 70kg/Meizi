@@ -13,7 +13,6 @@ import android.widget.ViewSwitcher;
 
 import butterknife.ButterKnife;
 import info.meizi_retrofit.R;
-import info.meizi_retrofit.base.BaseActivity;
 import info.meizi_retrofit.utils.Utils;
 
 /**

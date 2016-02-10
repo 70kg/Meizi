@@ -1,11 +1,12 @@
 package info.meizi_retrofit.ui.main;
 
+import android.app.SharedElementCallback;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.SharedElementCallback;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -16,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.avos.avoscloud.AVUser;
-import com.socks.library.KLog;
 import com.umeng.update.UmengUpdateAgent;
 
 import java.util.List;
@@ -25,10 +25,10 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import info.meizi_retrofit.R;
-import info.meizi_retrofit.base.BaseActivity;
 import info.meizi_retrofit.ui.CollectedActivity;
 import info.meizi_retrofit.ui.LoginActivity;
 import info.meizi_retrofit.ui.about.AboutActivity;
+import info.meizi_retrofit.ui.base.BaseActivity;
 import info.meizi_retrofit.ui.hot.HotActivity;
 import info.meizi_retrofit.ui.selfie.SelfieFragment;
 
@@ -53,6 +53,20 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         replaceFragment(HomeFragment.newFragment(""));
         initDrawer();
         initUser();
+        if (Build.VERSION.SDK_INT >= 22) {
+            setExitSharedElementCallback(new SharedElementCallback() {
+                @Override
+                public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                    if (bundle != null) {
+                        int i = bundle.getInt("index", 0);
+                        sharedElements.clear();
+                        names.clear();
+                        sharedElements.put(fragment.mAdapter.get(i).getUrl(), fragment.mLayoutManager.findViewByPosition(i));
+                        bundle = null;
+                    }
+                }
+            });
+        }
     }
 
     private void initUser() {
@@ -113,14 +127,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 break;
             case R.id.menu_selfie:
                 mToolbar.setTitle("妹子自拍");
-                SelfieFragment fragment = SelfieFragment.newFragment();
+                fragment = SelfieFragment.newFragment();
                 replaceFragment(fragment);
-                fragment.setExitSharedElementCallback(new SharedElementCallback() {
-                    @Override
-                    public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-                        KLog.e("selfiefragemt callback");
-                    }
-                });
                 break;
             case R.id.menu_collect1:
                 startActivity(new Intent(this, CollectedActivity.class));
@@ -133,12 +141,17 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         return true;
     }
 
+    SelfieFragment fragment;
+    Bundle bundle;
 
     @Override
     public void onActivityReenter(int resultCode, Intent data) {
         super.onActivityReenter(resultCode, data);
-        Bundle bundle = new Bundle(data.getExtras());
-        KLog.e(bundle == null);
+        bundle = new Bundle(data.getExtras());
+        if (fragment != null && fragment.isAdded()) {
+            supportPostponeEnterTransition();
+            fragment.scrollToPosition(bundle.getInt("index", 0));
+        }
     }
 
     public void replaceFragment(Fragment fragment) {

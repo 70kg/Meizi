@@ -1,11 +1,10 @@
-package info.meizi_retrofit.base;
+package info.meizi_retrofit.ui.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.avos.avoscloud.AVUser;
-import com.socks.library.KLog;
 import com.umeng.analytics.MobclickAgent;
 
 import info.meizi_retrofit.model.SaveDb;

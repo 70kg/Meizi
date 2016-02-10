@@ -1,4 +1,4 @@
-package info.meizi_retrofit.base;
+package info.meizi_retrofit.ui.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,14 +15,16 @@ import com.squareup.picasso.Picasso;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import info.meizi_retrofit.R;
+import info.meizi_retrofit.model.SaveDb;
 import info.meizi_retrofit.widget.MySwipeRefreshLayout;
 import io.realm.Realm;
+import io.realm.RealmObject;
 import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by Mr_Wrong on 15/10/30.
  */
-public abstract class BaseFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public abstract class BaseFragment<T extends RealmObject> extends Fragment implements SwipeRefreshLayout.OnRefreshListener, SaveDb<T> {
     protected View rootView;
     @Bind(R.id.id_recyclerview)
     protected RecyclerView mRecyclerView;
@@ -41,7 +43,6 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
         super.onCreate(savedInstanceState);
         realm = Realm.getDefaultInstance();
     }
-
 
 
     @Nullable
@@ -126,5 +127,19 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
         if (this.mSubscriptions != null) {
             this.mSubscriptions.unsubscribe();
         }
+    }
+
+    @Override
+    public void saveDb(T t) {
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(t);
+        realm.commitTransaction();
+    }
+
+    @Override
+    public void saveDb(Iterable<T> objects) {
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(objects);
+        realm.commitTransaction();
     }
 }

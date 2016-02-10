@@ -1,55 +1,32 @@
 package info.meizi_retrofit.adapter;
 
 import android.content.Context;
-import android.support.annotation.LayoutRes;
 import android.support.v4.view.ViewCompat;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.squareup.picasso.Transformation;
-
-import java.util.concurrent.CopyOnWriteArrayList;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import info.meizi_retrofit.R;
-import info.meizi_retrofit.adapter.base.ArrayRecyclerAdapter;
+import info.meizi_retrofit.adapter.base.BaseAdapter;
+import info.meizi_retrofit.adapter.base.MyViewHolder;
 import info.meizi_retrofit.model.Group;
-import info.meizi_retrofit.utils.PicassoHelper;
 import info.meizi_retrofit.widget.RadioImageView;
 
 /**
  * Created by Mr_Wrong on 15/10/30.
  */
-public abstract class HomeAdapter extends ArrayRecyclerAdapter<Group, HomeAdapter.ViewHolder> {
-
-    private final Context context;
-    private final LayoutInflater inflater;
-
-    public HomeAdapter(Context context) {
-        this.context = context;
-        this.inflater = LayoutInflater.from(context);
-        setHasStableIds(true);
-
+public abstract class HomeAdapter extends BaseAdapter<Group> {
+    protected HomeAdapter(Context context) {
+        super(context);
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(R.layout.main_item, parent);
-    }
-
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBind(MyViewHolder viewHolder, int position) {
         Group bean = get(position);
-        holder.imageView.setOriginalSize(bean.getWidth(), bean.getHeight());
-        PicassoHelper.getInstance(context).load(bean.getImageurl()).tag("1").//config(Bitmap.Config.RGB_565).
-                transform(new CopyOnWriteArrayList<Transformation>()).
-                into(holder.imageView);
-        holder.title.setText(bean.getTitle());
-        ViewCompat.setTransitionName(holder.imageView, bean.getUrl());
+        RadioImageView imageView = viewHolder.get(R.id.iv_main_item);
+        imageView.setOriginalSize(bean.getWidth(), bean.getHeight());
+        mPicasso.load(bean.getImageurl())
+                .tag("1")
+                .into(imageView);
+        viewHolder.setTextView(R.id.text_title, bean.getTitle());
+        ViewCompat.setTransitionName(imageView, bean.getUrl());
     }
 
     @Override
@@ -57,27 +34,8 @@ public abstract class HomeAdapter extends ArrayRecyclerAdapter<Group, HomeAdapte
         return get(position).getUrl().hashCode();
     }
 
-    protected abstract void onItemClick(View v, int position);
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-
-        @Bind(R.id.iv_main_item)
-        public RadioImageView imageView;
-
-        @Bind(R.id.text_title)
-        public TextView title;
-
-        public ViewHolder(@LayoutRes int resource, ViewGroup parent) {
-            super(inflater.inflate(resource, parent, false));
-            ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onItemClick(v, getAdapterPosition());
-                }
-            });
-        }
-
+    @Override
+    protected int getLayout() {
+        return R.layout.main_item;
     }
-
 }

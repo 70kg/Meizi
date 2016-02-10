@@ -6,14 +6,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.squareup.picasso.Picasso;
+
+import info.meizi_retrofit.utils.PicassoHelper;
+
 /**
  * Created by Mr_Wrong on 15/12/7.
  */
 public abstract class BaseAdapter<E> extends ArrayRecyclerAdapter<E, BaseAdapter.ViewHolder> {
     protected Context mContext;
+    protected Picasso mPicasso;
 
     protected BaseAdapter(Context context) {
         this.mContext = context;
+        mPicasso = PicassoHelper.getInstance(mContext);
     }
 
     @Override
