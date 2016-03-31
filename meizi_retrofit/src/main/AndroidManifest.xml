@@ -33,9 +33,7 @@
         <activity android:name=".ui.about.AboutActivity"/>
         <activity android:name=".ui.about.WebActivity"/>
         <activity android:name=".ui.hot.HotGroupActivity"/>
-        <activity
-            android:name=".ui.hot.HotActivity"
-            android:theme="@style/AppTheme.Base"/>
+        <activity android:name=".ui.hot.HotActivity"/>
         <activity android:name=".ui.LoginActivity"/>
 
         <service

@@ -41,7 +41,7 @@ public class HomeFragment extends BaseFragment {
     private int page = 2;
     private boolean hasload = false;
     protected GroupApi mGroupApi;
-    String currentImageUrl;
+    private String currentImageUrl;
 
     public HomeFragment() {
     }
