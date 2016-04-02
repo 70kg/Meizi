@@ -36,10 +36,13 @@
         <activity android:name=".ui.hot.HotActivity"/>
         <activity android:name=".ui.LoginActivity"/>
 
+        <service android:name=".ui.SaveAllService"/>
+
         <service
             android:name="com.umeng.update.net.DownloadingService"
             android:process=":DownloadingService">
         </service>
+
         <activity
             android:name="com.umeng.update.UpdateDialogActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar">

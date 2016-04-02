@@ -7,4 +7,6 @@
         android:orderInCategory="99"
         android:title="收藏"
         app:showAsAction="always|withText"></item>
+    <item android:title="一键保存"
+        android:id="@+id/menu_saveall"></item>
 </menu>

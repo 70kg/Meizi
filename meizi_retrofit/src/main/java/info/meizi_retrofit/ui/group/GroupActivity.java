@@ -35,6 +35,7 @@ import info.meizi_retrofit.model.Group;
 import info.meizi_retrofit.model.WrapGroup;
 import info.meizi_retrofit.net.ContentApi;
 import info.meizi_retrofit.net.ContentParser;
+import info.meizi_retrofit.ui.SaveAllService;
 import info.meizi_retrofit.ui.base.ListActivity;
 import info.meizi_retrofit.ui.largepic.LargePicActivity;
 import info.meizi_retrofit.utils.LogUtils;
@@ -255,6 +256,8 @@ public class GroupActivity extends ListActivity {
         return adapter.create(ContentApi.class);
     }
 
+
+
     private void startLargePicActivity(View view, int position) {
         ArrayList<String> urls = new ArrayList<>();
         for (Content content : mAdapter.getList()) {
@@ -324,7 +327,17 @@ public class GroupActivity extends ListActivity {
                     Toast.makeText(GroupActivity.this, "取消收藏成功", Toast.LENGTH_SHORT).show();
                 }
                 iscollected = mWrapGroup.iscollected();
-
+                break;
+            case R.id.menu_saveall:
+                ArrayList<String> urls = new ArrayList<>();
+                for (Content content : mAdapter.getList()) {
+                    urls.add(content.getUrl());
+                }
+                Intent intent = new Intent(this, SaveAllService.class);
+                intent.putExtra(SaveAllService.TITLE, mTitle);
+                intent.putExtra(SaveAllService.GROUPID, groupid);
+                intent.putExtra(SaveAllService.URLS, urls);
+                startService(intent);
                 break;
         }
         return true;

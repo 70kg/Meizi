@@ -14,8 +14,8 @@ android {
         applicationId "info.meizi_retrofit"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 11
-        versionName "1.6.0"
+        versionCode 12
+        versionName "1.7.0"
         resConfigs "zh"//只要中文的第二三方包等
         manifestPlaceholders = [CHANNEL_VALUE: "xiaomi"]
     }

@@ -24,6 +24,10 @@ import rx.schedulers.Schedulers;
  */
 public class RxMeizhi {
     public static Observable<Uri> saveImageAndGetPathObservable(final Context context, final String url, final String name) {
+        return saveImagesAndGetPathObservable(context, url, "Meizi", name);
+    }
+
+    public static Observable<Uri> saveImagesAndGetPathObservable(final Context context, final String url, final String foldername, final String name) {
         return Observable.create(new Observable.OnSubscribe<Bitmap>() {
             @Override
             public void call(Subscriber<? super Bitmap> subscriber) {
@@ -43,14 +47,13 @@ public class RxMeizhi {
             @Override
             public Observable<Uri> call(Bitmap bitmap) {
                 LogUtils.d(bitmap.getByteCount());
-                return Observable.just(saveimage(context, bitmap, name));
+                return Observable.just(saveimages(context, bitmap, foldername, name));
             }
         }).subscribeOn(Schedulers.io());
-
     }
 
-    private static Uri saveimage(Context context, Bitmap bm, String name) {
-        File appDir = new File(Environment.getExternalStorageDirectory(), "Meizi");
+    public static Uri saveimages(Context context, Bitmap bm, String foldername, String name) {
+        File appDir = new File(Environment.getExternalStorageDirectory(), foldername);
         if (!appDir.exists()) {
             appDir.mkdir();
         }
@@ -59,7 +62,6 @@ public class RxMeizhi {
         try {
             FileOutputStream out = new FileOutputStream(file);
             bm.compress(Bitmap.CompressFormat.JPEG, 100, out);
-            LogUtils.d("保存成功");
             out.flush();
             out.close();
         } catch (FileNotFoundException e) {
@@ -73,4 +75,6 @@ public class RxMeizhi {
         context.sendBroadcast(scannerIntent);
         return uri;
     }
+
+
 }
