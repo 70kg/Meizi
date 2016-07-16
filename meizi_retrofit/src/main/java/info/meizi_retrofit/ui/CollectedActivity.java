@@ -134,12 +134,10 @@ public class CollectedActivity extends ListActivity {
         if (bd != null) {
             bitmap = bd.getBitmap();
         }
-
         Intent intent1 = new Intent(this, GroupActivity.class);
         if (bitmap != null && !bitmap.isRecycled()) {
             intent1.putExtra(GroupActivity.COLOR, Utils.getPaletteColor(bitmap));
         }
-
         intent1.putExtra("title", mAdapter.get(position).getGroup().getTitle());
         intent1.putExtra("url", mAdapter.get(position).getGroup().getImageurl());
         intent1.putExtra(GroupActivity.GROUPID, mAdapter.get(position).getGroupid());

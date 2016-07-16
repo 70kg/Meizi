@@ -145,8 +145,13 @@ public class HomeFragment extends BaseFragment {
         //现在只需要传递处理完的URL进去
         intent1.putExtra("url", mAdapter.get(position).getImageurl());
         intent1.putExtra(GroupActivity.GROUPID, Utils.url2groupid(mAdapter.get(position).getUrl()));
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeThumbnailScaleUpAnimation(view, bitmap, 0, 0);
-        ActivityCompat.startActivity(getActivity(), intent1, options.toBundle());
+        if (bitmap != null) {
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeThumbnailScaleUpAnimation(view, bitmap, 0, 0);
+            ActivityCompat.startActivity(getActivity(), intent1, options.toBundle());
+        } else {
+            startActivity(intent1);
+        }
+
     }
 
     @Override

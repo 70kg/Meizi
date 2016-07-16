@@ -1,5 +1,6 @@
 package info.meizi_retrofit.net;
 
+import info.meizi_retrofit.test.SubjectId;
 import retrofit.http.GET;
 import retrofit.http.Headers;
 import retrofit.http.Path;
@@ -17,5 +18,6 @@ public interface ContentApi {
 
     @GET("/{groupid}")
     Observable<String> getContentCount(@Path("groupid") String groupid);
+    Observable<String> getContentCount1(@SubjectId("groupid") String groupid);
 
 }

@@ -1,1 +1,15 @@
 /build
+.idea/libraries
+.idea/workspace.xml
+.idea/dictionaries/
+.idea/compiler.xml
+.idea/encodings.xml
+.idea/gradle.xml
+.idea/misc.xml
+.idea/vcs.xml
+.idea/modules.xml
+.idea/codeStyleSettings.xml
+.idea/scopes
+.idea/inspectionProfiles/
+.idea/runConfigurations.xml
+.idea/jsLibraryMappings.xml

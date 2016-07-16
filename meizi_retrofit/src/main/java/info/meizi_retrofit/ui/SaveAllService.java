@@ -24,18 +24,16 @@ public class SaveAllService extends IntentService {
     public static final String URLS = "urls";
     public static final String GROUPID = "groupid";
     public static final String TITLE = "title";
-
+    private String groupId;
+    private ArrayList<String> urls;
+    private String title;
+    private NotificationManager mNotifyManager;
+    private NotificationCompat.Builder mBuilder;
 
     public SaveAllService() {
         super(TAG);
     }
 
-    String groupId;
-    ArrayList<String> urls;
-    String title;
-
-    NotificationManager mNotifyManager;
-    NotificationCompat.Builder mBuilder;
 
     @Override
     protected void onHandleIntent(Intent intent) {
