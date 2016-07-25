@@ -25,9 +25,16 @@ public class Alone {
     }
 
     public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
-        String url = "http://pic.mmfile.net/2016/01/06r20.jpg";
-        int i = 1;
-        System.out.println(String.format("%s%s%s", url.substring(0, 33), new DecimalFormat("00").format(i), ".jpg"));
+//        String url = "http://pic.mmfile.net/2016/01/06r20.jpg";
+//        http://i.meizitu.net/2016/07/23a10.jpg
+//        http://i.meizitu.net/2016/07/20c47.jpg
+        String url = "http://i.meizitu.net/2016/07/24b26.jpg";
+        int i1 = url.lastIndexOf(".");
+
+        String indexs = url.substring(i1 - 2, i1);
+        System.out.println(String.format("%s%s%s", url.substring(0, i1 - 2),
+                new DecimalFormat("00").format(Integer.valueOf(indexs) + 1), ".jpg"));
+//        System.out.println(String.format("%s%s%s", url.substring(0, 33), new DecimalFormat("00").format(i), ".jpg"));
 
 
 //        test(Alone.Person.class);
@@ -40,11 +47,11 @@ public class Alone {
 //        System.out.println(constructorStr1.newInstance("70kg"));
 
         HashMap<String, String> map = new HashMap<>();
-        map.put("70kg","aaa");
-        map.put("71kg","bbb");
-        map.put("72kg","ccc");
-        map.put("73kg","ddd");
-        map.put("74kg","eee");
+        map.put("70kg", "aaa");
+        map.put("71kg", "bbb");
+        map.put("72kg", "ccc");
+        map.put("73kg", "ddd");
+        map.put("74kg", "eee");
         System.out.println(map);
         for (Map.Entry entry : map.entrySet()) {
             System.out.println(entry);

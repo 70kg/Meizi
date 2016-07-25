@@ -169,7 +169,7 @@ public class GroupActivity extends ListActivity {
                     @Override
                     public Observable<Integer> call(Integer integer) {//23张
                         mCount = integer;
-                        return Observable.range(1, integer);
+                        return Observable.range(0, integer);
                     }
                 }).map(new Func1<Integer, Content>() {
                     @Override
