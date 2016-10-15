@@ -20,7 +20,7 @@ public class App extends Application {
         mContext = getApplicationContext();
         AVOSCloud.initialize(this, BuildConfig.APPLICATIONID, BuildConfig.CLIENTKEY);
         RealmConfiguration myConfig = new RealmConfiguration.Builder(getContext())
-                .name("myRealm")
+                .name("Realm")
                 .schemaVersion(2)
 //                .setModules(new MyCustomSchema())
                 .build();

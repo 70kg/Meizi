@@ -12,6 +12,10 @@ import io.realm.annotations.PrimaryKey;
  * Created by Mr_Wrong on 15/9/22.
  */
 public class Content extends RealmObject implements Serializable {
+
+    public Content() {
+    }
+
     private int imagewidth;
     private int imageheight;
     private String url;

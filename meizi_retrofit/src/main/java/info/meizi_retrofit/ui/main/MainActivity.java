@@ -1,7 +1,9 @@
 package info.meizi_retrofit.ui.main;
 
 import android.app.SharedElementCallback;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -9,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +19,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.GetCallback;
+import com.socks.library.KLog;
 import com.umeng.update.UmengUpdateAgent;
 
 import java.util.List;
@@ -25,6 +33,7 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import info.meizi_retrofit.R;
+import info.meizi_retrofit.model.UpLoad;
 import info.meizi_retrofit.ui.CollectedActivity;
 import info.meizi_retrofit.ui.LoginActivity;
 import info.meizi_retrofit.ui.about.AboutActivity;
@@ -39,8 +48,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     NavigationView mMenu;
     @Bind(R.id.layout_drawerlayouy)
     DrawerLayout mDrawerLayout;
-    TextView mName;
-    ImageView mHead;
+    private TextView mName;
+    private ImageView mHead;
+    private SelfieFragment fragment;
+    private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +78,44 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 }
             });
         }
+        initAutoUpDate();
+    }
+
+    private void initAutoUpDate() {
+
+        AVQuery<AVObject> query = AVQuery.getQuery("SelfiePage");
+        query.getFirstInBackground(new GetCallback<AVObject>() {
+            @Override
+            public void done(final AVObject avObject, AVException e) {
+                if (e == null) {
+                    int code = avObject.getNumber("versionCode").intValue();
+                    int oldCode = UpLoad.getVerson(realm);
+                    if (code > oldCode) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.DialogStyle);
+                        builder.setTitle("有新版本啦");
+                        builder.setMessage(avObject.getString("updateContent"));
+                        builder.setNegativeButton("更新", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent();
+                                intent.setAction(Intent.ACTION_VIEW);
+                                Uri uri = Uri.parse(avObject.getString("updateUrl"));
+                                intent.setData(uri);
+                                if (intent.resolveActivity(getPackageManager()) != null) {
+                                    startActivity(intent);
+                                }
+                                dialog.dismiss();
+                            }
+                        }).show();
+                        UpLoad upLoad = new UpLoad();
+                        upLoad.setVersionCode(code);
+                        saveDb(upLoad);
+                    }
+                } else {
+                    KLog.e(e);
+                }
+            }
+        });
     }
 
     private void initUser() {
@@ -77,7 +126,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             mName.setText("点击头像登录");
         }
     }
-
 
     private void initDrawer() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -141,8 +189,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         return true;
     }
 
-    SelfieFragment fragment;
-    Bundle bundle;
 
     @Override
     public void onActivityReenter(int resultCode, Intent data) {

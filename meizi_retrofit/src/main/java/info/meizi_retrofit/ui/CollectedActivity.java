@@ -9,7 +9,9 @@ import android.support.design.widget.Snackbar;
 import android.view.View;
 
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.GetCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.socks.library.KLog;
 
@@ -42,8 +44,6 @@ public class CollectedActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setTitle("我的收藏");
         groups = WrapGroup.all(realm);
-
-        KLog.e(groups.size());
         mAdapter = new CollectedAdapter(this) {
             @Override
             protected void onItemClick(View v, int position) {
@@ -51,25 +51,18 @@ public class CollectedActivity extends ListActivity {
             }
         };
         mRecyclerView.setAdapter(mAdapter);
-
-        if (groups.size() > 0) {//本地有数据才去上传
-            mAdapter.replaceWith(groups);
-            if (mHasUser) {//已经登录
-                saveToCloud();
-            } else {
-                showSnackBar("可以登录进行云端同步啦");
-            }
-        } else if (mHasUser) {//本地没有  并且已经登录
-            getFromCloud();
-        } else {
+        mAdapter.replaceWith(groups);
+        getFromCloud();
+        if (WrapGroup.all(realm).isEmpty() || !mHasUser) {
             showSnackBar("可以登录进行云端同步啦");
         }
-
     }
 
     private void saveToCloud() {
         try {
             JSONArray array = new JSONArray();
+            List<WrapGroup> groups = WrapGroup.all(realm);
+            mAdapter.replaceWith(groups);
             for (WrapGroup group : groups) {
                 JSONObject object = new JSONObject();
                 object.put("groupid", group.getGroupid());
@@ -96,34 +89,40 @@ public class CollectedActivity extends ListActivity {
 
 
     private void getFromCloud() {
-        try {
-            groups = new ArrayList<>();
-            AVUser user = AVUser.getCurrentUser();
-            JSONArray array = user.getJSONArray("groups");
-            if (array != null) {
-                for (int i = 0; i < array.length(); i++) {
-                    JSONObject object = array.getJSONObject(i);
-                    WrapGroup wrapGroup = new WrapGroup();
-                    Group group = new Group();
-                    group.setWidth(236);
-                    group.setHeight(354);
-                    group.setImageurl(object.getString("imageurl"));
-                    group.setTitle(object.getString("title"));
-                    group.setUrl(object.getString("url"));
-                    wrapGroup.setGroup(group);
-                    wrapGroup.setIscollected(true);
-                    wrapGroup.setDate(new Date().getTime());
-                    wrapGroup.setGroupid(object.getString("groupid"));
-                    groups.add(wrapGroup);
+        groups = new ArrayList<>();
+        AVUser user = AVUser.getCurrentUser();
+        if (user == null)
+            return;
+        user.fetchInBackground("groups", new GetCallback<AVObject>() {
+            @Override
+            public void done(AVObject avObject, AVException e) {
+                try {
+                    JSONArray array = avObject.getJSONArray("groups");
+                    if (array != null) {
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject object = array.getJSONObject(i);
+                            WrapGroup wrapGroup = new WrapGroup();
+                            Group group = new Group();
+                            group.setWidth(236);
+                            group.setHeight(354);
+                            group.setImageurl(object.getString("imageurl"));
+                            group.setTitle(object.getString("title"));
+                            group.setUrl(object.getString("url"));
+                            wrapGroup.setGroup(group);
+                            wrapGroup.setIscollected(true);
+                            wrapGroup.setDate(new Date().getTime());
+                            wrapGroup.setGroupid(object.getString("groupid"));
+                            groups.add(wrapGroup);
+                        }
+                        saveDb(groups);
+                        saveToCloud();
+                    }
+                } catch (JSONException ee) {
+                    ee.printStackTrace();
+                    KLog.e(ee);
                 }
-                saveDb(groups);
-                mAdapter.replaceWith(groups);
-                showSnackBar("云端同步成功");
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-            KLog.e(e);
-        }
+        });
 
     }
 

@@ -17,12 +17,11 @@ import info.meizi_retrofit.ui.main.HomeFragment;
 public class HotGroupActivity extends ToolBarActivity {
     public static final String TAG = "tag";
     public static final String TITLE = "title";
-    private String tag;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        tag = getIntent().getStringExtra(TAG);
+        String tag = getIntent().getStringExtra(TAG);
         KLog.e(tag);
         replaceFragment(HomeFragment.newFragment(tag));
         setTitle(getIntent().getStringExtra(TITLE));

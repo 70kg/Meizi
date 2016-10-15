@@ -40,9 +40,6 @@ public class LargePicFragment extends Fragment {
     private TouchImageView view;
     protected CompositeSubscription mSubscriptions = new CompositeSubscription();
 
-    public LargePicFragment() {
-    }
-
     public static Fragment newFragment(String url, String groupid, int position) {
         Bundle bundle = new Bundle();
         bundle.putString(URL, url);

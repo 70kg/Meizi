@@ -36,17 +36,17 @@ public class ContentParser {
     public static List<Group> ParserGroups(String html, String type) {
         List<Group> list = new ArrayList<>();
         Document doc = Jsoup.parse(html);
-        Elements links = doc.select("a");//.select("a[target]");
+        Elements links = doc.getElementById("pins").getElementsByTag("li");
 
         Element aelement;
         Element imgelement;
-        for (int i = 14; i < 86; i += 3) {
+        for (int i = 0; i < 24; i += 1) {
             if (i < links.size() && links.get(i) != null && links.get(i).select("img").first() != null) {
                 imgelement = links.get(i).select("img").first();
                 aelement = links.get(i).select("a").first();
                 Group bean = new Group();
                 bean.setOrder(i);
-                bean.setTitle(imgelement.attr("alt").toString());
+                bean.setTitle(imgelement.attr("alt"));
                 bean.setImageurl(imgelement.attr("data-original"));
 
                 bean.setType(type);
@@ -66,17 +66,14 @@ public class ContentParser {
 
     public static int getCount(String html) {
         Document doc = Jsoup.parse(html);
-        Elements pages = doc.select("span");
-
-        Element page = pages.get(3);
-
+        Element page = doc.getElementsByClass("pagenavi").get(0).getElementsByTag("a").get(4).getElementsByTag("span").first();
         Pattern p = Pattern.compile("[\\d*]");
         Matcher m = p.matcher(page.toString());
         StringBuffer stringBuffer = new StringBuffer();
         while (m.find()) {
             stringBuffer.append(m.group());
         }
-        return Integer.parseInt(stringBuffer.toString().substring(1));
+        return Integer.parseInt(stringBuffer.toString());
     }
 
     private static int url2groupid(String url) {

@@ -161,7 +161,6 @@ public class HomeFragment extends BaseFragment {
         }
         page = mAdapter.getItemCount() / 24;
         page = page < 2 ? 2 : page;
-        KLog.e(page);
         StartLoad(page, false);
         page++;
         hasload = true;

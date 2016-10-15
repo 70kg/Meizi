@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'AndResGuard'
 android {
     lintOptions {
         checkReleaseBuilds false
@@ -14,8 +13,8 @@ android {
         applicationId "info.meizi_retrofit"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 13
-        versionName "1.8.0"
+        versionCode 15
+        versionName "1.8.2"
         resConfigs "zh"//只要中文的第二三方包等
         manifestPlaceholders = [CHANNEL_VALUE: "xiaomi"]
     }
@@ -74,8 +73,8 @@ android {
 
             debuggable true
             minifyEnabled false
-            zipAlignEnabled true
-            shrinkResources true
+            zipAlignEnabled false
+            shrinkResources false
             signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'//混淆文件
         }

@@ -9,7 +9,8 @@ import rx.Observable;
  * Created by Mr_Wrong on 15/10/31.
  */
 public interface ContentApi {
-    public static String BASE_URL = "http://www.mzitu.com/";
+    String BASE_URL = "http://www.mzitu.com/";
+
     @Headers("User-Agent': 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36" +
             "(KHTML, like Gecko) Chrome/41.0.2272.118 Safari/537.36")
     @GET("/{groupid}/{index}")
