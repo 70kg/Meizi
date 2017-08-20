@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/md_grey_300"
-              android:fitsSystemWindows="true"
-              android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/md_grey_300"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/inc_toolbar"
@@ -18,7 +18,7 @@
         <TextSwitcher
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
     </android.support.v7.widget.Toolbar>
 
     <RelativeLayout
@@ -34,7 +34,7 @@
             android:layout_marginTop="-100dp"
             android:contentDescription="@null"
             android:scaleType="centerCrop"
-            android:src="@drawable/test"/>
+            android:src="@drawable/test" />
 
         <info.meizi_retrofit.widget.PullScrollView
             android:id="@+id/scroll_view"
@@ -69,7 +69,7 @@
                         android:text="@string/about"
                         android:textColor="@color/md_grey_800"
                         android:textIsSelectable="true"
-                        android:textSize="14sp"/>
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/text_tem"
@@ -79,7 +79,7 @@
                         android:layout_marginBottom="12dp"
                         android:layout_marginTop="12dp"
                         android:text="开发者"
-                        android:textColor="@color/md_grey_600"/>
+                        android:textColor="@color/md_grey_600" />
 
                     <RelativeLayout
                         android:id="@+id/layout"
@@ -95,7 +95,7 @@
                             android:layout_height="38dp"
                             android:layout_centerVertical="true"
                             android:layout_margin="16dp"
-                            android:src="@drawable/ic_github"/>
+                            android:src="@drawable/ic_github" />
 
                         <TextView
                             android:id="@+id/tv_70kg"
@@ -106,7 +106,7 @@
                             android:layout_toEndOf="@id/ig_avatar"
                             android:layout_toRightOf="@id/ig_avatar"
                             android:text="70kg"
-                            android:textColor="@color/md_grey_800"/>
+                            android:textColor="@color/md_grey_800" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -124,7 +124,7 @@
                             android:layout_centerVertical="true"
                             android:layout_margin="16dp"
                             android:gravity="center"
-                            android:src="@drawable/weibo"/>
+                            android:src="@drawable/weibo" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -134,7 +134,7 @@
                             android:layout_toEndOf="@id/weibo"
                             android:layout_toRightOf="@id/weibo"
                             android:text="Mr_Wrong丶"
-                            android:textColor="@color/md_grey_800"/>
+                            android:textColor="@color/md_grey_800" />
                     </RelativeLayout>
 
                     <TextView
@@ -145,9 +145,10 @@
                         android:layout_marginBottom="12dp"
                         android:layout_marginTop="12dp"
                         android:text="使用的开源库"
-                        android:textColor="@color/md_grey_600"/>
+                        android:textColor="@color/md_grey_600" />
 
                     <RelativeLayout
+                        android:id="@+id/open_libs"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/text_lib"
@@ -160,11 +161,54 @@
                             android:layout_height="wrap_content"
                             android:text="@string/libs_list"
                             android:textColor="@color/md_grey_600"
-                            android:textSize="13sp"/>
+                            android:textSize="13sp" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/open_libs"
+                        android:layout_marginBottom="16dp"
+                        android:background="@drawable/bg_card_nopic"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:id="@+id/verson_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/md_grey_600"
+                            android:textSize="13sp" />
 
                     </RelativeLayout>
 
                 </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_card_nopic"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/pay_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="@string/pay" />
+
+                    <ImageView
+                        android:id="@+id/pay_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/pay_text"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="8dp"
+                        android:src="@drawable/pay" />
+
+                </RelativeLayout>
+
 
             </LinearLayout>
         </info.meizi_retrofit.widget.PullScrollView>

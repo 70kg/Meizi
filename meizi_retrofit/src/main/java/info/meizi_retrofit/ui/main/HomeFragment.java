@@ -17,15 +17,17 @@ import java.util.List;
 import info.meizi_retrofit.R;
 import info.meizi_retrofit.adapter.HomeAdapter;
 import info.meizi_retrofit.model.Group;
+import info.meizi_retrofit.net.Api;
 import info.meizi_retrofit.net.ContentParser;
 import info.meizi_retrofit.net.GroupApi;
 import info.meizi_retrofit.ui.base.BaseFragment;
 import info.meizi_retrofit.ui.group.GroupActivity;
-import info.meizi_retrofit.utils.StringConverter;
 import info.meizi_retrofit.utils.Utils;
 import info.meizi_retrofit.widget.RadioImageView;
-import retrofit.RestAdapter;
-import retrofit.client.OkClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -67,7 +69,7 @@ public class HomeFragment extends BaseFragment {
             mAdapter.addAll(Group.all(realm, type));
         Utils.statrtRefresh(mRefresher, true);
         KLog.e("http://www.mzitu.com/" + type + "/page/" + page);
-        mSubscriptions.add(mGroupApi.getGroup(type, page)
+        mGroupApi.getGroupWithCall("http://www.mzitu.com/" + type + "/page/" + page)
                 .map(new Func1<String, List<Group>>() {
                     @Override
                     public List<Group> call(String s) {
@@ -82,10 +84,10 @@ public class HomeFragment extends BaseFragment {
                         saveDb(groups);
                     }
                 })
-                .subscribe(new listObserver()));
+                .subscribe(new listObserver());
     }
 
-    class listObserver implements Observer<List<Group>> {
+    private class listObserver implements Observer<List<Group>> {
 
         @Override
         public void onCompleted() {
@@ -176,12 +178,8 @@ public class HomeFragment extends BaseFragment {
     }
 
     protected GroupApi createGroupApi() {
-        RestAdapter adapter = new RestAdapter.Builder()
-                .setEndpoint("http://www.mzitu.com/")
-                .setConverter(new StringConverter())
-                .setClient(new OkClient())
-                .build();
-        return adapter.create(GroupApi.class);
+        return Api.getInsatcne().createGroupApi();
+
     }
 
     @Override

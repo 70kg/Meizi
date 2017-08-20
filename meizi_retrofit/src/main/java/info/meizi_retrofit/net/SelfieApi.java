@@ -1,8 +1,8 @@
 package info.meizi_retrofit.net;
 
-import retrofit.http.GET;
-import retrofit.http.Headers;
-import retrofit.http.Path;
+import retrofit2.http.GET;
+import retrofit2.http.Headers;
+import retrofit2.http.Path;
 import rx.Observable;
 
 /**

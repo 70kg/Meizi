@@ -37,5 +37,6 @@ captures/
 ### Android Patch ###
 gen-external-apklibs
 
-
+.DS_Store
+.idea/*
 meizi_retrofit/sign.properties

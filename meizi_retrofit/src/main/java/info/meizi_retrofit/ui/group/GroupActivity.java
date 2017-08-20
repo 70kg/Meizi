@@ -18,9 +18,6 @@ import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
 import com.socks.library.KLog;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,17 +30,17 @@ import info.meizi_retrofit.adapter.GroupAdapter;
 import info.meizi_retrofit.model.Content;
 import info.meizi_retrofit.model.Group;
 import info.meizi_retrofit.model.WrapGroup;
+import info.meizi_retrofit.net.Api;
 import info.meizi_retrofit.net.ContentApi;
 import info.meizi_retrofit.net.ContentParser;
 import info.meizi_retrofit.ui.SaveAllService;
 import info.meizi_retrofit.ui.base.ListActivity;
 import info.meizi_retrofit.ui.largepic.LargePicActivity;
-import info.meizi_retrofit.utils.LogUtils;
-import info.meizi_retrofit.utils.StringConverter;
 import info.meizi_retrofit.utils.UrlUtils;
 import info.meizi_retrofit.utils.Utils;
-import retrofit.RestAdapter;
-import retrofit.client.OkClient;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -248,14 +245,8 @@ public class GroupActivity extends ListActivity {
     }
 
     private ContentApi createApi() {
-        RestAdapter adapter = new RestAdapter.Builder()
-                .setEndpoint(ContentApi.BASE_URL)
-                .setConverter(new StringConverter())
-                .setClient(new OkClient())
-                .build();
-        return adapter.create(ContentApi.class);
+        return Api.getInsatcne().createContentApi();
     }
-
 
 
     private void startLargePicActivity(View view, int position) {
@@ -294,7 +285,7 @@ public class GroupActivity extends ListActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         //判断有没有收藏过
         List<WrapGroup> list = WrapGroup.all(realm);
-        LogUtils.e("进入时的收藏个数" + list.size() + "_" + isContain(groupid, list));
+        KLog.e("进入时的收藏个数" + list.size() + "_" + isContain(groupid, list));
         if (isContain(groupid, list)) {
             iscollected = true;
         } else {

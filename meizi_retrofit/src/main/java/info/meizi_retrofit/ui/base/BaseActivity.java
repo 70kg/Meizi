@@ -5,10 +5,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.avos.avoscloud.AVUser;
-import com.umeng.analytics.MobclickAgent;
 
 import info.meizi_retrofit.model.SaveDb;
-import info.meizi_retrofit.utils.BusProvider;
 import info.meizi_retrofit.utils.RxUtils;
 import io.realm.Realm;
 import io.realm.RealmObject;
@@ -27,20 +25,17 @@ public class BaseActivity<T extends RealmObject> extends AppCompatActivity imple
         super.onCreate(savedInstanceState);
         realm = Realm.getDefaultInstance();
         mHasUser = AVUser.getCurrentUser() != null;
-        BusProvider.register(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        MobclickAgent.onResume(this);
         mSubscriptions = RxUtils.getNewCompositeSubIfUnsubscribed(mSubscriptions);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        MobclickAgent.onPause(this);
         RxUtils.unsubscribeIfNotNull(mSubscriptions);
     }
 
@@ -48,7 +43,6 @@ public class BaseActivity<T extends RealmObject> extends AppCompatActivity imple
     protected void onDestroy() {
         super.onDestroy();
         realm.close();
-        BusProvider.unregister(this);
     }
 
     @Override

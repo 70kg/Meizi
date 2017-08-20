@@ -1,10 +1,15 @@
 package info.meizi_retrofit.utils;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
+
+import com.socks.library.KLog;
 
 import info.meizi_retrofit.widget.MySwipeRefreshLayout;
 
@@ -14,24 +19,6 @@ import info.meizi_retrofit.widget.MySwipeRefreshLayout;
 public class Utils {
     public static String url2groupid(String url) {
         return url.split("/")[3];
-    }
-
-    public static String makeUrl(String type, String count) {
-        String url;
-        String page = "";
-        if (type.equals("")) {
-            page = "page/";
-            if (count.equals("")) {
-                page = "";
-            }
-        } else {
-            page = "/page/";
-            if (count.equals("")) {
-                page = "";
-            }
-        }
-        LogUtils.e("http://www.mzitu.com/" + type + page + count);
-        return type + page + count;
     }
 
     public static int getPaletteColor(Bitmap bitmap) {
@@ -75,13 +62,26 @@ public class Utils {
         });
     }
 
-    public static  void setSystemBar(Activity context,Toolbar mToolbar,int color) {
+    public static void setSystemBar(Activity context, Toolbar mToolbar, int color) {
         SystemBarTintManager tintManager = new SystemBarTintManager(context);
         tintManager.setStatusBarTintEnabled(true);
         mToolbar.setBackgroundColor(color);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             tintManager.setStatusBarTintColor(color);
         }
+    }
+
+    public static String getVersionName(Context context) {
+        PackageManager packageManager = context.getPackageManager();
+        PackageInfo packageInfo;
+        String versionName = "";
+        try {
+            packageInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
+            versionName = packageInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return versionName;
     }
 
 }

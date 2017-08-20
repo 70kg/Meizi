@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -25,7 +26,6 @@ import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.GetCallback;
 import com.socks.library.KLog;
-import com.umeng.update.UmengUpdateAgent;
 
 import java.util.List;
 import java.util.Map;
@@ -58,8 +58,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        UmengUpdateAgent.setDeltaUpdate(false);
-        UmengUpdateAgent.update(this);
         initToolBar();
         replaceFragment(HomeFragment.newFragment(""));
         initDrawer();
@@ -78,45 +76,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 }
             });
         }
-        initAutoUpDate();
     }
 
-    private void initAutoUpDate() {
-
-        AVQuery<AVObject> query = AVQuery.getQuery("SelfiePage");
-        query.getFirstInBackground(new GetCallback<AVObject>() {
-            @Override
-            public void done(final AVObject avObject, AVException e) {
-                if (e == null) {
-                    int code = avObject.getNumber("versionCode").intValue();
-                    int oldCode = UpLoad.getVerson(realm);
-                    if (code > oldCode) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.DialogStyle);
-                        builder.setTitle("有新版本啦");
-                        builder.setMessage(avObject.getString("updateContent"));
-                        builder.setNegativeButton("更新", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent();
-                                intent.setAction(Intent.ACTION_VIEW);
-                                Uri uri = Uri.parse(avObject.getString("updateUrl"));
-                                intent.setData(uri);
-                                if (intent.resolveActivity(getPackageManager()) != null) {
-                                    startActivity(intent);
-                                }
-                                dialog.dismiss();
-                            }
-                        }).show();
-                        UpLoad upLoad = new UpLoad();
-                        upLoad.setVersionCode(code);
-                        saveDb(upLoad);
-                    }
-                } else {
-                    KLog.e(e);
-                }
-            }
-        });
-    }
 
     private void initUser() {
         if (AVUser.getCurrentUser() != null) {//已经登录
@@ -130,7 +91,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private void initDrawer() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawerLayout.setDrawerListener(toggle);
+        mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         mMenu.setNavigationItemSelectedListener(this);
         View haedLayout = mMenu.getHeaderView(0);
@@ -151,7 +112,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem menuItem) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.menu_home:
                 mToolbar.setTitle("Meizi");
@@ -203,7 +164,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     public void replaceFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content, fragment);
-        transaction.commit();
+        transaction.commitAllowingStateLoss();
     }
 
 

@@ -174,28 +174,6 @@
     -keep class sun.misc.Unsafe { *; }
     -keep class com.google.gson.stream.** { *; }
 
-    #友盟
-    -keepclassmembers class * {
-       public <init>(org.json.JSONObject);
-    }
-
-    -keep class com.umeng.**
-
-    -keep public class com.idea.fifaalarmclock.app.R$*{
-        public static final int *;
-    }
-
-    -keep public class com.umeng.fb.ui.ThreadView {
-    }
-
-    -dontwarn com.umeng.**
-
-    -dontwarn org.apache.commons.**
-
-    -keep public class * extends com.umeng.**
-
-    -keep class com.umeng.** {*; }
-
     # Retrofit 1.X
     -keep class retrofit.** { *; }
     -dontwarn okio.**
@@ -281,3 +259,6 @@
         @com.squareup.otto.Produce public *;
     }
 
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
+-keep class android.support.**{*;}

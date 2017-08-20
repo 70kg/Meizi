@@ -46,7 +46,7 @@ public class RxMeizhi {
         }).flatMap(new Func1<Bitmap, Observable<Uri>>() {
             @Override
             public Observable<Uri> call(Bitmap bitmap) {
-                LogUtils.d(bitmap.getByteCount());
+                KLog.d(bitmap.getByteCount());
                 return Observable.just(saveimages(context, bitmap, foldername, name));
             }
         }).subscribeOn(Schedulers.io());

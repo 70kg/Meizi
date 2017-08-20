@@ -5,10 +5,17 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import butterknife.Bind;
 import info.meizi_retrofit.R;
+import info.meizi_retrofit.ui.SaveAllService;
 import info.meizi_retrofit.ui.base.ToolBarActivity;
+import info.meizi_retrofit.utils.RxMeizhi;
+import info.meizi_retrofit.utils.Utils;
 import info.meizi_retrofit.widget.PullScrollView;
 
 /**
@@ -18,8 +25,12 @@ public class AboutActivity extends ToolBarActivity {
 
     @Bind(R.id.background_img)
     ImageView backgroundImg;
+    @Bind(R.id.pay_image)
+    ImageView payImage;
     @Bind(R.id.scroll_view)
     PullScrollView scrollView;
+    @Bind(R.id.verson_name)
+    TextView versonName;
 
     public void _70kg(View view) {
         Intent intent = new Intent(AboutActivity.this, WebActivity.class);
@@ -40,6 +51,17 @@ public class AboutActivity extends ToolBarActivity {
         super.onCreate(savedInstanceState);
         scrollView.setHeader(backgroundImg);
         setTitle("关于");
+        versonName.setText(getString(R.string.verson_name_format, Utils.getVersionName(this)));
+        payImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AboutActivity.this, SaveAllService.class);
+                intent.putExtra(SaveAllService.TITLE, "pay");
+                intent.putExtra(SaveAllService.GROUPID, "pay");
+                intent.putExtra(SaveAllService.RESOURCEI_D, R.drawable.pay);
+                startService(intent);
+            }
+        });
     }
 
     @Override

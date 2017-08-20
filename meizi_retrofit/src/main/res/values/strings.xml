@@ -8,12 +8,13 @@
     <string name="drawer_close">Close navigation drawer</string>
 
     <string name="about">这是个看妹子的应用，每天都会有更新呦
-        \n数据来源http://www.mzitu.com
-        \n\n完全开源，项目地址https://github.com/70kg/Meizi，如果你觉得还不错，可以给个star啦。如果能对项目贡献代码就再好不过了。
-        \n\n完全无广告，尽量保持优雅和简洁。欢迎去酷安下面评论提意见,我会经常去看的http://coolapk.com/apk/info.meizi_retrofit 还可以加福利qq群:535031567,你懂的
-        \n\n如果有兴趣也可以赞助一下我的啦QAQ\n支付宝账户：18817956513</string>
+    \n数据来源http://www.mzitu.com
+    \n\n完全开源，项目地址https://github.com/70kg/Meizi，如果你觉得还不错，可以给个star啦。如果能对项目贡献代码就再好不过了。
+    \n\n完全无广告，尽量保持优雅和简洁。还可以加福利qq群:483212982,你懂的</string>
     <string name="libs_list">butterknife\nokhttp\npicasso\nrealm\njsoup\nRxJava\nRetrofit\n</string>
 
+    <string name="verson_name_format">当前版本：%s</string>
+    <string name="pay">如果有兴趣也可以赞助一下我的啦QAQ\n点击保存，在支付宝扫一扫中选择相册</string>
 
     <array name="tag">
         <item>秀人网</item>

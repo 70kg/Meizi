@@ -2,10 +2,6 @@ package info.meizi_retrofit.net;
 
 import android.graphics.BitmapFactory;
 
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -16,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import info.meizi_retrofit.model.Selfie;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by Mr_Wrong on 16/1/26.

@@ -15,9 +15,6 @@ import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.GetCallback;
 import com.socks.library.KLog;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
@@ -31,10 +28,11 @@ import info.meizi_retrofit.model.Selfie;
 import info.meizi_retrofit.net.SelfieApi;
 import info.meizi_retrofit.ui.base.BaseFragment;
 import info.meizi_retrofit.ui.largepic.LargePicActivity;
-import info.meizi_retrofit.utils.StringConverter;
 import info.meizi_retrofit.utils.Utils;
-import retrofit.RestAdapter;
-import retrofit.client.OkClient;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import retrofit2.Retrofit;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -133,7 +131,8 @@ public class SelfieFragment extends BaseFragment {
         Selfie selfie = new Selfie();
         selfie.setUrl(url);
         try {
-            Response response = new OkHttpClient().newCall(new Request.Builder().url(url).build()).execute();
+            Response response;
+            response = new OkHttpClient().newCall(new Request.Builder().url(url).build()).execute();
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;
             BitmapFactory.decodeStream(response.body().byteStream(), null, options);
@@ -187,12 +186,10 @@ public class SelfieFragment extends BaseFragment {
 
 
     private SelfieApi createApi() {
-        RestAdapter adapter = new RestAdapter.Builder()
-                .setEndpoint("http://www.mzitu.com/share/")
-                .setConverter(new StringConverter())
-                .setClient(new OkClient())
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://www.mzitu.com/share/")
                 .build();
-        return adapter.create(SelfieApi.class);
+        return retrofit.create(SelfieApi.class);
     }
 
     @Override

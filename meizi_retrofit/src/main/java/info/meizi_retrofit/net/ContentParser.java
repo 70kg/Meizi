@@ -19,19 +19,6 @@ import info.meizi_retrofit.model.Group;
  */
 public class ContentParser {
 
-
-    public static Content ParserContent(String html) {
-        Content content = new Content();
-        Document doc = Jsoup.parse(html);
-        Elements links = doc.select("img[src~=(?i)\\.(png|jpe?g)]");
-
-        Element element = links.get(1).getElementsByTag("img").first();
-
-        content.setUrl(element.attr("src"));
-        content.setTitle(element.attr("alt"));
-        return content;
-    }
-
     //获取首页的list
     public static List<Group> ParserGroups(String html, String type) {
         List<Group> list = new ArrayList<>();

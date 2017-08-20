@@ -1,1 +1,1 @@
-include ':app', ':meizi_retrofit'
+include ':meizi_retrofit'
