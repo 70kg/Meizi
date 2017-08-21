@@ -97,13 +97,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         View haedLayout = mMenu.getHeaderView(0);
         mName = (TextView) haedLayout.findViewById(R.id.tv_name);
         mHead = (ImageView) haedLayout.findViewById(R.id.iv_head);
-        if (!mHasUser)//没有登录的时候才去登录
-            mHead.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        //没有登录的时候才去登录
+        mHead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (AVUser.getCurrentUser() == null) {
                     startActivityForResult(new Intent(MainActivity.this, LoginActivity.class), 66);
                 }
-            });
+            }
+        });
     }
 
     private void initToolBar() {

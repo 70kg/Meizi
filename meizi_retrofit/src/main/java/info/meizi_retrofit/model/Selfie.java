@@ -5,9 +5,9 @@ package info.meizi_retrofit.model;
  * 自拍
  */
 public class Selfie {
-    int width;
-    int height;
-    String url;
+    private int width;
+    private int height;
+    private String url;
 
     public int getWidth() {
         return width;

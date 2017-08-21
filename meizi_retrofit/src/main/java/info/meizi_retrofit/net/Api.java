@@ -33,4 +33,7 @@ public class Api {
         return retrofit.create(ContentApi.class);
     }
 
+    public SelfieApi createSelfieApi() {
+        return retrofit.create(SelfieApi.class);
+    }
 }

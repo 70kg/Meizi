@@ -43,7 +43,6 @@ public class HomeFragment extends BaseFragment {
     private int page = 2;
     private boolean hasload = false;
     protected GroupApi mGroupApi;
-    private String currentImageUrl;
 
     public HomeFragment() {
     }
@@ -61,7 +60,6 @@ public class HomeFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         type = getArguments().getString("type");
         mGroupApi = createGroupApi();
-        currentImageUrl = Group.getFirstImageUrl(realm, type);
     }
 
     private void StartLoad(int page, boolean isrefresh) {
